@@ -9,11 +9,11 @@ export function SiteNav() {
           <Wordmark />
         </Link>
         <nav className="flex items-center gap-8 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-ink-mute">
-          <Link href="/#instrument" className="hidden hover:text-ink sm:inline">
-            Method
-          </Link>
-          <Link href="/#coverage" className="hidden hover:text-ink sm:inline">
+          <Link href="/#report" className="hidden hover:text-ink sm:inline">
             The Report
+          </Link>
+          <Link href="/#method" className="hidden hover:text-ink sm:inline">
+            Method
           </Link>
           <Link href="/#fees" className="hidden hover:text-ink sm:inline">
             Fees
@@ -22,7 +22,7 @@ export function SiteNav() {
             href="/assessment"
             className="border border-ink px-4 py-2 text-ink transition-colors hover:bg-ink hover:text-paper"
           >
-            Begin Intake
+            Analyse my resume
           </Link>
         </nav>
       </div>

@@ -12,7 +12,7 @@ export function Wordmark({ compact = false }: { compact?: boolean }) {
             LexIntent <span className="text-oxblood">AI</span>
           </div>
           <div className="u-eyebrow mt-1 text-[0.5625rem]">
-            Law Career Intelligence
+            Legal Career Intelligence
           </div>
         </div>
       )}

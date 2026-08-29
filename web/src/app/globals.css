@@ -1,57 +1,57 @@
 @import "tailwindcss";
 
 /* ============================================================
-   LexIntent AI — editorial / broadsheet design system
-   Palette + type taken from the reference dashboard:
-   warm paper, oxblood accent, Newsreader serif + Inter labels.
+   LexIntent AI — editorial design system
+   Investigative-newspaper language: off-white paper, deep
+   burgundy accent, Newsreader serif headlines + Inter labels.
    ============================================================ */
 
 :root {
-  --paper: #f4f1ea;
-  --paper-panel: #efebe0;
-  --paper-sink: #eae5d8;
-  --ink: #1b1a17;
-  --ink-soft: #46423b;
-  --ink-mute: #6f6a5f;
-  --rule: #d8d3c6;
-  --rule-strong: #c4beaa;
-  --oxblood: #8a1a15;
-  --oxblood-deep: #6d130f;
-  --track: #dcd7ca;
-  --paper-card: #f7f4ee;
+  --paper: #f8f6f2;
+  --paper-panel: #f1eee7;
+  --paper-sink: #ebe7dd;
+  --ink: #111111;
+  --ink-soft: #33322f;
+  --ink-mute: #8a8a8a;
+  --rule: #d8d3ca;
+  --rule-strong: #c6c0b3;
+  --oxblood: #6a0f1a;
+  --oxblood-deep: #500b14;
+  --track: #e3ded3;
+  --paper-card: #fbfaf7;
 }
 
 /* dark is a courtesy mapping; the product ships light (print-emulating editorial) */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #16150f;
-    --paper-panel: #1c1b14;
-    --paper-sink: #201e16;
-    --ink: #f2ede0;
-    --ink-soft: #cbc5b4;
+    --paper: #14130f;
+    --paper-panel: #1b1a15;
+    --paper-sink: #201e18;
+    --ink: #f4f1ea;
+    --ink-soft: #cfc9bc;
     --ink-mute: #928c7c;
-    --rule: #33301f;
-    --rule-strong: #423d2a;
-    --oxblood: #d5443b;
-    --oxblood-deep: #b8352d;
-    --track: #302d1f;
-    --paper-card: #1b1a13;
+    --rule: #322f26;
+    --rule-strong: #423d31;
+    --oxblood: #c8434f;
+    --oxblood-deep: #a83540;
+    --track: #2e2b22;
+    --paper-card: #1a1914;
   }
 }
 
 [data-theme="dark"] {
-  --paper: #16150f;
-  --paper-panel: #1c1b14;
-  --paper-sink: #201e16;
-  --ink: #f2ede0;
-  --ink-soft: #cbc5b4;
+  --paper: #14130f;
+  --paper-panel: #1b1a15;
+  --paper-sink: #201e18;
+  --ink: #f4f1ea;
+  --ink-soft: #cfc9bc;
   --ink-mute: #928c7c;
-  --rule: #33301f;
-  --rule-strong: #423d2a;
-  --oxblood: #d5443b;
-  --oxblood-deep: #b8352d;
-  --track: #302d1f;
-  --paper-card: #1b1a13;
+  --rule: #322f26;
+  --rule-strong: #423d31;
+  --oxblood: #c8434f;
+  --oxblood-deep: #a83540;
+  --track: #2e2b22;
+  --paper-card: #1a1914;
 }
 
 @theme inline {
@@ -135,6 +135,13 @@ body {
   line-height: 1.28;
 }
 
+.u-folio {
+  font-family: var(--font-serif);
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--ink-mute);
+}
+
 /* on dark (ink) backgrounds, flip the editorial primitives */
 .on-dark .u-serif {
   color: var(--paper);
@@ -146,14 +153,59 @@ body {
   color: var(--paper);
 }
 
+/* printed-paper grain: fixed, non-interactive, very faint --------- */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+}
+
+/* editorial reveal: fade + rise, gated on reduced-motion --------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal[data-shown="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* burgundy underline that draws itself when its Reveal fires ----- */
+.ink-underline {
+  color: var(--oxblood);
+  background-image: linear-gradient(var(--oxblood), var(--oxblood));
+  background-repeat: no-repeat;
+  background-position: 0 92%;
+  background-size: 0% 0.09em;
+  transition: background-size 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.35s;
+}
+[data-shown="true"] .ink-underline {
+  background-size: 100% 0.09em;
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.001ms !important;
     transition-duration: 0.001ms !important;
   }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .ink-underline {
+    background-size: 100% 0.09em;
+  }
 }
 
 ::selection {
   background: var(--oxblood);
-  color: #f4f1ea;
+  color: #f8f6f2;
 }

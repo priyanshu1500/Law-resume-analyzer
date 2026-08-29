@@ -6,3 +6,7 @@ build/
 .env*
 .DS_Store
 .vercel
+
+# screenshots / scratch
+web/*.png
+web/*.mjs

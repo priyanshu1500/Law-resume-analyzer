@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+/* ============================================================
+   LexIntent AI — editorial / broadsheet design system
+   Palette + type taken from the reference dashboard:
+   warm paper, oxblood accent, Newsreader serif + Inter labels.
+   ============================================================ */
+
+:root {
+  --paper: #f4f1ea;
+  --paper-panel: #efebe0;
+  --paper-sink: #eae5d8;
+  --ink: #1b1a17;
+  --ink-soft: #46423b;
+  --ink-mute: #6f6a5f;
+  --rule: #d8d3c6;
+  --rule-strong: #c4beaa;
+  --oxblood: #8a1a15;
+  --oxblood-deep: #6d130f;
+  --track: #dcd7ca;
+  --paper-card: #f7f4ee;
+}
+
+/* dark is a courtesy mapping; the product ships light (print-emulating editorial) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #16150f;
+    --paper-panel: #1c1b14;
+    --paper-sink: #201e16;
+    --ink: #f2ede0;
+    --ink-soft: #cbc5b4;
+    --ink-mute: #928c7c;
+    --rule: #33301f;
+    --rule-strong: #423d2a;
+    --oxblood: #d5443b;
+    --oxblood-deep: #b8352d;
+    --track: #302d1f;
+    --paper-card: #1b1a13;
+  }
+}
+
+[data-theme="dark"] {
+  --paper: #16150f;
+  --paper-panel: #1c1b14;
+  --paper-sink: #201e16;
+  --ink: #f2ede0;
+  --ink-soft: #cbc5b4;
+  --ink-mute: #928c7c;
+  --rule: #33301f;
+  --rule-strong: #423d2a;
+  --oxblood: #d5443b;
+  --oxblood-deep: #b8352d;
+  --track: #302d1f;
+  --paper-card: #1b1a13;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-panel: var(--paper-panel);
+  --color-paper-sink: var(--paper-sink);
+  --color-paper-card: var(--paper-card);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-mute: var(--ink-mute);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-oxblood: var(--oxblood);
+  --color-oxblood-deep: var(--oxblood-deep);
+  --color-track: var(--track);
+
+  --font-serif: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+* {
+  border-color: var(--rule);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink-soft);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* editorial primitives --------------------------------------------- */
+
+.u-serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.u-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.u-eyebrow-ox {
+  color: var(--oxblood);
+}
+
+.u-dropnum {
+  font-family: var(--font-serif);
+  color: var(--oxblood);
+  line-height: 0.8;
+}
+
+.u-link {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--oxblood);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: gap 0.18s ease;
+}
+.u-link:hover {
+  gap: 0.7rem;
+}
+
+.u-pullquote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.28;
+}
+
+/* on dark (ink) backgrounds, flip the editorial primitives */
+.on-dark .u-serif {
+  color: var(--paper);
+}
+.on-dark .u-eyebrow {
+  color: color-mix(in srgb, var(--paper) 65%, transparent);
+}
+.on-dark .u-link {
+  color: var(--paper);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+::selection {
+  background: var(--oxblood);
+  color: #f4f1ea;
+}

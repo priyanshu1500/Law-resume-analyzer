@@ -39,7 +39,7 @@ export default function Home() {
         <div className="grid gap-14 py-14 lg:grid-cols-[1fr_0.9fr] lg:gap-16 lg:py-20">
           <Reveal className="flex flex-col justify-center">
             <Eyebrow ox>Editorial Report</Eyebrow>
-            <h1 className="u-serif mt-5 text-[2.6rem] leading-[1.03] text-ink sm:text-[3.35rem] lg:text-[4rem]">
+            <h1 className="u-serif mt-5 text-[2.75rem] leading-[1.02] text-ink sm:text-[3.5rem] lg:text-[4.25rem]">
               Your legal career, analysed like a{" "}
               <span className="ink-underline">recruiter</span>.
             </h1>
@@ -94,7 +94,7 @@ export default function Home() {
             Recruiter&rsquo;s Notes
           </span>
           <div className="mx-auto max-w-[62ch] lg:ml-[16%]">
-            <p className="u-serif text-[1.6rem] leading-[1.4] text-ink">
+            <p className="u-serif text-[1.75rem] leading-snug text-ink">
               A recruiter spends about ninety seconds with your resume. They are
               not reading it. They are scanning for four or five signals that
               tell them whether you can do the work.
@@ -115,7 +115,7 @@ export default function Home() {
         <div className="mx-auto max-w-[1400px] px-6 py-16">
           <Reveal>
             <Eyebrow>The Report</Eyebrow>
-            <h2 className="u-serif mt-4 max-w-[20ch] text-[2rem] leading-tight text-ink sm:text-[2.6rem]">
+            <h2 className="u-serif mt-4 max-w-[20ch] text-[2rem] leading-tight text-ink sm:text-[2.5rem]">
               Five pages. One honest read.
             </h2>
             <p className="mt-5 max-w-[54ch] text-[0.9375rem] leading-relaxed text-ink-soft">
@@ -133,7 +133,7 @@ export default function Home() {
       <section id="method" className="border-b border-ink">
         <div className="mx-auto max-w-[1400px] px-6 py-16">
           <Reveal>
-            <h2 className="u-serif max-w-[22ch] text-[2rem] leading-tight text-ink sm:text-[2.6rem]">
+            <h2 className="u-serif max-w-[22ch] text-[2rem] leading-tight text-ink sm:text-[2.5rem]">
               How the read is done.
             </h2>
           </Reveal>
@@ -158,7 +158,7 @@ export default function Home() {
         <div className="mx-auto max-w-[1400px] px-6 py-16">
           <Reveal>
             <Eyebrow>Fees</Eyebrow>
-            <h2 className="u-serif mt-4 max-w-[26ch] text-[2rem] leading-tight text-ink sm:text-[2.6rem]">
+            <h2 className="u-serif mt-4 max-w-[26ch] text-[2rem] leading-tight text-ink sm:text-[2.5rem]">
               Pay once for the read. Pay again only if you want the rewrite.
             </h2>
           </Reveal>
@@ -211,7 +211,7 @@ export default function Home() {
       {/* CLOSING ---------------------------------------------- */}
       <section className="on-dark border-b border-ink bg-ink">
         <div className="mx-auto flex max-w-[1400px] flex-col items-start gap-6 px-6 py-16 md:flex-row md:items-center md:justify-between">
-          <h2 className="u-serif max-w-[22ch] text-[1.9rem] leading-tight sm:text-[2.4rem]">
+          <h2 className="u-serif max-w-[22ch] text-[1.75rem] leading-tight sm:text-[2.25rem]">
             Open the report on your own future.
           </h2>
           <Link

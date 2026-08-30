@@ -9,8 +9,9 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
-import { Band, Button, Eyebrow, ArrowLink, Check, TrustItem } from "@/components/ui";
-import { Reveal } from "@/components/reveal";
+import { Band, Button, Eyebrow, Check, TrustItem } from "@/components/ui";
+import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
+import { WordReveal, Parallax, Breathe } from "@/components/motion-bits";
 import { ExhibitStack } from "@/components/exhibit-stack";
 import { ScoreCard } from "@/components/score-card";
 import { EditorialStamp } from "@/components/editorial-stamp";
@@ -57,48 +58,64 @@ export default function Home() {
       {/* HERO ----------------------------------------------------- */}
       <Band>
         <div className="grid gap-14 lg:grid-cols-[1.06fr_0.9fr] lg:gap-10">
-          <Reveal className="flex flex-col justify-center">
+          <div className="flex flex-col justify-center">
             <h1 className="u-display text-[clamp(2.4rem,4.7vw,3.7rem)]">
-              Your legal career,
-              <br />
-              analysed like a<br />
-              <span className="ink-underline">recruiter</span>.
+              <span className="block">
+                <WordReveal text="Your legal career," />
+              </span>
+              <span className="block">
+                <WordReveal text="analysed like a" delay={0.25} />
+              </span>
+              <span className="block">
+                <WordReveal text="recruiter" highlight="recruiter" delay={0.5} />.
+              </span>
             </h1>
-            <div className="mt-5 h-[3px] w-16 bg-oxblood" />
-            <p className="mt-6 max-w-[44ch] text-[0.9375rem] leading-relaxed text-ink-soft">
-              We simulate how recruiters read your resume, score it across 5
-              hiring signals, and show you exactly what to fix to get
-              shortlisted.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button href="/assessment">Analyse My Resume</Button>
-              <Button href="/report" variant="outline">
-                View Sample Report
-              </Button>
-            </div>
-            <div className="mt-10 flex flex-wrap gap-x-10 gap-y-4">
-              <TrustItem
-                icon={<ShieldCheckIcon size={18} />}
-                title="Confidential"
-                sub="Your data is safe"
-              />
-              <TrustItem
-                icon={<LockSimpleIcon size={18} />}
-                title="Secure Upload"
-                sub="256-bit encryption"
-              />
-              <TrustItem
-                icon={<CheckCircleIcon size={18} />}
-                title="No Subscription"
-                sub="Pay once. That's it."
-              />
-            </div>
-          </Reveal>
+            <Reveal delay={650}>
+              <p className="mt-7 max-w-[44ch] text-[0.9375rem] leading-relaxed text-ink-soft">
+                We simulate how recruiters read your resume, score it across 5
+                hiring signals, and show you exactly what to fix to get
+                shortlisted.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Button href="/assessment">Analyse My Resume</Button>
+                <Button href="/report" variant="outline">
+                  View Sample Report
+                </Button>
+              </div>
+            </Reveal>
+            <RevealGroup className="mt-10 flex flex-wrap gap-x-10 gap-y-4" stagger={0.09} delay={0.8}>
+              <RevealItem>
+                <TrustItem
+                  icon={<ShieldCheckIcon size={18} />}
+                  title="Confidential"
+                  sub="Your data is safe"
+                />
+              </RevealItem>
+              <RevealItem>
+                <TrustItem
+                  icon={<LockSimpleIcon size={18} />}
+                  title="Secure Upload"
+                  sub="256-bit encryption"
+                />
+              </RevealItem>
+              <RevealItem>
+                <TrustItem
+                  icon={<CheckCircleIcon size={18} />}
+                  title="No Subscription"
+                  sub="Pay once. That's it."
+                />
+              </RevealItem>
+            </RevealGroup>
+          </div>
 
-          <Reveal delay={140} className="relative flex flex-col items-center justify-center pb-4 lg:pb-16 lg:pr-10">
-            <ExhibitStack />
-            <ScoreCard className="mt-8 lg:absolute lg:-bottom-2 lg:-right-4 lg:mt-0" />
-          </Reveal>
+          <div className="relative flex flex-col items-center justify-center pb-4 lg:pb-16 lg:pr-10">
+            <Parallax distance={32}>
+              <ExhibitStack />
+            </Parallax>
+            <Breathe className="mt-8 lg:absolute lg:-bottom-2 lg:-right-4 lg:mt-0">
+              <ScoreCard />
+            </Breathe>
+          </div>
         </div>
       </Band>
 
@@ -114,11 +131,10 @@ export default function Home() {
             </h2>
           </Reveal>
 
-          <div className="grid gap-8 sm:grid-cols-[1fr_1fr_1fr_auto] sm:gap-6">
-            {STEPS.map(({ n, label, icon: Icon, body }, i) => (
-              <Reveal
+          <RevealGroup className="grid gap-8 sm:grid-cols-[1fr_1fr_1fr_auto] sm:gap-6" stagger={0.1}>
+            {STEPS.map(({ n, label, icon: Icon, body }) => (
+              <RevealItem
                 key={n}
-                delay={i * 90}
                 className="sm:border-l sm:border-rule sm:pl-5 sm:first:border-l-0 sm:first:pl-0"
               >
                 <Icon size={26} weight="regular" className="text-ink" />
@@ -131,12 +147,12 @@ export default function Home() {
                 <p className="mt-3 text-[0.8125rem] leading-relaxed text-muted">
                   {body}
                 </p>
-              </Reveal>
+              </RevealItem>
             ))}
-            <Reveal delay={280} className="hidden items-center justify-center pr-2 sm:flex">
+            <RevealItem className="hidden items-center justify-center pr-2 sm:flex">
               <EditorialStamp size={104} />
-            </Reveal>
-          </div>
+            </RevealItem>
+          </RevealGroup>
         </div>
       </Band>
 
@@ -185,11 +201,13 @@ export default function Home() {
             </h2>
           </Reveal>
 
-          <Reveal delay={140} className="grid gap-6 sm:grid-cols-2">
+          <RevealGroup className="grid gap-6 sm:grid-cols-2" stagger={0.12}>
             {PRICING.tiers.map((t) => (
-              <PricingCard key={t.name} tier={t} />
+              <RevealItem key={t.name}>
+                <PricingCard tier={t} />
+              </RevealItem>
             ))}
-          </Reveal>
+          </RevealGroup>
         </div>
       </Band>
 

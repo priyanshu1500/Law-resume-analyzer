@@ -1,12 +1,13 @@
 import { Button, Check } from "./ui";
+import { Lift } from "./motion-bits";
 import { PRICING } from "@/lib/mock";
 
 type Tier = (typeof PRICING.tiers)[number];
 
 export function PricingCard({ tier }: { tier: Tier }) {
   return (
-    <div
-      className={`relative flex flex-col border border-ink bg-[#f7f3e8] p-6 text-ink [--ink:#1a1a1a] [--ink-soft:#40403b] [--muted:#8c8880] [--oxblood:#7a1712] [--rule:#d9d4c7] ${
+    <Lift
+      className={`relative flex h-full w-full flex-col border border-ink bg-[#f7f3e8] p-6 text-ink [--ink:#1a1a1a] [--ink-soft:#40403b] [--muted:#8c8880] [--oxblood:#7a1712] [--rule:#d9d4c7] ${
         tier.featured
           ? "shadow-[8px_8px_0_rgba(0,0,0,0.55)]"
           : "shadow-[6px_6px_0_rgba(0,0,0,0.35)]"
@@ -47,6 +48,6 @@ export function PricingCard({ tier }: { tier: Tier }) {
       >
         {tier.cta}
       </Button>
-    </div>
+    </Lift>
   );
 }

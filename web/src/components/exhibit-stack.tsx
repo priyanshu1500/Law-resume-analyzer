@@ -1,8 +1,10 @@
+"use client";
+
 /**
- * Hero visual: a legal casefile. Torn "EXHIBIT A" resume on a stack of
- * sheets and a kraft folder, marked up in red pen. Built from layout
- * primitives + SVG ink; decorative, aria-hidden.
+ * Hero visual: a legal casefile. Torn "EXHIBIT A" resume, marked up in
+ * red pen that draws itself on scroll-in. Decorative, aria-hidden.
  */
+import { DrawGroup, DrawPath, InkNote } from "./motion-bits";
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -15,18 +17,11 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
-function Note({ className = "", children }: { className?: string; children: React.ReactNode }) {
-  return (
-    <span className={`u-hand absolute text-[13.5px] ${className}`}>{children}</span>
-  );
-}
-
 export function ExhibitStack() {
   return (
     <div aria-hidden className="relative mx-auto w-full max-w-[336px] select-none">
       {/* kraft folder, just peeking */}
       <div className="absolute -bottom-5 -right-4 h-[68%] w-[62%] rotate-[5deg] bg-kraft shadow-[0_24px_50px_-24px_rgba(0,0,0,0.4)]" />
-      {/* torn blank sheets */}
       <div className="deckle absolute inset-0 -translate-x-4 translate-y-5 -rotate-[4deg] bg-[#efe9dc] shadow-[0_20px_45px_-25px_rgba(0,0,0,0.3)]" />
       <div className="deckle absolute inset-0 translate-x-3 translate-y-3 rotate-[2.5deg] bg-[#f4efe3] shadow-[0_20px_45px_-25px_rgba(0,0,0,0.3)]" />
 
@@ -66,22 +61,21 @@ export function ExhibitStack() {
           <Field label="Publications">None listed</Field>
         </div>
 
-        {/* red-pen arrows, pointing in from the left margin */}
-        <svg
+        {/* red-pen arrows draw in from the left margin, in sequence */}
+        <DrawGroup
           className="pointer-events-none absolute inset-0 h-full w-full"
           viewBox="0 0 100 130"
-          preserveAspectRatio="none"
-          fill="none"
+          stagger={0.45}
         >
           <g stroke="var(--oxblood)" strokeWidth="0.8" strokeLinecap="round" vectorEffect="non-scaling-stroke">
-            <path d="M2 31 C 9 29, 13 33, 15 38" />
-            <path d="M15 38 l -5 -1 M15 38 l 1 -5" />
-            <path d="M1 59 C 8 57, 12 61, 14 65" />
-            <path d="M14 65 l -5 -1 M14 65 l 1 -5" />
-            <path d="M2 92 C 8 91, 12 93, 14 97" />
-            <path d="M14 97 l -5 0 M14 97 l 0 -5" />
+            <DrawPath d="M2 31 C 9 29, 13 33, 15 38" />
+            <DrawPath d="M15 38 l -5 -1 M15 38 l 1 -5" />
+            <DrawPath d="M1 59 C 8 57, 12 61, 14 65" />
+            <DrawPath d="M14 65 l -5 -1 M14 65 l 1 -5" />
+            <DrawPath d="M2 92 C 8 91, 12 93, 14 97" />
+            <DrawPath d="M14 97 l -5 0 M14 97 l 0 -5" />
           </g>
-        </svg>
+        </DrawGroup>
       </div>
 
       {/* paper clip */}
@@ -96,16 +90,16 @@ export function ExhibitStack() {
         <path d="M20 12 v50 a10 10 0 0 1-20 0 V20 a14 14 0 0 1 28 0 v44" />
       </svg>
 
-      {/* editor's notes, in the left margin (desktop only) */}
-      <Note className="hidden lg:block left-[-38%] top-[16%] w-[104px] rotate-[-4deg] text-right">
+      {/* editor's notes (desktop) — write in after the arrows */}
+      <InkNote className="hidden lg:block left-[-38%] top-[16%] w-[104px] text-[13.5px] text-right" rotate={-4}>
         Strong academic signal
-      </Note>
-      <Note className="hidden lg:block left-[-40%] top-[41%] w-[112px] rotate-[3deg] text-right">
+      </InkNote>
+      <InkNote className="hidden lg:block left-[-40%] top-[41%] w-[112px] text-[13.5px] text-right" rotate={3}>
         Good firms. Need better framing.
-      </Note>
-      <Note className="hidden lg:block left-[-37%] top-[70%] w-[102px] rotate-[-3deg] text-right">
+      </InkNote>
+      <InkNote className="hidden lg:block left-[-37%] top-[70%] w-[102px] text-[13.5px] text-right" rotate={-3}>
         Missing drafting evidence
-      </Note>
+      </InkNote>
     </div>
   );
 }

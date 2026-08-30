@@ -1,5 +1,5 @@
 import { ChartBarIcon } from "@phosphor-icons/react/dist/ssr";
-import { CountUp } from "./count-up";
+import { CountUpSpring } from "./motion-bits";
 
 /** The "CONFIDENTIAL" casefile score sheet that overlaps the exhibit. */
 export function ScoreCard({ className = "" }: { className?: string }) {
@@ -16,7 +16,7 @@ export function ScoreCard({ className = "" }: { className?: string }) {
       </div>
       <div className="mt-1 flex items-end gap-1">
         <span className="u-display text-[3.5rem] leading-[0.8] text-ink">
-          <CountUp to={78} />
+          <CountUpSpring to={78} />
         </span>
         <span className="pb-1.5 font-display text-[1.05rem] text-muted">/100</span>
       </div>

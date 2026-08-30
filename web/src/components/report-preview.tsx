@@ -1,4 +1,5 @@
-import { CountUp } from "./count-up";
+import { CountUpSpring } from "./motion-bits";
+import { RevealGroup, RevealItem } from "./reveal";
 import { REPORT_PREVIEW } from "@/lib/mock";
 
 function Cell({
@@ -45,34 +46,36 @@ export function ReportPreviewCard() {
         </span>
       </div>
 
-      <div className="grid grid-cols-1 divide-y divide-rule sm:grid-cols-2 sm:divide-x sm:divide-y-0">
-        <Cell label="Career Score">
-          <span className="u-display text-[2.25rem] leading-[0.8] text-oxblood">
-            <CountUp to={r.score} />
-            <span className="font-display text-[0.9rem] text-muted">/100</span>
-          </span>{" "}
-          {Bars}
-        </Cell>
-        <Cell label="Recruiter's Read">{r.recruiterRead}</Cell>
-      </div>
+      <RevealGroup stagger={0.1}>
+        <RevealItem className="grid grid-cols-1 divide-y divide-rule sm:grid-cols-2 sm:divide-x sm:divide-y-0">
+          <Cell label="Career Score">
+            <span className="u-display text-[2.25rem] leading-[0.8] text-oxblood">
+              <CountUpSpring to={r.score} />
+              <span className="font-display text-[0.9rem] text-muted">/100</span>
+            </span>{" "}
+            {Bars}
+          </Cell>
+          <Cell label="Recruiter's Read">{r.recruiterRead}</Cell>
+        </RevealItem>
 
-      <div className="grid grid-cols-1 divide-y divide-rule border-t border-rule sm:grid-cols-2 sm:divide-x sm:divide-y-0">
-        <Cell label="Missing Signals">
-          <ul className="space-y-1">
-            {r.missingSignals.map((s) => (
-              <li key={s} className="flex gap-2">
-                <span className="text-oxblood">·</span>
-                {s}
-              </li>
-            ))}
-          </ul>
-        </Cell>
-        <Cell label="Placement Forecast">{r.forecast}</Cell>
-      </div>
+        <RevealItem className="grid grid-cols-1 divide-y divide-rule border-t border-rule sm:grid-cols-2 sm:divide-x sm:divide-y-0">
+          <Cell label="Missing Signals">
+            <ul className="space-y-1">
+              {r.missingSignals.map((s) => (
+                <li key={s} className="flex gap-2">
+                  <span className="text-oxblood">·</span>
+                  {s}
+                </li>
+              ))}
+            </ul>
+          </Cell>
+          <Cell label="Placement Forecast">{r.forecast}</Cell>
+        </RevealItem>
 
-      <div className="border-t border-rule">
-        <Cell label="90-Day Roadmap">{r.roadmap}</Cell>
-      </div>
+        <RevealItem className="border-t border-rule">
+          <Cell label="90-Day Roadmap">{r.roadmap}</Cell>
+        </RevealItem>
+      </RevealGroup>
     </div>
   );
 }

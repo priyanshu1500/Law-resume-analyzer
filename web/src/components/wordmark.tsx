@@ -1,21 +1,22 @@
-import { ScalesIcon } from "@phosphor-icons/react/dist/ssr";
-
-export function Wordmark({ compact = false }: { compact?: boolean }) {
+export function Wordmark({
+  size = "md",
+  compact = false,
+}: {
+  size?: "sm" | "md" | "lg";
+  /** legacy prop from the inner-flow headers; renders the small mark */
+  compact?: boolean;
+}) {
+  const scale = { sm: "text-[1.05rem]", md: "text-[1.35rem]", lg: "text-[1.6rem]" }[
+    compact ? "sm" : size
+  ];
   return (
-    <div className="flex items-center gap-3">
-      <span className="grid size-9 place-items-center border border-ink/70 text-ink">
-        <ScalesIcon size={20} weight="regular" />
+    <span className={`u-display inline-block leading-[0.8] ${scale}`}>
+      <span className="relative">
+        LEX
+        <span className="absolute -right-2 top-0 size-[5px] bg-oxblood" aria-hidden />
       </span>
-      {!compact && (
-        <div className="leading-none">
-          <div className="u-serif text-[1.35rem] tracking-tight text-ink">
-            LexIntent <span className="text-oxblood">AI</span>
-          </div>
-          <div className="u-eyebrow mt-1 text-[0.5625rem]">
-            Legal Career Intelligence
-          </div>
-        </div>
-      )}
-    </div>
+      <br />
+      INTENT
+    </span>
   );
 }

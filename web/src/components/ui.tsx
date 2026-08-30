@@ -1,19 +1,77 @@
 import Link from "next/link";
-import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRightIcon, CheckCircleIcon } from "@phosphor-icons/react/dist/ssr";
 
 export function Eyebrow({
   children,
-  ox = false,
+  muted = false,
   className = "",
 }: {
   children: React.ReactNode;
+  muted?: boolean;
+  /** legacy no-op: the eyebrow is oxblood by default now */
   ox?: boolean;
   className?: string;
 }) {
   return (
-    <p className={`u-eyebrow ${ox ? "u-eyebrow-ox" : ""} ${className}`}>
+    <p className={`u-eyebrow ${muted ? "u-eyebrow-muted" : ""} ${className}`}>
       {children}
     </p>
+  );
+}
+
+/** Full-bleed polarity band. `tone="dark"` flips the semantic tokens. */
+export function Band({
+  children,
+  tone = "light",
+  id,
+  className = "",
+}: {
+  children: React.ReactNode;
+  tone?: "light" | "dark";
+  id?: string;
+  className?: string;
+}) {
+  return (
+    <section
+      id={id}
+      className={`${tone === "dark" ? "band-dark" : ""} border-b-2 border-ink ${className}`}
+    >
+      <div className="mx-auto max-w-[1240px] px-6 py-[clamp(4rem,9vw,7rem)]">
+        {children}
+      </div>
+    </section>
+  );
+}
+
+type ButtonProps = {
+  href: string;
+  children: React.ReactNode;
+  variant?: "oxblood" | "ink" | "outline";
+  className?: string;
+};
+
+export function Button({
+  href,
+  children,
+  variant = "oxblood",
+  className = "",
+}: ButtonProps) {
+  const base =
+    "group inline-flex items-center justify-center gap-3 px-6 py-3.5 text-[0.6875rem] font-bold uppercase tracking-[0.16em] transition-colors active:translate-y-px";
+  const styles = {
+    oxblood: "bg-oxblood text-[#f3efe4] hover:bg-oxblood-deep",
+    ink: "bg-ink text-[#f3efe4] border border-ink hover:bg-transparent hover:text-ink",
+    outline: "border border-ink text-ink hover:bg-ink hover:text-[#f3efe4]",
+  }[variant];
+  return (
+    <Link href={href} className={`${base} ${styles} ${className}`}>
+      {children}
+      <ArrowRightIcon
+        size={13}
+        weight="bold"
+        className="transition-transform group-hover:translate-x-1"
+      />
+    </Link>
   );
 }
 
@@ -29,12 +87,48 @@ export function ArrowLink({
   return (
     <Link href={href} className={`u-link ${className}`}>
       {children}
-      <ArrowRightIcon size={13} weight="bold" />
+      <ArrowRightIcon size={12} weight="bold" />
     </Link>
   );
 }
 
-/** horizontal score meter, as in the reference "Legal Career Score" */
+export function Check({ children }: { children: React.ReactNode }) {
+  return (
+    <li className="flex items-start gap-2.5 text-[0.875rem] text-ink-soft">
+      <CheckCircleIcon
+        size={16}
+        weight="fill"
+        className="mt-[0.15rem] shrink-0 text-oxblood"
+      />
+      {children}
+    </li>
+  );
+}
+
+export function TrustItem({
+  icon,
+  title,
+  sub,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  sub: string;
+}) {
+  return (
+    <div className="flex items-start gap-3">
+      <span className="mt-[0.1rem] text-ink">{icon}</span>
+      <div>
+        <div className="text-[0.6875rem] font-bold uppercase tracking-[0.12em] text-ink">
+          {title}
+        </div>
+        <div className="text-[0.75rem] text-muted">{sub}</div>
+      </div>
+    </div>
+  );
+}
+
+/* ---- primitives still used by the inner flow screens ------------- */
+
 export function Meter({ value, max = 100 }: { value: number; max?: number }) {
   const pct = Math.max(0, Math.min(100, (value / max) * 100));
   return (
@@ -44,7 +138,6 @@ export function Meter({ value, max = 100 }: { value: number; max?: number }) {
   );
 }
 
-/** small stat with number over label and mini meter */
 export function StatBlock({
   icon,
   label,
@@ -58,18 +151,19 @@ export function StatBlock({
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-ink-mute">{icon}</span>
-      <span className="u-eyebrow text-[0.625rem] leading-tight">{label}</span>
-      <span className="u-serif text-[2rem] leading-none text-ink">
+      <span className="text-muted">{icon}</span>
+      <span className="text-[0.625rem] font-bold uppercase tracking-[0.12em] text-muted">
+        {label}
+      </span>
+      <span className="u-display text-[2rem] leading-none text-ink">
         {value}
-        <span className="align-top text-[0.75rem] text-ink-mute">/{max}</span>
+        <span className="text-[0.75rem] text-muted">/{max}</span>
       </span>
       <Meter value={value} max={max} />
     </div>
   );
 }
 
-/** donut used for the placement forecast */
 export function Donut({
   value,
   label,
@@ -84,7 +178,10 @@ export function Donut({
   const c = 2 * Math.PI * r;
   const dash = (value / 100) * c;
   return (
-    <div className="relative grid place-items-center" style={{ width: size, height: size }}>
+    <div
+      className="relative grid place-items-center"
+      style={{ width: size, height: size }}
+    >
       <svg width={size} height={size} className="-rotate-90">
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--track)" strokeWidth={stroke} />
         <circle
@@ -98,8 +195,12 @@ export function Donut({
         />
       </svg>
       <div className="absolute text-center">
-        <div className="u-serif text-[1.5rem] leading-none text-ink">{value}%</div>
-        {label && <div className="u-eyebrow mt-1 text-[0.5rem]">{label}</div>}
+        <div className="u-display text-[1.5rem] leading-none text-ink">{value}%</div>
+        {label && (
+          <div className="text-[0.5rem] font-bold uppercase tracking-[0.12em] text-muted">
+            {label}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -108,10 +209,7 @@ export function Donut({
 export function CheckRow({ children }: { children: React.ReactNode }) {
   return (
     <li className="flex items-start gap-3 py-2 text-[0.9375rem] text-ink-soft">
-      <span
-        aria-hidden
-        className="mt-[0.35rem] size-[6px] shrink-0 rounded-full bg-oxblood"
-      />
+      <span aria-hidden className="mt-[0.35rem] size-[6px] shrink-0 bg-oxblood" />
       {children}
     </li>
   );

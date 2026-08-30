@@ -1,227 +1,204 @@
 import Link from "next/link";
 import {
-  LockKeyIcon,
-  ScalesIcon,
-  NotePencilIcon,
-  MapPinLineIcon,
+  ShieldCheckIcon,
+  LockSimpleIcon,
+  CheckCircleIcon,
+  ListChecksIcon,
+  CrosshairIcon,
+  FileTextIcon,
 } from "@phosphor-icons/react/dist/ssr";
-import { Masthead } from "@/components/masthead";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
-import { Eyebrow, ArrowLink } from "@/components/ui";
+import { Band, Button, Eyebrow, ArrowLink, Check, TrustItem } from "@/components/ui";
 import { Reveal } from "@/components/reveal";
-import { AnnotatedResume } from "@/components/annotated-resume";
+import { ExhibitStack } from "@/components/exhibit-stack";
 import { ScoreCard } from "@/components/score-card";
-import { ReportSpread } from "@/components/report-spread";
+import { EditorialStamp } from "@/components/editorial-stamp";
+import { ReportPreviewCard } from "@/components/report-preview";
+import { PageStack } from "@/components/page-stack";
+import { PricingCard } from "@/components/pricing-card";
+import { Testimonials } from "@/components/testimonials";
 import { PRICING } from "@/lib/mock";
 
-const TRUST = [
-  { icon: LockKeyIcon, label: "Your data stays private", note: "Read once to write your report. Never sold, never used for training." },
-  { icon: ScalesIcon, label: "Built with lawyers", note: "The rubric was written with practising Indian advocates and recruiters." },
-  { icon: NotePencilIcon, label: "Human-guided AI", note: "The model follows an editorial checklist, not a black box." },
-  { icon: MapPinLineIcon, label: "Designed for Indian law", note: "NLU cycles, chambers, tier structure, bar enrolment, the local reality." },
+const STEPS = [
+  {
+    n: "01",
+    label: "Answer",
+    icon: ListChecksIcon,
+    body: "49 questions across 9 sections reveal what you're actually optimizing for.",
+  },
+  {
+    n: "02",
+    label: "Analyse",
+    icon: CrosshairIcon,
+    body: "Your resume is scored against five hiring signals recruiters notice first.",
+  },
+  {
+    n: "03",
+    label: "Advance",
+    icon: FileTextIcon,
+    body: "Get a newsroom-style report with your score, missing signals, and next steps.",
+  },
 ];
 
-const METHOD = [
-  { n: "01", verb: "Answer", body: "A 49-question intake across nine sections: your record, your exposure, your skills, and the seat you are actually aiming at." },
-  { n: "02", verb: "Analyse", body: "Your resume is read line by line against those answers and the norms of your target practice area, then scored on five dimensions." },
-  { n: "03", verb: "Advance", body: "You receive the five-page report: a score, the recruiter read, the signals you are missing, and a 90-day plan." },
+const SAMPLE_CHECKS = [
+  "Career Score",
+  "Placement Forecast",
+  "Recruiter's Read",
+  "90-Day Roadmap",
+  "Missing Signals",
 ];
 
 export default function Home() {
   return (
     <div className="min-h-[100dvh] bg-paper">
-      <Masthead tagline="Legal Career Intelligence" index="VOL. I / NO. 07" />
       <SiteNav />
 
-      {/* HERO -------------------------------------------------------- */}
-      <section className="mx-auto max-w-[1400px] px-6">
-        <div className="grid gap-14 py-14 lg:grid-cols-[1fr_0.9fr] lg:gap-16 lg:py-20">
+      {/* HERO ----------------------------------------------------- */}
+      <Band>
+        <div className="grid gap-14 lg:grid-cols-[1.06fr_0.9fr] lg:gap-10">
           <Reveal className="flex flex-col justify-center">
-            <Eyebrow ox>Editorial Report</Eyebrow>
-            <h1 className="u-serif mt-5 text-[2.75rem] leading-[1.02] text-ink sm:text-[3.5rem] lg:text-[4.25rem]">
-              Your legal career, analysed like a{" "}
+            <h1 className="u-display text-[clamp(2.4rem,4.7vw,3.7rem)]">
+              Your legal career,
+              <br />
+              analysed like a<br />
               <span className="ink-underline">recruiter</span>.
             </h1>
-            <p className="mt-6 max-w-[46ch] text-[1.05rem] leading-relaxed text-ink-soft">
-              Upload your resume. Our AI reviews it the way Indian law firms and
-              chambers actually do, then returns a score, recruiter insights, the
-              signals you are missing, and a practical roadmap.
+            <div className="mt-5 h-[3px] w-16 bg-oxblood" />
+            <p className="mt-6 max-w-[44ch] text-[0.9375rem] leading-relaxed text-ink-soft">
+              We simulate how recruiters read your resume, score it across 5
+              hiring signals, and show you exactly what to fix to get
+              shortlisted.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Link
-                href="/assessment"
-                className="border border-ink bg-ink px-6 py-3 text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-paper transition-transform active:translate-y-px"
-              >
-                Analyse my resume
-              </Link>
-              <ArrowLink href="/report">Read a sample report</ArrowLink>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button href="/assessment">Analyse My Resume</Button>
+              <Button href="/report" variant="outline">
+                View Sample Report
+              </Button>
+            </div>
+            <div className="mt-10 flex flex-wrap gap-x-10 gap-y-4">
+              <TrustItem
+                icon={<ShieldCheckIcon size={18} />}
+                title="Confidential"
+                sub="Your data is safe"
+              />
+              <TrustItem
+                icon={<LockSimpleIcon size={18} />}
+                title="Secure Upload"
+                sub="256-bit encryption"
+              />
+              <TrustItem
+                icon={<CheckCircleIcon size={18} />}
+                title="No Subscription"
+                sub="Pay once. That's it."
+              />
             </div>
           </Reveal>
 
-          <Reveal delay={140} className="relative flex flex-col items-center justify-center">
-            <AnnotatedResume />
-            <ScoreCard className="mt-8 lg:absolute lg:bottom-[-3.75rem] lg:left-[-7.5rem] lg:mt-0" />
+          <Reveal delay={140} className="relative flex flex-col items-center justify-center pb-4 lg:pb-16 lg:pr-10">
+            <ExhibitStack />
+            <ScoreCard className="mt-8 lg:absolute lg:-bottom-2 lg:-right-4 lg:mt-0" />
           </Reveal>
         </div>
-      </section>
+      </Band>
 
-      {/* TRUST STRIP ---------------------------------------------- */}
-      <section className="border-y border-ink bg-paper-panel">
-        <div className="mx-auto grid max-w-[1400px] grid-cols-1 divide-y divide-rule px-6 sm:grid-cols-2 sm:divide-y-0 lg:grid-cols-4 lg:divide-x">
-          {TRUST.map(({ icon: Icon, label, note }, i) => (
-            <Reveal
-              key={label}
-              delay={i * 70}
-              className="px-0 py-7 sm:px-6 lg:first:pl-0 lg:last:pr-0"
-            >
-              <Icon size={24} weight="regular" className="text-ink" />
-              <div className="mt-3 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-ink">
-                {label}
-              </div>
-              <p className="mt-2 text-[0.8125rem] leading-relaxed text-ink-mute">
-                {note}
-              </p>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      {/* RECRUITER'S NOTES — editorial passage ------------------- */}
-      <section className="border-b border-ink">
-        <div className="relative mx-auto max-w-[1400px] px-6 py-16">
-          <span className="absolute left-6 top-16 hidden text-[0.625rem] font-semibold uppercase tracking-[0.18em] text-ink-mute lg:block">
-            Recruiter&rsquo;s Notes
-          </span>
-          <div className="mx-auto max-w-[62ch] lg:ml-[16%]">
-            <p className="u-serif text-[1.75rem] leading-snug text-ink">
-              A recruiter spends about ninety seconds with your resume. They are
-              not reading it. They are scanning for four or five signals that
-              tell them whether you can do the work.
-            </p>
-            <p className="mt-5 text-[0.9375rem] leading-relaxed text-ink-soft">
-              Most law-student resumes list where they were, not what they did.
-              They bury the one strong internship under three weak ones. They
-              claim drafting and research without a single line that evidences
-              either. LexIntent reads for those signals first, tells you which
-              ones are missing, and shows you the edit that fixes each.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* REPORT SPREAD ----------------------------------------- */}
-      <section id="report" className="border-b border-ink bg-paper-panel">
-        <div className="mx-auto max-w-[1400px] px-6 py-16">
+      {/* HOW IT WORKS ------------------------------------------- */}
+      <Band tone="dark" id="how">
+        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.4fr] lg:gap-16">
           <Reveal>
-            <Eyebrow>The Report</Eyebrow>
-            <h2 className="u-serif mt-4 max-w-[20ch] text-[2rem] leading-tight text-ink sm:text-[2.5rem]">
-              Five pages. One honest read.
-            </h2>
-            <p className="mt-5 max-w-[54ch] text-[0.9375rem] leading-relaxed text-ink-soft">
-              Delivered as a set of printed-style pages you keep, not a
-              dashboard you rent. Re-run it after you revise.
-            </p>
-          </Reveal>
-          <div className="mt-12">
-            <ReportSpread />
-          </div>
-        </div>
-      </section>
-
-      {/* METHOD ---------------------------------------------- */}
-      <section id="method" className="border-b border-ink">
-        <div className="mx-auto max-w-[1400px] px-6 py-16">
-          <Reveal>
-            <h2 className="u-serif max-w-[22ch] text-[2rem] leading-tight text-ink sm:text-[2.5rem]">
-              How the read is done.
+            <Eyebrow>How It Works</Eyebrow>
+            <h2 className="u-display mt-4 text-[clamp(2rem,4.4vw,3.25rem)]">
+              One instrument,
+              <br />
+              read <span className="text-oxblood">three</span> ways.
             </h2>
           </Reveal>
-          <div className="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
-            {METHOD.map((m, i) => (
-              <Reveal key={m.n} delay={i * 90} className="border-t-2 border-ink pt-5">
-                <div className="flex items-baseline gap-4">
-                  <span className="u-dropnum text-[3rem]">{m.n}</span>
-                  <span className="u-serif text-[1.5rem] text-ink">{m.verb}</span>
+
+          <div className="grid gap-8 sm:grid-cols-[1fr_1fr_1fr_auto] sm:gap-6">
+            {STEPS.map(({ n, label, icon: Icon, body }, i) => (
+              <Reveal
+                key={n}
+                delay={i * 90}
+                className="sm:border-l sm:border-rule sm:pl-5 sm:first:border-l-0 sm:first:pl-0"
+              >
+                <Icon size={26} weight="regular" className="text-ink" />
+                <div className="mt-4 flex items-baseline gap-2">
+                  <span className="u-display text-[1.75rem] text-oxblood">{n}</span>
+                  <span className="text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-ink">
+                    {label}
+                  </span>
                 </div>
-                <p className="mt-4 text-[0.9375rem] leading-relaxed text-ink-soft">
-                  {m.body}
+                <p className="mt-3 text-[0.8125rem] leading-relaxed text-muted">
+                  {body}
                 </p>
               </Reveal>
             ))}
+            <Reveal delay={280} className="hidden items-center justify-center pr-2 sm:flex">
+              <EditorialStamp size={104} />
+            </Reveal>
           </div>
         </div>
-      </section>
+      </Band>
 
-      {/* FEES ---------------------------------------------- */}
-      <section id="fees" className="border-b border-ink bg-paper-panel">
-        <div className="mx-auto max-w-[1400px] px-6 py-16">
+      {/* SAMPLE REPORT PREVIEW -------------------------------- */}
+      <Band id="sample">
+        <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
           <Reveal>
-            <Eyebrow>Fees</Eyebrow>
-            <h2 className="u-serif mt-4 max-w-[26ch] text-[2rem] leading-tight text-ink sm:text-[2.5rem]">
-              Pay once for the read. Pay again only if you want the rewrite.
+            <Eyebrow>Sample Report Preview</Eyebrow>
+            <h2 className="u-display mt-4 text-[clamp(1.9rem,4.2vw,3rem)]">
+              The number is the <span className="text-oxblood">hook</span>. The
+              paragraph beneath it is the <span className="text-oxblood">point</span>.
+            </h2>
+            <p className="mt-6 text-[0.875rem] font-bold uppercase tracking-[0.1em] text-ink">
+              This is what lands in your inbox.
+            </p>
+            <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2">
+              {SAMPLE_CHECKS.map((c) => (
+                <Check key={c}>{c}</Check>
+              ))}
+            </ul>
+            <div className="mt-8">
+              <Button href="/report" variant="outline">
+                View Full Sample Report
+              </Button>
+            </div>
+          </Reveal>
+
+          <Reveal delay={140} className="flex items-start gap-4">
+            <div className="min-w-0 flex-1">
+              <ReportPreviewCard />
+            </div>
+            <PageStack />
+          </Reveal>
+        </div>
+      </Band>
+
+      {/* PRICING --------------------------------------------- */}
+      <Band tone="dark" id="pricing">
+        <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+          <Reveal>
+            <Eyebrow>Pricing</Eyebrow>
+            <h2 className="u-display mt-4 text-[clamp(2rem,4.4vw,3.25rem)]">
+              Pay <span className="text-oxblood">once</span> for the read. Pay
+              again only if you want us to do{" "}
+              <span className="ink-underline">the writing</span>.
             </h2>
           </Reveal>
 
-          <div className="mt-10 border-t-2 border-ink">
-            <div className="grid gap-6 border-b border-rule py-8 md:grid-cols-[auto_1fr_auto] md:items-baseline md:gap-10">
-              <div className="u-serif text-[2rem] text-ink">
-                {PRICING.currency}
-                {PRICING.analysis.toLocaleString("en-IN")}
-              </div>
-              <div>
-                <div className="u-serif text-[1.25rem] text-ink">
-                  Resume analysis &amp; five-page report
-                </div>
-                <p className="mt-2 max-w-[60ch] text-[0.9375rem] leading-relaxed text-ink-soft">
-                  The full intake, the AI analysis, the score, the recruiter
-                  read, missing signals and your 90-day roadmap.
-                </p>
-              </div>
-              <Link
-                href="/assessment"
-                className="whitespace-nowrap border border-ink px-5 py-3 text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-ink transition-colors hover:bg-ink hover:text-paper"
-              >
-                Start here
-              </Link>
-            </div>
-
-            <div className="grid gap-6 border-b border-rule py-8 md:grid-cols-[auto_1fr_auto] md:items-baseline md:gap-10">
-              <div className="u-serif text-[2rem] text-ink">
-                {PRICING.currency}
-                {PRICING.rewrite.toLocaleString("en-IN")}
-              </div>
-              <div>
-                <div className="u-serif text-[1.25rem] text-ink">
-                  Full rewrite by the LexIntent desk
-                </div>
-                <p className="mt-2 max-w-[60ch] text-[0.9375rem] leading-relaxed text-ink-soft">
-                  Optional. After your report, our editors rebuild the document
-                  around the findings, with two rounds of revisions.
-                </p>
-              </div>
-              <span className="whitespace-nowrap px-5 py-3 text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-ink-mute">
-                Offered after the report
-              </span>
-            </div>
-          </div>
+          <Reveal delay={140} className="grid gap-6 sm:grid-cols-2">
+            {PRICING.tiers.map((t) => (
+              <PricingCard key={t.name} tier={t} />
+            ))}
+          </Reveal>
         </div>
-      </section>
+      </Band>
 
-      {/* CLOSING ---------------------------------------------- */}
-      <section className="on-dark border-b border-ink bg-ink">
-        <div className="mx-auto flex max-w-[1400px] flex-col items-start gap-6 px-6 py-16 md:flex-row md:items-center md:justify-between">
-          <h2 className="u-serif max-w-[22ch] text-[1.75rem] leading-tight sm:text-[2.25rem]">
-            Open the report on your own future.
-          </h2>
-          <Link
-            href="/assessment"
-            className="whitespace-nowrap border border-paper bg-paper px-7 py-3.5 text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-ink transition-transform active:translate-y-px"
-          >
-            Analyse my resume
-          </Link>
-        </div>
-      </section>
+      {/* TESTIMONIALS -------------------------------------- */}
+      <Band>
+        <Reveal>
+          <Testimonials />
+        </Reveal>
+      </Band>
 
       <SiteFooter />
     </div>

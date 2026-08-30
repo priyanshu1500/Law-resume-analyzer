@@ -1,10 +1,67 @@
 /** Mock analysis output. Stands in for the AI response until the backend exists. */
 
 export const PRICING = {
-  analysis: 1499, // INR, one-off resume analysis + report
-  rewrite: 3999, // INR, human rewrite of the resume by the LexIntent desk
   currency: "₹",
+  analysis: 1499, // one-off resume analysis + report (Editor's Edition)
+  rewrite: 2999, // Founder's Edition upgrade
+  tiers: [
+    {
+      name: "Editor's Edition",
+      price: 1499,
+      cadence: "One-time payment",
+      badge: "Most chosen",
+      intro: null as string | null,
+      features: [
+        "Career Score",
+        "Recruiter's Read",
+        "Missing Signals",
+        "Placement Forecast",
+        "90-Day Roadmap",
+      ],
+      cta: "Get the read",
+      featured: false,
+    },
+    {
+      name: "Founder's Edition",
+      price: 2999,
+      cadence: "One-time payment",
+      badge: null as string | null,
+      intro: "Everything in Editor's Edition plus:",
+      features: [
+        "ATS-Optimized Resume",
+        "LinkedIn Headline",
+        "Cover Letter",
+        "Interview Prep Brief",
+      ],
+      cta: "Get the full package",
+      featured: true,
+    },
+  ],
 };
+
+export const REPORT_PREVIEW = {
+  edition: "Edition 001",
+  score: 78,
+  recruiterRead:
+    "Strong academic signals and internships at reputed firms. Needs stronger drafting evidence and domain clarity.",
+  missingSignals: [
+    "No publication or writing sample",
+    "Weak drafting indication",
+    "Limited domain specialization",
+  ],
+  forecast:
+    "High chance of shortlist for mid-size and some Tier-1 firms with improved framing.",
+  roadmap:
+    "A personalized plan to build the missing signals and improve your placement odds.",
+};
+
+export const TESTIMONIALS = [
+  { quote: "Finally, something that shows what recruiters actually see.", by: "4th Year, NLU Jodhpur", avatar: true },
+  { quote: "The red-pen feedback was a game changer.", by: "5th Year, Symbiosis", avatar: false },
+  { quote: "Helped me understand why I wasn't shortlisted.", by: "3rd Year, GNLU", avatar: true },
+];
+
+export const SCHOOLS = ["NLU Delhi", "NLIU", "NUJS", "Symbiosis"];
 
 export const SCORE = {
   overall: 78,

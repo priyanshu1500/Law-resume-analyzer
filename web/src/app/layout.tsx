@@ -1,26 +1,40 @@
 import type { Metadata } from "next";
-import { Newsreader, Inter } from "next/font/google";
+import { Anton, Inter, Caveat, Newsreader } from "next/font/google";
 import "./globals.css";
 
-const newsreader = Newsreader({
+const anton = Anton({
   subsets: ["latin"],
+  weight: "400",
   display: "swap",
-  variable: "--font-newsreader",
-  style: ["normal", "italic"],
-  weight: ["400", "500", "600"],
+  variable: "--font-anton",
 });
 
 const inter = Inter({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
   variable: "--font-inter",
-  weight: ["400", "500", "600", "700"],
+});
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  display: "swap",
+  variable: "--font-caveat",
+});
+
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  style: ["normal", "italic"],
+  display: "swap",
+  variable: "--font-newsreader",
 });
 
 export const metadata: Metadata = {
-  title: "LexIntent AI - Law Career Intelligence",
+  title: "LexIntent - AI Career Analysis for Law Students",
   description:
-    "A data-driven evaluation of your legal profile. Answer the intake, get your resume analysed by AI, and receive an editorial report on where you stand.",
+    "We simulate how recruiters read your resume, score it across five hiring signals, and show you exactly what to fix to get shortlisted.",
 };
 
 export default function RootLayout({
@@ -28,7 +42,9 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" data-theme="light">
-      <body className={`${newsreader.variable} ${inter.variable} antialiased`}>
+      <body
+        className={`${anton.variable} ${inter.variable} ${caveat.variable} ${newsreader.variable} antialiased`}
+      >
         {children}
       </body>
     </html>

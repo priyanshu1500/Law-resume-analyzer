@@ -1,37 +1,43 @@
+import { ChartBarIcon } from "@phosphor-icons/react/dist/ssr";
 import { CountUp } from "./count-up";
 
-const ROWS = [
-  { label: "Corporate Law", value: 78 },
-  { label: "Litigation", value: 61 },
-  { label: "Judiciary", value: 73 },
-];
-
-/** Clean editorial report card, overlaid on the hero visual. No glass, no heavy shadow. */
+/** The "CONFIDENTIAL" casefile score sheet that overlaps the exhibit. */
 export function ScoreCard({ className = "" }: { className?: string }) {
   return (
     <div
-      className={`w-[206px] border border-ink bg-paper-card px-5 py-4 shadow-[0_24px_50px_-30px_rgba(17,17,17,0.4)] ${className}`}
+      className={`relative w-[224px] rotate-[2deg] border border-ink bg-card px-6 py-6 shadow-[0_28px_55px_-26px_rgba(0,0,0,0.45)] ${className}`}
     >
-      <div className="text-[9px] font-semibold uppercase tracking-[0.22em] text-ink-mute">
-        Career score
+      <span className="absolute -top-3 right-3 rotate-[-9deg] border border-oxblood bg-card px-2 py-0.5 text-[8px] font-bold uppercase tracking-[0.18em] text-oxblood">
+        Confidential
+      </span>
+
+      <div className="text-[9px] font-bold uppercase tracking-[0.16em] text-muted">
+        Career Score
       </div>
       <div className="mt-1 flex items-end gap-1">
-        <span className="font-serif text-[3.25rem] leading-none text-ink">
+        <span className="u-display text-[3.5rem] leading-[0.8] text-ink">
           <CountUp to={78} />
         </span>
-        <span className="pb-2 font-serif text-[1rem] text-ink-mute">/100</span>
+        <span className="pb-1.5 font-display text-[1.05rem] text-muted">/100</span>
       </div>
-      <ul className="mt-3 divide-y divide-rule border-t border-rule">
-        {ROWS.map((r) => (
-          <li
-            key={r.label}
-            className="flex items-center justify-between py-[7px] text-[0.8125rem]"
-          >
-            <span className="text-ink-soft">{r.label}</span>
-            <span className="font-serif text-ink">{r.value}</span>
-          </li>
-        ))}
-      </ul>
+
+      <div className="my-4 h-px bg-rule" />
+
+      <div className="text-[9px] font-bold uppercase tracking-[0.16em] text-muted">
+        Corporate Fit
+      </div>
+      <div className="u-display mt-0.5 text-[1.5rem] text-oxblood">High</div>
+
+      <div className="my-4 h-px bg-rule" />
+
+      <div className="flex items-center gap-2">
+        <ChartBarIcon size={20} weight="fill" className="text-ink" />
+        <span className="text-[0.8125rem] leading-tight text-ink-soft">
+          Top 22%
+          <br />
+          <span className="text-muted">of law students</span>
+        </span>
+      </div>
     </div>
   );
 }

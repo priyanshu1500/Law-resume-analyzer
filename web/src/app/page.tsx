@@ -17,7 +17,6 @@ import { ScoreCard } from "@/components/score-card";
 import { EditorialStamp } from "@/components/editorial-stamp";
 import { ReportPreviewCard } from "@/components/report-preview";
 import { PageStack } from "@/components/page-stack";
-import { PricingCard } from "@/components/pricing-card";
 import { Testimonials } from "@/components/testimonials";
 import { PRICING } from "@/lib/mock";
 
@@ -77,9 +76,9 @@ export default function Home() {
                 shortlisted.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Button href="/assessment">Analyse My Resume</Button>
-                <Button href="/report" variant="outline">
-                  View Sample Report
+                <Button href="/questionnaire">Take the Questionnaire</Button>
+                <Button href="/fit" variant="outline">
+                  See a Sample Fit
                 </Button>
               </div>
             </Reveal>
@@ -201,13 +200,40 @@ export default function Home() {
             </h2>
           </Reveal>
 
-          <RevealGroup className="grid gap-6 sm:grid-cols-2" stagger={0.12}>
-            {PRICING.tiers.map((t) => (
-              <RevealItem key={t.name}>
-                <PricingCard tier={t} />
-              </RevealItem>
-            ))}
-          </RevealGroup>
+          <Reveal className="border-t-2 border-ink">
+            <div className="grid gap-4 border-b border-rule py-7 md:grid-cols-[auto_1fr_auto] md:items-baseline md:gap-10">
+              <div className="u-display text-[2rem] text-oxblood">
+                {PRICING.currency}
+                {PRICING.analysis}
+              </div>
+              <div>
+                <div className="u-display text-[1.15rem] text-ink">Resume Analysis</div>
+                <p className="mt-1 max-w-[54ch] text-[0.875rem] leading-relaxed text-muted">
+                  Score, recruiter&rsquo;s read, missing signals, line-by-line
+                  fixes and a 90-day roadmap. You make the edits.
+                </p>
+              </div>
+              <span className="text-[0.625rem] font-bold uppercase tracking-[0.16em] text-oxblood">
+                Start here
+              </span>
+            </div>
+            <div className="grid gap-4 border-b border-rule py-7 md:grid-cols-[auto_1fr_auto] md:items-baseline md:gap-10">
+              <div className="u-display text-[2rem] text-oxblood">
+                {PRICING.currency}
+                {PRICING.rewrite}
+              </div>
+              <div>
+                <div className="u-display text-[1.15rem] text-ink">Done-for-you Rewrite</div>
+                <p className="mt-1 max-w-[54ch] text-[0.875rem] leading-relaxed text-muted">
+                  Our desk rebuilds the resume around the findings, with two
+                  rounds of revisions.
+                </p>
+              </div>
+              <span className="text-[0.625rem] font-bold uppercase tracking-[0.16em] text-muted">
+                After your report
+              </span>
+            </div>
+          </Reveal>
         </div>
       </Band>
 

@@ -21,15 +21,15 @@ export function SiteFooter() {
           <FooterCol
             title="Product"
             links={[
-              ["How It Works", "/#how"],
-              ["Sample Report", "/report"],
+              ["Questionnaire", "/questionnaire"],
+              ["Sample Fit", "/fit"],
               ["Pricing", "/#pricing"],
             ]}
           />
           <FooterCol
             title="Company"
             links={[
-              ["About", "/#how"],
+              ["How It Works", "/#how"],
               ["Terms", "/#"],
               ["Privacy", "/#"],
             ]}

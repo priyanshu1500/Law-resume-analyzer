@@ -2,41 +2,23 @@
 
 export const PRICING = {
   currency: "₹",
-  analysis: 1499, // one-off resume analysis + report (Editor's Edition)
-  rewrite: 2999, // Founder's Edition upgrade
-  tiers: [
-    {
-      name: "Editor's Edition",
-      price: 1499,
-      cadence: "One-time payment",
-      badge: "Most chosen",
-      intro: null as string | null,
-      features: [
-        "Career Score",
-        "Recruiter's Read",
-        "Missing Signals",
-        "Placement Forecast",
-        "90-Day Roadmap",
-      ],
-      cta: "Get the read",
-      featured: false,
-    },
-    {
-      name: "Founder's Edition",
-      price: 2999,
-      cadence: "One-time payment",
-      badge: null as string | null,
-      intro: "Everything in Editor's Edition plus:",
-      features: [
-        "ATS-Optimized Resume",
-        "LinkedIn Headline",
-        "Cover Letter",
-        "Interview Prep Brief",
-      ],
-      cta: "Get the full package",
-      featured: true,
-    },
+  /** the read: score + recruiter's take + the exact changes to make yourself */
+  analysis: 99,
+  /** optional, offered only after you have read the analysis: our desk does the rewrite */
+  rewrite: 499,
+};
+
+/** Free career-fit result. Real ranking + copy land with the user's scoring system.
+ *  Placeholder shape so /fit renders in the meantime. */
+export const CAREER_FIT = {
+  ranked: [
+    { path: "Corporate / M&A", matchPct: 0, why: [] as string[] },
+    { path: "Disputes & Litigation", matchPct: 0, why: [] as string[] },
+    { path: "In-house Counsel", matchPct: 0, why: [] as string[] },
   ],
+  theLife: "",
+  interestMatch: [] as { label: string; pct: number }[],
+  workingStyle: [] as { axis: string; leaning: string; note: string }[],
 };
 
 export const REPORT_PREVIEW = {
@@ -144,15 +126,3 @@ export const REPORT_SECTIONS = [
   },
 ];
 
-export const RESOURCES = [
-  { title: "How to get into Tier-1 Law Firms", kind: "Guide" },
-  { title: "Resume Writing for Law Students", kind: "Guide" },
-  { title: "Top 50 Law Firms, ranked", kind: "Report" },
-  { title: "Judiciary Preparation Roadmap", kind: "Guide" },
-];
-
-export const ACTIVITY = [
-  { label: "Resume analysed", date: "24 Aug 2026" },
-  { label: "Intake completed", date: "24 Aug 2026" },
-  { label: "Account created", date: "23 Aug 2026" },
-];

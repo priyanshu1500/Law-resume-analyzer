@@ -34,7 +34,7 @@ export default function AssessmentPage() {
 
   function next() {
     if (isLast) {
-      router.push("/unlock");
+      router.push("/fit");
       return;
     }
     setStep((s) => Math.min(SECTIONS.length - 1, s + 1));

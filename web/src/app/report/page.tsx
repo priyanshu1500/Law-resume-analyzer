@@ -21,7 +21,7 @@ export default function ReportPage() {
           <Link href="/">
             <Wordmark compact />
           </Link>
-          <ArrowLink href="/dashboard">Open dashboard</ArrowLink>
+          <ArrowLink href="/results">Open results</ArrowLink>
         </div>
       </div>
 
@@ -186,7 +186,7 @@ export default function ReportPage() {
         </section>
 
         <div className="border-t border-ink py-8">
-          <ArrowLink href="/dashboard">Continue to your dashboard</ArrowLink>
+          <ArrowLink href="/results">Continue to your results</ArrowLink>
         </div>
       </main>
     </div>

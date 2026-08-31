@@ -7,6 +7,12 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "fastly.picsum.photos" },
     ],
   },
+  async redirects() {
+    return [
+      { source: "/assessment", destination: "/questionnaire", permanent: true },
+      { source: "/dashboard", destination: "/results", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

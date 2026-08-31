@@ -42,7 +42,7 @@ export function SiteNav() {
         <nav className="hidden items-center gap-8 text-[0.6875rem] font-bold uppercase tracking-[0.13em] text-ink lg:flex">
           {[
             ["How It Works", "/#how"],
-            ["Sample Report", "/report"],
+            ["Sample Fit", "/fit"],
             ["Pricing", "/#pricing"],
           ].map(([label, href]) => (
             <Link key={label} href={href} className="group relative py-1">
@@ -52,8 +52,8 @@ export function SiteNav() {
           ))}
         </nav>
 
-        <Button href="/assessment" className="hidden sm:inline-flex">
-          Analyse My Resume
+        <Button href="/questionnaire" className="hidden sm:inline-flex">
+          Take the Questionnaire
         </Button>
       </div>
     </motion.header>

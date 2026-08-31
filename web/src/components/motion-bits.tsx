@@ -219,7 +219,9 @@ export function CountUpSpring({
   );
 }
 
-export function Breathe({
+/** One-time arrival settle. Was a perpetual float; a constantly-visible
+ *  element does not need to move forever. */
+export function Settle({
   children,
   className = "",
 }: {
@@ -231,8 +233,10 @@ export function Breathe({
   return (
     <motion.div
       className={className}
-      animate={{ y: [0, -4, 0] }}
-      transition={{ duration: 5.5, ease: "easeInOut", repeat: Infinity }}
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.4 }}
+      transition={{ type: "spring", stiffness: 200, damping: 24, mass: 0.8 }}
     >
       {children}
     </motion.div>

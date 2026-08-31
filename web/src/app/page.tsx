@@ -11,7 +11,7 @@ import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { Band, Button, Eyebrow, Check, TrustItem } from "@/components/ui";
 import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
-import { WordReveal, Parallax, Breathe } from "@/components/motion-bits";
+import { WordReveal, Parallax, Settle } from "@/components/motion-bits";
 import { ExhibitStack } from "@/components/exhibit-stack";
 import { ScoreCard } from "@/components/score-card";
 import { EditorialStamp } from "@/components/editorial-stamp";
@@ -112,9 +112,9 @@ export default function Home() {
             <Parallax distance={32}>
               <ExhibitStack />
             </Parallax>
-            <Breathe className="mt-8 lg:absolute lg:-bottom-2 lg:-right-4 lg:mt-0">
+            <Settle className="mt-8 lg:absolute lg:-bottom-2 lg:-right-4 lg:mt-0">
               <ScoreCard />
-            </Breathe>
+            </Settle>
           </div>
         </div>
       </Band>

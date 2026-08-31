@@ -15,16 +15,18 @@ export function SiteNav() {
     <motion.header
       className="sticky top-0 z-40 border-b-2 border-ink bg-paper/95 backdrop-blur-sm"
       animate={{ boxShadow: scrolled ? "0 8px 24px -16px rgba(0,0,0,0.4)" : "0 0 0 rgba(0,0,0,0)" }}
-      transition={{ duration: 0.25 }}
+      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
     >
-      <motion.div
-        className="mx-auto flex max-w-[1240px] items-center justify-between gap-6 px-6"
-        animate={{ paddingTop: scrolled ? 10 : 16, paddingBottom: scrolled ? 10 : 16 }}
-        transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-      >
+      <div className="mx-auto flex max-w-[1240px] items-center justify-between gap-6 px-6 py-3.5">
         <div className="flex items-center gap-5">
           <Link href="/" aria-label="LexIntent home">
-            <Wordmark />
+            <motion.span
+              className="inline-block origin-left"
+              animate={{ scale: scrolled ? 0.9 : 1 }}
+              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <Wordmark />
+            </motion.span>
           </Link>
           <span className="hidden h-9 w-px bg-rule-strong sm:block" aria-hidden />
           <div className="hidden items-start gap-2 sm:flex">
@@ -53,7 +55,7 @@ export function SiteNav() {
         <Button href="/assessment" className="hidden sm:inline-flex">
           Analyse My Resume
         </Button>
-      </motion.div>
+      </div>
     </motion.header>
   );
 }

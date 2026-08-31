@@ -57,7 +57,7 @@ export function Button({
   className = "",
 }: ButtonProps) {
   const base =
-    "press group inline-flex items-center justify-center gap-3 px-6 py-3.5 text-[0.6875rem] font-bold uppercase tracking-[0.16em] transition-[transform,background-color,color] duration-200 will-change-transform hover:-translate-y-px";
+    "group inline-flex items-center justify-center gap-3 px-6 py-3.5 text-[0.6875rem] font-bold uppercase tracking-[0.16em] transition-[transform,background-color,color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] will-change-transform hover:-translate-y-px active:scale-[0.97] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100";
   const styles = {
     oxblood: "bg-oxblood text-[#f3efe4] hover:bg-oxblood-deep",
     ink: "bg-ink text-[#f3efe4] border border-ink hover:bg-transparent hover:text-ink",
@@ -69,7 +69,7 @@ export function Button({
       <ArrowRightIcon
         size={13}
         weight="bold"
-        className="transition-transform group-hover:translate-x-1"
+        className="transition-transform duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-x-1 motion-reduce:group-hover:translate-x-0"
       />
     </Link>
   );

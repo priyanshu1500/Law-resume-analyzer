@@ -9,7 +9,7 @@ import { useSession } from "@/lib/store";
 
 export default function ResultsPage() {
   const { state, ready } = useSession();
-  const fitDone = Object.keys(state.answers).length > 0;
+  const fitDone = state.fitDone;
   const reportDone = state.paid && Boolean(state.resumeName);
 
   return (

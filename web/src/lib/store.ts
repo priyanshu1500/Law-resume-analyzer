@@ -3,20 +3,25 @@
 import { useCallback, useEffect, useState } from "react";
 
 /**
- * Throwaway client-side persistence for the static prototype.
- * No backend yet — answers live in localStorage so the flow feels real
- * across the intake -> unlock -> upload -> report steps.
+ * Throwaway client-side persistence for the prototype. No backend yet —
+ * state lives in localStorage so the funnel feels real across
+ * questionnaire -> fit -> unlock -> upload -> report.
  */
 
-const KEY = "lexintent.session.v1";
+const KEY = "lexintent.session.v2";
+
+export type CompassResp = Record<string, number | number[]>;
 
 export interface SessionState {
-  answers: Record<string, string | string[]>;
+  /** Practice Compass responses, keyed by question id */
+  responses: CompassResp;
+  /** questionnaire completed at least once */
+  fitDone: boolean;
   paid: boolean;
   resumeName: string | null;
 }
 
-const EMPTY: SessionState = { answers: {}, paid: false, resumeName: null };
+const EMPTY: SessionState = { responses: {}, fitDone: false, paid: false, resumeName: null };
 
 function read(): SessionState {
   if (typeof window === "undefined") return EMPTY;
@@ -53,21 +58,18 @@ export function useSession() {
     });
   }, []);
 
-  const setAnswer = useCallback(
-    (id: string, value: string | string[]) => {
-      setState((prev) => {
-        const next = { ...prev, answers: { ...prev.answers, [id]: value } };
-        write(next);
-        return next;
-      });
-    },
-    [],
-  );
+  const setResponse = useCallback((id: string, value: number | number[]) => {
+    setState((prev) => {
+      const next = { ...prev, responses: { ...prev.responses, [id]: value } };
+      write(next);
+      return next;
+    });
+  }, []);
 
   const reset = useCallback(() => {
     write(EMPTY);
     setState(EMPTY);
   }, []);
 
-  return { state, ready, update, setAnswer, reset };
+  return { state, ready, update, setResponse, reset };
 }

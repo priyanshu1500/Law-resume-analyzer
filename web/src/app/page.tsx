@@ -32,7 +32,7 @@ export default function Home() {
               your resume stand out in the legal field.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Button href="/questionnaire">Analyse My Resume</Button>
+              <Button href="/questionnaire">Take the Questionnaire</Button>
               <Button href="/fit" variant="ghost">
                 View Sample Report
               </Button>

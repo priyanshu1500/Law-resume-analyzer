@@ -106,21 +106,21 @@ export default function QuestionnairePage() {
           <h1 className="u-display mt-4 text-[clamp(2rem,5vw,3.2rem)] [text-wrap:balance]">
             Which kind of law suits the way you actually work?
           </h1>
-          <p className="mt-5 text-[1.05rem] leading-relaxed text-ink-soft">
+          <p className="mt-5 text-[1.05rem] leading-relaxed text-muted">
             Questions about how you like to spend a day — not about marks, college, or
             where you interned. Then eighteen practice areas, ranked, with the reason for
             each one.
           </p>
           <button
             onClick={start}
-            className="mt-8 press bg-ink px-8 py-4 text-[0.9375rem] font-semibold text-paper transition-transform hover:-translate-y-px"
+            className="mt-8 press rounded-[14px] bg-navy px-8 py-4 text-[0.9375rem] font-semibold text-white transition-transform hover:-translate-y-px"
           >
             Start
           </button>
           <p className="mt-4 text-[0.8125rem] text-muted">
             {total} questions · about {mins} minutes · nothing is stored
           </p>
-          <div className="mt-10 flex flex-wrap gap-x-6 gap-y-2 border-t border-rule pt-4 text-[0.8125rem] text-ink-soft">
+          <div className="mt-10 flex flex-wrap gap-x-6 gap-y-2 border-t border-line pt-4 text-[0.8125rem] text-muted">
             <span><b className="text-ink">18</b> practice areas</span>
             <span><b className="text-ink">9</b> ways of working</span>
             <span><b className="text-ink">0</b> right answers</span>
@@ -137,7 +137,7 @@ export default function QuestionnairePage() {
   return (
     <Shell
       top={
-        <div className="border-b border-ink bg-paper">
+        <div className="border-b border-line bg-white">
           <div className="mx-auto flex max-w-[680px] items-center justify-between gap-4 px-6 py-3">
             <span className="truncate text-[0.75rem] font-medium text-muted">
               <b className="text-ink">{sec.name}</b>
@@ -146,9 +146,9 @@ export default function QuestionnairePage() {
               {idx + 1} of {total}
             </span>
           </div>
-          <div className="h-[2px] bg-rule">
+          <div className="h-[2px] bg-line">
             <div
-              className="h-[2px] bg-oxblood transition-[width] duration-300"
+              className="h-[2px] bg-navy transition-[width] duration-300"
               style={{ width: `${pct}%` }}
             />
           </div>
@@ -156,8 +156,8 @@ export default function QuestionnairePage() {
       }
     >
       <div className="mx-auto max-w-[680px] px-6 pb-24 pt-6">
-        <Mark name={QMARK[q.id] || "book"} size={46} className="mb-3 text-ink-soft" />
-        <h2 className="font-doc text-[clamp(1.25rem,3.4vw,1.6rem)] leading-[1.32] text-ink [text-wrap:pretty]">
+        <Mark name={QMARK[q.id] || "book"} size={46} className="mb-3 text-muted" />
+        <h2 className="text-[clamp(1.25rem,3.4vw,1.6rem)] leading-[1.32] text-ink [text-wrap:pretty]">
           {stem}
         </h2>
         {q.help && <p className="mt-2 text-[0.875rem] text-muted">{q.help}</p>}
@@ -174,7 +174,7 @@ export default function QuestionnairePage() {
           <Field q={q} a={a} set={set} />
         </div>
 
-        <div className="mt-6 flex items-center justify-between border-t border-rule pt-4">
+        <div className="mt-6 flex items-center justify-between border-t border-line pt-4">
           <button
             onClick={back}
             disabled={idx === 0}
@@ -185,7 +185,7 @@ export default function QuestionnairePage() {
           <button
             onClick={next}
             disabled={!answered(q, a)}
-            className="press flex items-center gap-2 bg-ink px-6 py-3 text-[0.8125rem] font-semibold text-paper transition-transform hover:-translate-y-px disabled:cursor-not-allowed disabled:opacity-30"
+            className="press flex items-center gap-2 rounded-[14px] bg-navy px-6 py-3 text-[0.8125rem] font-semibold text-white transition-transform hover:-translate-y-px disabled:cursor-not-allowed disabled:opacity-30"
           >
             {idx === total - 1 ? "See my result" : "Continue"}
             <ArrowRightIcon size={13} weight="bold" />
@@ -207,8 +207,8 @@ function Shell({
   top?: React.ReactNode;
 }) {
   return (
-    <div className="min-h-[100dvh] bg-paper">
-      <div className="border-b-2 border-ink">
+    <div className="min-h-[100dvh] bg-white">
+      <div className="border-b border-line">
         <div className="mx-auto max-w-[680px] px-6 py-3">
           <Link href="/">
             <Wordmark size="sm" />
@@ -223,7 +223,7 @@ function Shell({
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
-    <span className="mt-3 inline-block border border-oxblood px-2.5 py-1 text-[0.625rem] font-bold uppercase tracking-[0.1em] text-oxblood">
+    <span className="mt-3 inline-block border border-navy px-2.5 py-1 text-[0.625rem] font-bold uppercase tracking-[0.1em] text-navy">
       {children}
     </span>
   );
@@ -231,9 +231,9 @@ function Pill({ children }: { children: React.ReactNode }) {
 
 function Curtain({ mark, name, line }: { mark: string; name: string; line: string }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-paper motion-safe:animate-[fadein_.3s_ease]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white motion-safe:animate-[fadein_.3s_ease]">
       <div className="px-6 text-center">
-        <Mark name={mark} size={74} className="mx-auto text-oxblood" />
+        <Mark name={mark} size={74} className="mx-auto text-navy" />
         <div className="mt-5 text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-muted">
           {name}
         </div>
@@ -282,17 +282,17 @@ function Field({
               }}
               aria-pressed={on}
               className={`flex w-full items-start gap-3 border p-3.5 text-left transition-colors ${
-                on ? "border-oxblood bg-card" : "border-rule bg-card hover:border-oxblood-deep"
+                on ? "border-navy bg-white" : "border-line bg-white hover:border-navy-deep"
               } ${dim ? "opacity-50" : ""} ${o.unc ? "border-dashed bg-transparent" : ""}`}
             >
               <span
                 className={`mt-0.5 grid size-[21px] shrink-0 place-items-center rounded-full border text-[0.6875rem] font-semibold ${
-                  on ? "border-oxblood bg-oxblood text-paper" : "border-rule text-muted"
+                  on ? "border-navy bg-navy text-white" : "border-line text-muted"
                 }`}
               >
                 {label}
               </span>
-              <span className={`text-[0.95rem] leading-[1.45] ${o.unc ? "text-ink-soft" : ""} ${on ? "font-medium" : ""}`}>
+              <span className={`text-[0.95rem] leading-[1.45] ${o.unc ? "text-muted" : ""} ${on ? "font-medium" : ""}`}>
                 {o.t}
               </span>
             </button>
@@ -313,8 +313,8 @@ function Field({
               aria-pressed={one(a) === v}
               className={`flex-1 border py-4 text-[0.9375rem] font-semibold transition-colors ${
                 one(a) === v
-                  ? "border-oxblood bg-oxblood text-paper"
-                  : "border-rule bg-card text-ink-soft hover:border-oxblood-deep"
+                  ? "border-navy bg-navy text-white"
+                  : "border-line bg-white text-muted hover:border-navy-deep"
               }`}
             >
               {v}
@@ -346,12 +346,12 @@ function Field({
               }}
               aria-pressed={r >= 0}
               className={`flex w-full items-start gap-3 border p-3.5 text-left transition-colors ${
-                r >= 0 ? "border-oxblood bg-card" : "border-rule bg-card hover:border-oxblood-deep"
+                r >= 0 ? "border-navy bg-white" : "border-line bg-white hover:border-navy-deep"
               }`}
             >
               <span
                 className={`mt-0.5 grid size-[21px] shrink-0 place-items-center border text-[0.6875rem] font-semibold ${
-                  r >= 0 ? "border-oxblood bg-oxblood text-paper" : "border-rule text-muted"
+                  r >= 0 ? "border-navy bg-navy text-white" : "border-line text-muted"
                 }`}
               >
                 {r >= 0 ? r + 1 : ""}
@@ -381,7 +381,7 @@ function Field({
               }}
               aria-pressed={on}
               className={`border px-3.5 py-2.5 text-[0.9rem] transition-colors ${
-                on ? "border-oxblood bg-oxblood font-medium text-paper" : "border-rule bg-card hover:border-oxblood-deep"
+                on ? "border-navy bg-navy font-medium text-white" : "border-line bg-white hover:border-navy-deep"
               }`}
             >
               {s}
@@ -392,7 +392,7 @@ function Field({
           onClick={() => set(sel.includes(-1) ? [] : [-1])}
           aria-pressed={sel.includes(-1)}
           className={`border px-3.5 py-2.5 text-[0.9rem] transition-colors ${
-            sel.includes(-1) ? "border-oxblood bg-oxblood font-medium text-paper" : "border-rule bg-card hover:border-oxblood-deep"
+            sel.includes(-1) ? "border-navy bg-navy font-medium text-white" : "border-line bg-white hover:border-navy-deep"
           }`}
         >
           {q.none}

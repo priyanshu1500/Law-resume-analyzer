@@ -1,248 +1,128 @@
 import Link from "next/link";
-import {
-  ShieldCheckIcon,
-  LockSimpleIcon,
-  CheckCircleIcon,
-  ListChecksIcon,
-  CrosshairIcon,
-  FileTextIcon,
-} from "@phosphor-icons/react/dist/ssr";
+import { LockSimpleIcon, SparkleIcon } from "@phosphor-icons/react/dist/ssr";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
-import { Band, Button, Eyebrow, Check, TrustItem } from "@/components/ui";
-import { Reveal, RevealGroup, RevealItem } from "@/components/reveal";
-import { WordReveal, Parallax, Settle } from "@/components/motion-bits";
-import { ExhibitStack } from "@/components/exhibit-stack";
-import { ScoreCard } from "@/components/score-card";
-import { EditorialStamp } from "@/components/editorial-stamp";
-import { ReportPreviewCard } from "@/components/report-preview";
-import { PageStack } from "@/components/page-stack";
-import { Testimonials } from "@/components/testimonials";
+import { Button, Eyebrow } from "@/components/ui";
+import { Reveal } from "@/components/reveal";
+import { HeroCluster } from "@/components/hero-cluster";
+import { HowItWorks } from "@/components/sections";
+import { DotGrid } from "@/components/illus";
 import { PRICING } from "@/lib/mock";
-
-const STEPS = [
-  {
-    n: "01",
-    label: "Answer",
-    icon: ListChecksIcon,
-    body: "49 questions across 9 sections reveal what you're actually optimizing for.",
-  },
-  {
-    n: "02",
-    label: "Analyse",
-    icon: CrosshairIcon,
-    body: "Your resume is scored against five hiring signals recruiters notice first.",
-  },
-  {
-    n: "03",
-    label: "Advance",
-    icon: FileTextIcon,
-    body: "Get a newsroom-style report with your score, missing signals, and next steps.",
-  },
-];
-
-const SAMPLE_CHECKS = [
-  "Career Score",
-  "Placement Forecast",
-  "Recruiter's Read",
-  "90-Day Roadmap",
-  "Missing Signals",
-];
 
 export default function Home() {
   return (
-    <div className="min-h-[100dvh] bg-paper">
+    <div className="min-h-[100dvh] bg-white">
       <SiteNav />
 
-      {/* HERO ----------------------------------------------------- */}
-      <Band>
-        <div className="grid gap-14 lg:grid-cols-[1.06fr_0.9fr] lg:gap-10">
-          <div className="flex flex-col justify-center">
-            <h1 className="u-display text-[clamp(2.4rem,4.7vw,3.7rem)]">
-              <span className="block">
-                <WordReveal text="Your legal career," />
-              </span>
-              <span className="block">
-                <WordReveal text="analysed like a" delay={0.25} />
-              </span>
-              <span className="block">
-                <WordReveal text="recruiter" highlight="recruiter" delay={0.5} />.
-              </span>
+      {/* HERO ---------------------------------------------------- */}
+      <section className="mx-auto max-w-[1180px] px-6">
+        <div className="grid items-center gap-10 py-[clamp(2.5rem,6vw,4.5rem)] lg:grid-cols-[1fr_1fr] lg:gap-6">
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 text-[0.6875rem] font-bold uppercase tracking-[0.12em] text-navy">
+              <SparkleIcon size={12} weight="fill" className="text-gold" />
+              AI Powered
+            </span>
+            <h1 className="u-display mt-5 text-[clamp(2.75rem,7vw,4.75rem)]">
+              <span className="block text-navy">Understand.</span>
+              <span className="block text-gold">Improve.</span>
+              <span className="block text-navy">Get Hired.</span>
             </h1>
-            <Reveal delay={650}>
-              <p className="mt-7 max-w-[44ch] text-[0.9375rem] leading-relaxed text-ink-soft">
-                We simulate how recruiters read your resume, score it across 5
-                hiring signals, and show you exactly what to fix to get
-                shortlisted.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Button href="/questionnaire">Take the Questionnaire</Button>
-                <Button href="/fit" variant="outline">
-                  See a Sample Fit
-                </Button>
-              </div>
-            </Reveal>
-            <RevealGroup className="mt-10 flex flex-wrap gap-x-10 gap-y-4" stagger={0.09} delay={0.8}>
-              <RevealItem>
-                <TrustItem
-                  icon={<ShieldCheckIcon size={18} />}
-                  title="Confidential"
-                  sub="Your data is safe"
-                />
-              </RevealItem>
-              <RevealItem>
-                <TrustItem
-                  icon={<LockSimpleIcon size={18} />}
-                  title="Secure Upload"
-                  sub="256-bit encryption"
-                />
-              </RevealItem>
-              <RevealItem>
-                <TrustItem
-                  icon={<CheckCircleIcon size={18} />}
-                  title="No Subscription"
-                  sub="Pay once. That's it."
-                />
-              </RevealItem>
-            </RevealGroup>
-          </div>
-
-          <div className="relative flex flex-col items-center justify-center pb-4 lg:pb-16 lg:pr-10">
-            <Parallax distance={32}>
-              <ExhibitStack />
-            </Parallax>
-            <Settle className="mt-8 lg:absolute lg:-bottom-2 lg:-right-4 lg:mt-0">
-              <ScoreCard />
-            </Settle>
-          </div>
-        </div>
-      </Band>
-
-      {/* HOW IT WORKS ------------------------------------------- */}
-      <Band tone="dark" id="how">
-        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.4fr] lg:gap-16">
-          <Reveal>
-            <Eyebrow>How It Works</Eyebrow>
-            <h2 className="u-display mt-4 text-[clamp(2rem,4.4vw,3.25rem)]">
-              One instrument,
-              <br />
-              read <span className="text-oxblood">three</span> ways.
-            </h2>
-          </Reveal>
-
-          <RevealGroup className="grid gap-8 sm:grid-cols-[1fr_1fr_1fr_auto] sm:gap-6" stagger={0.1}>
-            {STEPS.map(({ n, label, icon: Icon, body }) => (
-              <RevealItem
-                key={n}
-                className="sm:border-l sm:border-rule sm:pl-5 sm:first:border-l-0 sm:first:pl-0"
-              >
-                <Icon size={26} weight="regular" className="text-ink" />
-                <div className="mt-4 flex items-baseline gap-2">
-                  <span className="u-display text-[1.75rem] text-oxblood">{n}</span>
-                  <span className="text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-ink">
-                    {label}
-                  </span>
-                </div>
-                <p className="mt-3 text-[0.8125rem] leading-relaxed text-muted">
-                  {body}
-                </p>
-              </RevealItem>
-            ))}
-            <RevealItem className="hidden items-center justify-center pr-2 sm:flex">
-              <EditorialStamp size={104} />
-            </RevealItem>
-          </RevealGroup>
-        </div>
-      </Band>
-
-      {/* SAMPLE REPORT PREVIEW -------------------------------- */}
-      <Band id="sample">
-        <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
-          <Reveal>
-            <Eyebrow>Sample Report Preview</Eyebrow>
-            <h2 className="u-display mt-4 text-[clamp(1.9rem,4.2vw,3rem)]">
-              The number is the <span className="text-oxblood">hook</span>. The
-              paragraph beneath it is the <span className="text-oxblood">point</span>.
-            </h2>
-            <p className="mt-6 text-[0.875rem] font-bold uppercase tracking-[0.1em] text-ink">
-              This is what lands in your inbox.
+            <p className="mt-6 max-w-[30rem] text-[1.0625rem] leading-relaxed text-muted">
+              Specialized AI analysis for law students and legal professionals. Make
+              your resume stand out in the legal field.
             </p>
-            <ul className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2">
-              {SAMPLE_CHECKS.map((c) => (
-                <Check key={c}>{c}</Check>
-              ))}
-            </ul>
-            <div className="mt-8">
-              <Button href="/report" variant="outline">
-                View Full Sample Report
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <Button href="/questionnaire">Analyse My Resume</Button>
+              <Button href="/fit" variant="ghost">
+                View Sample Report
               </Button>
             </div>
-          </Reveal>
+            <p className="mt-5 flex items-center gap-2 text-[0.8125rem] text-muted">
+              <LockSimpleIcon size={15} className="text-gold" />
+              Your data is secure &amp; confidential.
+            </p>
+          </div>
 
-          <Reveal delay={140} className="flex items-start gap-4">
-            <div className="min-w-0 flex-1">
-              <ReportPreviewCard />
-            </div>
-            <PageStack />
-          </Reveal>
+          <div className="lg:pl-6">
+            <HeroCluster />
+          </div>
         </div>
-      </Band>
+      </section>
 
-      {/* PRICING --------------------------------------------- */}
-      <Band tone="dark" id="pricing">
-        <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
-          <Reveal>
-            <Eyebrow>Pricing</Eyebrow>
-            <h2 className="u-display mt-4 text-[clamp(2rem,4.4vw,3.25rem)]">
-              Pay <span className="text-oxblood">once</span> for the read. Pay
-              again only if you want us to do{" "}
-              <span className="ink-underline">the writing</span>.
-            </h2>
-          </Reveal>
+      <hr className="divider mx-auto max-w-[1180px]" />
 
-          <Reveal className="border-t-2 border-ink">
-            <div className="grid gap-4 border-b border-rule py-7 md:grid-cols-[auto_1fr_auto] md:items-baseline md:gap-10">
-              <div className="u-display text-[2rem] text-oxblood">
-                {PRICING.currency}
-                {PRICING.analysis}
-              </div>
-              <div>
-                <div className="u-display text-[1.15rem] text-ink">Resume Analysis</div>
-                <p className="mt-1 max-w-[54ch] text-[0.875rem] leading-relaxed text-muted">
-                  Score, recruiter&rsquo;s read, missing signals, line-by-line
-                  fixes and a 90-day roadmap. You make the edits.
-                </p>
-              </div>
-              <span className="text-[0.625rem] font-bold uppercase tracking-[0.16em] text-oxblood">
-                Start here
-              </span>
-            </div>
-            <div className="grid gap-4 border-b border-rule py-7 md:grid-cols-[auto_1fr_auto] md:items-baseline md:gap-10">
-              <div className="u-display text-[2rem] text-oxblood">
-                {PRICING.currency}
-                {PRICING.rewrite}
-              </div>
-              <div>
-                <div className="u-display text-[1.15rem] text-ink">Done-for-you Rewrite</div>
-                <p className="mt-1 max-w-[54ch] text-[0.875rem] leading-relaxed text-muted">
-                  Our desk rebuilds the resume around the findings, with two
-                  rounds of revisions.
-                </p>
-              </div>
-              <span className="text-[0.625rem] font-bold uppercase tracking-[0.16em] text-muted">
-                After your report
-              </span>
-            </div>
-          </Reveal>
+      {/* HOW IT WORKS + FEATURES ------------------------------- */}
+      <section className="mx-auto max-w-[1180px] px-6 py-[clamp(3.5rem,8vw,6rem)]">
+        <HowItWorks />
+      </section>
+
+      {/* QUOTE STRIP ------------------------------------------ */}
+      <section className="border-y border-line bg-surface">
+        <div className="mx-auto flex max-w-[1180px] flex-col items-start gap-6 px-6 py-12 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-start gap-4">
+            <span className="font-serif text-5xl leading-none text-gold" aria-hidden>
+              &ldquo;
+            </span>
+            <p className="max-w-[36ch] text-[1.15rem] font-medium leading-snug text-ink">
+              In the legal profession, your resume is your first argument.
+            </p>
+          </div>
+          <div className="flex items-center gap-6">
+            <Button href="/questionnaire">Get Started Now</Button>
+            <DotGrid className="hidden md:block" cols={4} rows={3} color="#CB9323" />
+          </div>
         </div>
-      </Band>
+      </section>
 
-      {/* TESTIMONIALS -------------------------------------- */}
-      <Band>
+      {/* PRICING -------------------------------------------- */}
+      <section id="pricing" className="mx-auto max-w-[1180px] px-6 py-[clamp(3.5rem,8vw,6rem)]">
         <Reveal>
-          <Testimonials />
+          <Eyebrow>Pricing</Eyebrow>
+          <h2 className="u-display mt-3 text-[clamp(1.75rem,4vw,2.75rem)]">
+            Pay once for the read. The rewrite is optional.
+          </h2>
         </Reveal>
-      </Band>
+        <Reveal delay={120} className="mt-10 divide-y divide-line border-t border-line">
+          {[
+            {
+              price: PRICING.analysis,
+              name: "Resume Analysis",
+              body: "Score, recruiter's read, missing signals, line-by-line fixes and a 90-day roadmap. You make the edits.",
+              tag: "Start here",
+            },
+            {
+              price: PRICING.rewrite,
+              name: "Done-for-you Rewrite",
+              body: "Our desk rebuilds the resume around the findings, with two rounds of revisions.",
+              tag: "After your report",
+            },
+          ].map((t) => (
+            <div
+              key={t.name}
+              className="grid gap-3 py-7 md:grid-cols-[auto_1fr_auto] md:items-baseline md:gap-10"
+            >
+              <div className="text-[2rem] font-bold tracking-tight text-navy">
+                {PRICING.currency}
+                {t.price}
+              </div>
+              <div>
+                <div className="text-[1.05rem] font-bold text-ink">{t.name}</div>
+                <p className="mt-1 max-w-[56ch] text-[0.875rem] leading-relaxed text-muted">
+                  {t.body}
+                </p>
+              </div>
+              <span className="text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-gold">
+                {t.tag}
+              </span>
+            </div>
+          ))}
+        </Reveal>
+        <Reveal delay={200} className="mt-8">
+          <Link href="/questionnaire" className="btn btn-navy">
+            Take the questionnaire
+          </Link>
+        </Reveal>
+      </section>
 
       <SiteFooter />
     </div>

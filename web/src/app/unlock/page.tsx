@@ -3,8 +3,7 @@
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { LockKeyIcon, ShieldCheckIcon } from "@phosphor-icons/react/dist/ssr";
-import { Masthead } from "@/components/masthead";
-import { Wordmark } from "@/components/wordmark";
+import { SiteNav } from "@/components/site-nav";
 import { Eyebrow } from "@/components/ui";
 import { PRICING } from "@/lib/mock";
 import { useSession } from "@/lib/store";
@@ -29,38 +28,31 @@ export default function UnlockPage() {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-paper">
-      <Masthead tagline="Intake complete" index="UNLOCK" />
-      <div className="border-b border-ink">
-        <div className="mx-auto max-w-[1400px] px-6 py-3">
-          <Link href="/">
-            <Wordmark compact />
-          </Link>
-        </div>
-      </div>
+    <div className="min-h-[100dvh] bg-white">
+      <SiteNav />
 
-      <main className="mx-auto max-w-[1400px] px-6 py-16">
+      <main className="mx-auto max-w-[1180px] px-6 py-16">
         <div className="grid gap-14 md:grid-cols-[1.1fr_0.9fr] md:gap-20">
           <div>
             <Eyebrow ox>Your answers are saved</Eyebrow>
-            <h1 className="u-serif mt-5 text-[2.5rem] leading-[1.05] text-ink sm:text-[3rem]">
+            <h1 className="u-display mt-5 text-[2.5rem] leading-[1.05] text-ink sm:text-[3rem]">
               Unlock the analysis.
             </h1>
-            <p className="mt-6 max-w-[52ch] text-[1.05rem] leading-relaxed text-ink-soft">
+            <p className="mt-6 max-w-[52ch] text-[1.05rem] leading-relaxed text-muted">
               You have finished the intake. Next you upload your resume and the
               analysis runs against everything you just told us.
             </p>
 
-            <ul className="mt-10 divide-y divide-rule border-y-2 border-ink">
+            <ul className="mt-10 divide-y divide-line border-y border-line">
               {INCLUDED.map((item) => (
-                <li key={item} className="flex items-start gap-4 py-4 text-[0.9375rem] leading-relaxed text-ink-soft">
-                  <span aria-hidden className="mt-[0.4rem] size-[6px] shrink-0 rounded-full bg-oxblood" />
+                <li key={item} className="flex items-start gap-4 py-4 text-[0.9375rem] leading-relaxed text-muted">
+                  <span aria-hidden className="mt-[0.4rem] size-[6px] shrink-0 rounded-full bg-navy" />
                   {item}
                 </li>
               ))}
             </ul>
 
-            <p className="mt-6 flex items-center gap-2 text-[0.8125rem] italic text-ink-mute">
+            <p className="mt-6 flex items-center gap-2 text-[0.8125rem] italic text-muted">
               <ShieldCheckIcon size={16} />
               Your resume is used only to produce your report. Analysis is
               guidance, not legal or career advice.
@@ -68,33 +60,33 @@ export default function UnlockPage() {
           </div>
 
           <div className="md:sticky md:top-12 md:self-start">
-            <div className="border border-ink bg-paper-card p-8">
-              <div className="flex items-center gap-2 text-ink-mute">
+            <div className="border border-line bg-white p-8">
+              <div className="flex items-center gap-2 text-muted">
                 <LockKeyIcon size={18} />
                 <span className="u-eyebrow">One-off fee</span>
               </div>
-              <div className="u-serif mt-4 text-[3.5rem] leading-none text-ink">
+              <div className="u-display mt-4 text-[3.5rem] leading-none text-ink">
                 {PRICING.currency}
                 {PRICING.analysis.toLocaleString("en-IN")}
               </div>
-              <p className="mt-3 text-[0.875rem] text-ink-soft">
+              <p className="mt-3 text-[0.875rem] text-muted">
                 Covers the AI analysis, the score and the written report. No
                 subscription.
               </p>
               <button
                 type="button"
                 onClick={pay}
-                className="mt-7 w-full border border-ink bg-ink px-6 py-3.5 text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-paper transition-transform active:translate-y-px"
+                className="mt-7 w-full border border-line bg-navy px-6 py-3.5 text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-white transition-transform active:translate-y-px"
               >
                 Pay {PRICING.currency}
                 {PRICING.analysis.toLocaleString("en-IN")} &amp; continue
               </button>
-              <p className="mt-3 text-center text-[0.6875rem] uppercase tracking-[0.12em] text-ink-mute">
+              <p className="mt-3 text-center text-[0.6875rem] uppercase tracking-[0.12em] text-muted">
                 Prototype. No card is charged
               </p>
 
-              <div className="mt-6 border-t border-rule pt-4 text-[0.8125rem] text-ink-soft">
-                <span className="u-serif text-ink">
+              <div className="mt-6 border-t border-line pt-4 text-[0.8125rem] text-muted">
+                <span className="u-display text-ink">
                   {PRICING.currency}
                   {PRICING.rewrite.toLocaleString("en-IN")}
                 </span>{" "}

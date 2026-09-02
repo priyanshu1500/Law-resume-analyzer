@@ -13,7 +13,7 @@ export default function ResultsPage() {
   const reportDone = state.paid && Boolean(state.resumeName);
 
   return (
-    <div className="min-h-[100dvh] bg-paper">
+    <div className="min-h-[100dvh] bg-white">
       <SiteNav />
       <Band>
         <Eyebrow>Your results</Eyebrow>
@@ -69,11 +69,11 @@ function HubCard({
   return (
     <Link
       href={href}
-      className="card-hard group flex flex-col justify-between p-6 transition-transform hover:-translate-y-1"
+      className="card group flex flex-col justify-between p-6 transition-transform hover:-translate-y-1"
     >
       <div>
         <div className="flex items-center justify-between">
-          <span className="text-[0.625rem] font-bold uppercase tracking-[0.16em] text-oxblood">
+          <span className="text-[0.625rem] font-bold uppercase tracking-[0.16em] text-navy">
             {kicker}
           </span>
           {done && (
@@ -83,9 +83,9 @@ function HubCard({
           )}
         </div>
         <h2 className="u-display mt-3 text-[1.5rem] text-ink">{title}</h2>
-        <p className="mt-2 text-[0.875rem] leading-relaxed text-ink-soft">{body}</p>
+        <p className="mt-2 text-[0.875rem] leading-relaxed text-muted">{body}</p>
       </div>
-      <span className="mt-6 inline-flex items-center gap-2 text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-oxblood">
+      <span className="mt-6 inline-flex items-center gap-2 text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-navy">
         {cta}
         <ArrowRightIcon size={13} weight="bold" className="transition-transform group-hover:translate-x-1" />
       </span>

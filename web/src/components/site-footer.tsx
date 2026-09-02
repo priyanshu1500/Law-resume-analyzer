@@ -1,94 +1,68 @@
 import Link from "next/link";
-import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
 import { Wordmark } from "./wordmark";
+
+const COLS: [string, [string, string][]][] = [
+  [
+    "Product",
+    [
+      ["How It Works", "/#how"],
+      ["Features", "/#features"],
+      ["Pricing", "/#pricing"],
+      ["Sample Report", "/report"],
+    ],
+  ],
+  [
+    "Company",
+    [
+      ["About", "/#about"],
+      ["Terms", "/#"],
+      ["Privacy", "/#"],
+      ["Contact", "/#"],
+    ],
+  ],
+];
 
 export function SiteFooter() {
   return (
-    <footer className="band-dark bg-paper">
-      <div className="mx-auto max-w-[1240px] px-6 py-14">
-        <div className="grid gap-10 md:grid-cols-[1.2fr_0.8fr_0.8fr_1.4fr]">
+    <footer className="border-t border-line bg-white">
+      <div className="mx-auto max-w-[1180px] px-6 py-14">
+        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1.4fr]">
           <div>
             <Wordmark />
-            <p className="mt-5 text-[0.625rem] font-bold uppercase tracking-[0.14em] text-oxblood">
-              Editorial Position
-            </p>
-            <p className="mt-2 max-w-[32ch] text-[0.8125rem] leading-relaxed text-muted">
-              Every resume already makes an argument. We help you write the
-              stronger one.
+            <p className="mt-4 max-w-[34ch] text-[0.875rem] leading-relaxed text-muted">
+              Specialized AI analysis for law students and legal professionals.
             </p>
           </div>
-
-          <FooterCol
-            title="Product"
-            links={[
-              ["Questionnaire", "/questionnaire"],
-              ["Sample Fit", "/fit"],
-              ["Pricing", "/#pricing"],
-            ]}
-          />
-          <FooterCol
-            title="Company"
-            links={[
-              ["How It Works", "/#how"],
-              ["Terms", "/#"],
-              ["Privacy", "/#"],
-            ]}
-          />
-
+          {COLS.map(([title, links]) => (
+            <div key={title}>
+              <p className="text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-navy">
+                {title}
+              </p>
+              <ul className="mt-3 space-y-2 text-[0.875rem] text-muted">
+                {links.map(([label, href]) => (
+                  <li key={label}>
+                    <Link href={href} className="transition-colors hover:text-ink">
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
           <div>
-            <p className="text-[0.625rem] font-bold uppercase tracking-[0.14em] text-ink">
-              Questions?
+            <p className="text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-navy">
+              Get started
             </p>
-            <form className="mt-3 flex items-center border border-rule-strong">
-              <input
-                type="email"
-                defaultValue="hello@lexintent.com"
-                aria-label="Email"
-                className="w-full bg-transparent px-3 py-2.5 text-[0.8125rem] text-ink outline-none"
-              />
-              <button
-                type="submit"
-                aria-label="Send"
-                className="grid h-full place-items-center border-l border-rule-strong px-3 py-2.5 text-ink transition-colors hover:bg-oxblood hover:text-paper"
-              >
-                <ArrowRightIcon size={14} weight="bold" />
-              </button>
-            </form>
+            <Link href="/questionnaire" className="btn btn-navy mt-3 !py-2.5 text-[0.9rem]">
+              Analyse my resume
+            </Link>
           </div>
         </div>
-
-        <div className="mt-12 flex items-center justify-between border-t border-rule pt-5">
-          <span className="text-[0.625rem] font-bold uppercase tracking-[0.16em] text-muted">
-            Built for law students. Backed by insight.
-          </span>
-          <span className="size-[7px] bg-oxblood" aria-hidden />
+        <div className="mt-12 flex flex-col justify-between gap-2 border-t border-line pt-5 text-[0.75rem] text-muted sm:flex-row">
+          <span>© {new Date().getFullYear()} LawAnalyser</span>
+          <span>Built for the Indian legal field.</span>
         </div>
       </div>
     </footer>
-  );
-}
-
-function FooterCol({
-  title,
-  links,
-}: {
-  title: string;
-  links: [string, string][];
-}) {
-  return (
-    <div>
-      <p className="text-[0.625rem] font-bold uppercase tracking-[0.14em] text-oxblood">
-        {title}
-      </p>
-      <ul className="mt-3 space-y-2 text-[0.8125rem] text-muted">
-        {links.map(([label, href]) => (
-          <li key={label}>
-            <Link href={href} className="hover:text-ink">
-              {label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
   );
 }

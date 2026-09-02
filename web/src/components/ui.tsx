@@ -1,75 +1,74 @@
 import Link from "next/link";
-import { ArrowRightIcon, CheckCircleIcon } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRightIcon, CheckIcon } from "@phosphor-icons/react/dist/ssr";
 
 export function Eyebrow({
   children,
-  muted = false,
   className = "",
 }: {
   children: React.ReactNode;
-  muted?: boolean;
-  /** legacy no-op: the eyebrow is oxblood by default now */
+  /** legacy no-ops */
   ox?: boolean;
+  muted?: boolean;
   className?: string;
 }) {
-  return (
-    <p className={`u-eyebrow ${muted ? "u-eyebrow-muted" : ""} ${className}`}>
-      {children}
-    </p>
-  );
+  return <p className={`u-eyebrow ${className}`}>{children}</p>;
 }
 
-/** Full-bleed polarity band. `tone="dark"` flips the semantic tokens. */
+/** Section wrapper: centered container, generous vertical rhythm. */
 export function Band({
   children,
   tone = "light",
   id,
   className = "",
+  divide = false,
 }: {
   children: React.ReactNode;
   tone?: "light" | "dark";
   id?: string;
   className?: string;
+  divide?: boolean;
 }) {
+  const dark = tone === "dark";
   return (
     <section
       id={id}
-      className={`${tone === "dark" ? "band-dark" : ""} border-b-2 border-ink ${className}`}
+      className={`${dark ? "bg-navy text-white" : "bg-bg text-ink"} ${
+        divide && !dark ? "border-t border-line" : ""
+      } ${className}`}
     >
-      <div className="mx-auto max-w-[1240px] px-6 py-[clamp(4rem,9vw,7rem)]">
+      <div className="mx-auto max-w-[1180px] px-6 py-[clamp(3.5rem,8vw,6.5rem)]">
         {children}
       </div>
     </section>
   );
 }
 
-type ButtonProps = {
-  href: string;
-  children: React.ReactNode;
-  variant?: "oxblood" | "ink" | "outline";
-  className?: string;
+type Variant = "navy" | "gold" | "ghost";
+const MAP: Record<string, Variant> = {
+  navy: "navy", gold: "gold", ghost: "ghost",
+  // legacy aliases
+  oxblood: "navy", ink: "navy", outline: "ghost", primary: "navy",
 };
 
 export function Button({
   href,
   children,
-  variant = "oxblood",
+  variant = "navy",
   className = "",
-}: ButtonProps) {
-  const base =
-    "group inline-flex items-center justify-center gap-3 px-6 py-3.5 text-[0.6875rem] font-bold uppercase tracking-[0.16em] transition-[transform,background-color,color] duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] will-change-transform hover:-translate-y-px active:scale-[0.97] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100";
-  const styles = {
-    oxblood: "bg-oxblood text-[#f3efe4] hover:bg-oxblood-deep",
-    ink: "bg-ink text-[#f3efe4] border border-ink hover:bg-transparent hover:text-ink",
-    outline: "border border-ink text-ink hover:bg-ink hover:text-[#f3efe4]",
-  }[variant];
+}: {
+  href: string;
+  children: React.ReactNode;
+  variant?: string;
+  className?: string;
+}) {
+  const v = MAP[variant] ?? "navy";
   return (
-    <Link href={href} className={`${base} ${styles} ${className}`}>
+    <Link href={href} className={`btn group btn-${v} ${className}`}>
       {children}
       <ArrowRightIcon
-        size={13}
+        size={16}
         weight="bold"
-        className="transition-transform duration-150 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-x-1 motion-reduce:group-hover:translate-x-0"
+        className="transition-transform group-hover:translate-x-0.5"
       />
     </Link>
   );
@@ -85,55 +84,40 @@ export function ArrowLink({
   className?: string;
 }) {
   return (
-    <Link href={href} className={`u-link ${className}`}>
+    <Link href={href} className={`u-link text-sm ${className}`}>
       {children}
-      <ArrowRightIcon size={12} weight="bold" />
+      <ArrowRightIcon size={14} weight="bold" />
     </Link>
   );
 }
 
 export function Check({ children }: { children: React.ReactNode }) {
   return (
-    <li className="flex items-start gap-2.5 text-[0.875rem] text-ink-soft">
-      <CheckCircleIcon
-        size={16}
-        weight="fill"
-        className="mt-[0.15rem] shrink-0 text-oxblood"
-      />
+    <li className="flex items-start gap-2.5 text-[0.9375rem] text-ink">
+      <span className="mt-0.5 grid size-[18px] shrink-0 place-items-center rounded-full bg-gold text-white">
+        <CheckIcon size={11} weight="bold" />
+      </span>
       {children}
     </li>
   );
 }
 
-export function TrustItem({
-  icon,
-  title,
-  sub,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  sub: string;
-}) {
+export function CheckRow({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-start gap-3">
-      <span className="mt-[0.1rem] text-ink">{icon}</span>
-      <div>
-        <div className="text-[0.6875rem] font-bold uppercase tracking-[0.12em] text-ink">
-          {title}
-        </div>
-        <div className="text-[0.75rem] text-muted">{sub}</div>
-      </div>
-    </div>
+    <li className="flex items-start gap-3 py-2 text-[0.9375rem] text-ink">
+      <span className="mt-0.5 grid size-[18px] shrink-0 place-items-center rounded-full bg-gold text-white">
+        <CheckIcon size={11} weight="bold" />
+      </span>
+      {children}
+    </li>
   );
 }
-
-/* ---- primitives still used by the inner flow screens ------------- */
 
 export function Meter({ value, max = 100 }: { value: number; max?: number }) {
   const pct = Math.max(0, Math.min(100, (value / max) * 100));
   return (
-    <div className="h-[6px] w-full bg-track">
-      <div className="h-full bg-oxblood" style={{ width: `${pct}%` }} />
+    <div className="h-[6px] w-full rounded-full bg-track">
+      <div className="h-full rounded-full bg-navy" style={{ width: `${pct}%` }} />
     </div>
   );
 }
@@ -151,13 +135,13 @@ export function StatBlock({
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-muted">{icon}</span>
-      <span className="text-[0.625rem] font-bold uppercase tracking-[0.12em] text-muted">
+      <span className="text-navy">{icon}</span>
+      <span className="text-[0.625rem] font-bold uppercase tracking-[0.1em] text-muted">
         {label}
       </span>
-      <span className="u-display text-[2rem] leading-none text-ink">
+      <span className="text-[1.9rem] font-bold leading-none tracking-tight text-ink">
         {value}
-        <span className="text-[0.75rem] text-muted">/{max}</span>
+        <span className="text-[0.7rem] text-muted">/{max}</span>
       </span>
       <Meter value={value} max={max} />
     </div>
@@ -173,15 +157,12 @@ export function Donut({
   label?: string;
   size?: number;
 }) {
-  const stroke = 10;
+  const stroke = 9;
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
   const dash = (value / 100) * c;
   return (
-    <div
-      className="relative grid place-items-center"
-      style={{ width: size, height: size }}
-    >
+    <div className="relative grid place-items-center" style={{ width: size, height: size }}>
       <svg width={size} height={size} className="-rotate-90">
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--track)" strokeWidth={stroke} />
         <circle
@@ -189,28 +170,38 @@ export function Donut({
           cy={size / 2}
           r={r}
           fill="none"
-          stroke="var(--oxblood)"
+          stroke="var(--navy)"
           strokeWidth={stroke}
+          strokeLinecap="round"
           strokeDasharray={`${dash} ${c - dash}`}
         />
       </svg>
       <div className="absolute text-center">
-        <div className="u-display text-[1.5rem] leading-none text-ink">{value}%</div>
+        <div className="text-[1.5rem] font-bold leading-none text-ink">{value}%</div>
         {label && (
-          <div className="text-[0.5rem] font-bold uppercase tracking-[0.12em] text-muted">
-            {label}
-          </div>
+          <div className="text-[0.5rem] font-bold uppercase tracking-[0.1em] text-muted">{label}</div>
         )}
       </div>
     </div>
   );
 }
 
-export function CheckRow({ children }: { children: React.ReactNode }) {
+export function TrustItem({
+  icon,
+  title,
+  sub,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  sub: string;
+}) {
   return (
-    <li className="flex items-start gap-3 py-2 text-[0.9375rem] text-ink-soft">
-      <span aria-hidden className="mt-[0.35rem] size-[6px] shrink-0 bg-oxblood" />
-      {children}
-    </li>
+    <div className="flex items-start gap-3">
+      <span className="mt-0.5 text-navy">{icon}</span>
+      <div>
+        <div className="text-[0.8125rem] font-semibold text-ink">{title}</div>
+        <div className="text-[0.8125rem] text-muted">{sub}</div>
+      </div>
+    </div>
   );
 }

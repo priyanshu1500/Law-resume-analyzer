@@ -4,8 +4,7 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FileArrowUpIcon, FileTextIcon, CircleNotchIcon } from "@phosphor-icons/react/dist/ssr";
-import { Masthead } from "@/components/masthead";
-import { Wordmark } from "@/components/wordmark";
+import { SiteNav } from "@/components/site-nav";
 import { Eyebrow } from "@/components/ui";
 import { useSession } from "@/lib/store";
 
@@ -48,8 +47,8 @@ export default function UploadPage() {
     return (
       <Shell index="UPLOAD">
         <div className="py-24 text-center">
-          <p className="u-serif text-[1.5rem] text-ink">This step is locked.</p>
-          <p className="mt-3 text-ink-soft">Unlock the analysis to upload your resume.</p>
+          <p className="u-display text-[1.5rem] text-ink">This step is locked.</p>
+          <p className="mt-3 text-muted">Unlock the analysis to upload your resume.</p>
           <Link href="/unlock" className="u-link mt-6 inline-flex">
             Go to unlock
           </Link>
@@ -63,10 +62,10 @@ export default function UploadPage() {
       <div className="grid gap-14 md:grid-cols-[1fr_0.85fr] md:gap-20">
         <div>
           <Eyebrow ox>Final step</Eyebrow>
-          <h1 className="u-serif mt-5 text-[2.5rem] leading-[1.05] text-ink sm:text-[3rem]">
+          <h1 className="u-display mt-5 text-[2.5rem] leading-[1.05] text-ink sm:text-[3rem]">
             Upload your resume.
           </h1>
-          <p className="mt-6 max-w-[48ch] text-[1.05rem] leading-relaxed text-ink-soft">
+          <p className="mt-6 max-w-[48ch] text-[1.05rem] leading-relaxed text-muted">
             PDF or Word, one file. The analysis reads it against the forty-nine
             answers you gave in the intake.
           </p>
@@ -84,24 +83,24 @@ export default function UploadPage() {
                 accept(e.dataTransfer.files?.[0]);
               }}
               className={`mt-10 border-2 border-dashed p-12 text-center transition-colors ${
-                dragging ? "border-ink bg-paper-panel" : "border-rule-strong"
+                dragging ? "border-line bg-surface" : "border-line"
               }`}
             >
-              <FileArrowUpIcon size={32} className="mx-auto text-ink-mute" />
+              <FileArrowUpIcon size={32} className="mx-auto text-muted" />
               {name ? (
-                <p className="u-serif mt-4 flex items-center justify-center gap-2 text-[1.1rem] text-ink">
+                <p className="u-display mt-4 flex items-center justify-center gap-2 text-[1.1rem] text-ink">
                   <FileTextIcon size={18} />
                   {name}
                 </p>
               ) : (
-                <p className="mt-4 text-[0.9375rem] text-ink-soft">
+                <p className="mt-4 text-[0.9375rem] text-muted">
                   Drag a file here, or
                 </p>
               )}
               <button
                 type="button"
                 onClick={() => inputRef.current?.click()}
-                className="mt-3 border border-ink px-5 py-2.5 text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-ink transition-colors hover:bg-ink hover:text-paper"
+                className="mt-3 border border-line px-5 py-2.5 text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-ink transition-colors hover:bg-navy hover:text-white"
               >
                 {name ? "Choose a different file" : "Browse files"}
               </button>
@@ -114,17 +113,17 @@ export default function UploadPage() {
               />
             </div>
           ) : (
-            <ol className="mt-10 divide-y divide-rule border-y-2 border-ink">
+            <ol className="mt-10 divide-y divide-line border-y border-line">
               {STAGES.map((s, i) => (
                 <li key={s} className="flex items-center gap-3 py-4 text-[0.9375rem]">
                   {i < stage ? (
-                    <span className="size-[7px] rounded-full bg-oxblood" />
+                    <span className="size-[7px] rounded-full bg-navy" />
                   ) : i === stage ? (
-                    <CircleNotchIcon size={16} className="animate-spin text-oxblood" />
+                    <CircleNotchIcon size={16} className="animate-spin text-navy" />
                   ) : (
-                    <span className="size-[7px] rounded-full border border-rule-strong" />
+                    <span className="size-[7px] rounded-full border border-line" />
                   )}
-                  <span className={i <= stage ? "text-ink" : "text-ink-mute"}>{s}</span>
+                  <span className={i <= stage ? "text-ink" : "text-muted"}>{s}</span>
                 </li>
               ))}
             </ol>
@@ -135,7 +134,7 @@ export default function UploadPage() {
               type="button"
               onClick={run}
               disabled={!name}
-              className="mt-8 border border-ink bg-ink px-7 py-3.5 text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-paper transition-transform active:translate-y-px disabled:cursor-not-allowed disabled:opacity-30"
+              className="mt-8 border border-line bg-navy px-7 py-3.5 text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-white transition-transform active:translate-y-px disabled:cursor-not-allowed disabled:opacity-30"
             >
               Run the analysis
             </button>
@@ -143,9 +142,9 @@ export default function UploadPage() {
         </div>
 
         <aside className="md:sticky md:top-12 md:self-start">
-          <div className="border border-ink bg-paper-card p-7">
+          <div className="border border-line bg-white p-7">
             <Eyebrow>What happens to your file</Eyebrow>
-            <ul className="mt-4 space-y-3 text-[0.875rem] leading-relaxed text-ink-soft">
+            <ul className="mt-4 space-y-3 text-[0.875rem] leading-relaxed text-muted">
               <li>It is read once to produce your report.</li>
               <li>It is not shared, sold, or used to train anything.</li>
               <li>You can delete it from your dashboard at any time.</li>
@@ -157,18 +156,11 @@ export default function UploadPage() {
   );
 }
 
-function Shell({ children, index }: { children: React.ReactNode; index: string }) {
+function Shell({ children }: { children: React.ReactNode; index?: string }) {
   return (
-    <div className="min-h-[100dvh] bg-paper">
-      <Masthead tagline="Analysis" index={index} />
-      <div className="border-b border-ink">
-        <div className="mx-auto max-w-[1400px] px-6 py-3">
-          <Link href="/">
-            <Wordmark compact />
-          </Link>
-        </div>
-      </div>
-      <main className="mx-auto max-w-[1400px] px-6 py-16">{children}</main>
+    <div className="min-h-[100dvh] bg-white">
+      <SiteNav />
+      <main className="mx-auto max-w-[1180px] px-6 py-16">{children}</main>
     </div>
   );
 }

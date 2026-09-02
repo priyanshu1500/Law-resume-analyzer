@@ -30,7 +30,7 @@ export default function FitPage() {
 
   if (!ready) {
     return (
-      <div className="min-h-[100dvh] bg-paper">
+      <div className="min-h-[100dvh] bg-white">
         <SiteNav />
       </div>
     );
@@ -38,14 +38,14 @@ export default function FitPage() {
 
   if (!has || !res) {
     return (
-      <div className="min-h-[100dvh] bg-paper">
+      <div className="min-h-[100dvh] bg-white">
         <SiteNav />
         <Band>
           <Eyebrow>Your career fit</Eyebrow>
           <h1 className="u-display mt-4 text-[clamp(2rem,4.6vw,3.2rem)] [text-wrap:balance]">
             There&rsquo;s nothing to read yet.
           </h1>
-          <p className="mt-5 max-w-[46ch] text-[0.9375rem] leading-relaxed text-ink-soft">
+          <p className="mt-5 max-w-[46ch] text-[0.9375rem] leading-relaxed text-muted">
             The fit is built from the questionnaire. It takes about thirteen minutes
             and nothing is stored.
           </p>
@@ -59,7 +59,7 @@ export default function FitPage() {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-paper">
+    <div className="min-h-[100dvh] bg-white">
       <SiteNav />
       {res.thin ? <Thin res={res} resp={resp} /> : <Full res={res} resp={resp} />}
       <SiteFooter />
@@ -82,7 +82,7 @@ function Limits({ lines }: { lines: string[] }) {
     <ul className="mt-4 flex flex-col gap-1.5 text-[0.8125rem] text-muted">
       {lines.map((l, i) => (
         <li key={i} className="flex gap-2">
-          <span className="text-rule-strong">—</span>
+          <span className="text-line">—</span>
           {l}
         </li>
       ))}
@@ -94,15 +94,15 @@ function Full({ res, resp }: { res: any; resp: any }) {
   const { comb, cal, int, fit, ord, dest, tens, soft, trace, shape, open, mapVersion, exp, q, inf } = res;
   const VERD: Record<string, [React.ReactNode, string]> = {
     one: [
-      <>Your answers point at <b className="font-semibold text-oxblood">{shortName(ord[0])}</b>.</>,
+      <>Your answers point at <b className="font-semibold text-navy">{shortName(ord[0])}</b>.</>,
       `Clearly enough to act on. ${shortName(ord[1])} and ${shortName(ord[2])} come next.`,
     ],
     two: [
-      <><b className="font-semibold text-oxblood">{shortName(ord[0])}</b> and <b className="font-semibold text-oxblood">{shortName(ord[1])}</b>, and this can't separate them.</>,
+      <><b className="font-semibold text-navy">{shortName(ord[0])}</b> and <b className="font-semibold text-navy">{shortName(ord[1])}</b>, and this can't separate them.</>,
       `Treat the two as one direction — they sit close together in practice too. ${shortName(ord[2])} is next, at a distance.`,
     ],
     three: [
-      <><b className="font-semibold text-oxblood">{shortName(ord[0])}</b>, then <b className="font-semibold text-oxblood">{shortName(ord[1])}</b> and <b className="font-semibold text-oxblood">{shortName(ord[2])}</b> — but the order between them isn&rsquo;t reliable.</>,
+      <><b className="font-semibold text-navy">{shortName(ord[0])}</b>, then <b className="font-semibold text-navy">{shortName(ord[1])}</b> and <b className="font-semibold text-navy">{shortName(ord[2])}</b> — but the order between them isn&rsquo;t reliable.</>,
       "Treat the three as one direction. The gaps between them are inside the range you would get by changing a handful of answers, so an internship will separate them faster than more thinking will.",
     ],
   };
@@ -111,10 +111,10 @@ function Full({ res, resp }: { res: any; resp: any }) {
     <>
       <Band>
         <Eyebrow>{open[0]}</Eyebrow>
-        <h1 className="font-doc mt-3 text-[clamp(1.7rem,4.6vw,2.6rem)] font-normal leading-[1.16] tracking-[-0.02em] [text-wrap:pretty] text-ink">
+        <h1 className="mt-3 text-[clamp(1.7rem,4.6vw,2.6rem)] font-normal leading-[1.16] tracking-[-0.02em] [text-wrap:pretty] text-ink">
           {VERD[shape][0]}
         </h1>
-        <p className="mt-3 max-w-[52ch] text-[1rem] leading-relaxed text-ink-soft">
+        <p className="mt-3 max-w-[52ch] text-[1rem] leading-relaxed text-muted">
           {VERD[shape][1]} Ranked by how the daily work matches the way you like to
           work, and by which problems you said pull you in.
         </p>
@@ -126,18 +126,18 @@ function Full({ res, resp }: { res: any; resp: any }) {
             const w = whyFor(p, resp, cal, trace);
             const nb = (res.NEIGHBOUR[p] || []).filter((x: string) => ord.slice(0, 6).includes(x));
             return (
-              <div key={p} className="card-hard p-5 sm:p-6">
+              <div key={p} className="card p-5 sm:p-6">
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <div className="text-[0.75rem] font-semibold tabular-nums text-muted">
                       {String(i + 1).padStart(2, "0")}
                     </div>
-                    <h3 className="font-doc mt-1 text-[1.3rem] font-medium leading-tight tracking-[-0.015em] text-ink">
+                    <h3 className="mt-1 text-[1.3rem] font-medium leading-tight tracking-[-0.015em] text-ink">
                       {P[p].n}
                     </h3>
-                    <p className="mt-1 text-[0.875rem] text-ink-soft">{WHAT[p]}</p>
+                    <p className="mt-1 text-[0.875rem] text-muted">{WHAT[p]}</p>
                   </div>
-                  <div className="font-doc shrink-0 text-[1.6rem] font-medium tabular-nums tracking-[-0.02em] text-ink">
+                  <div className="shrink-0 text-[1.6rem] font-medium tabular-nums tracking-[-0.02em] text-ink">
                     {comb[p]}
                   </div>
                 </div>
@@ -183,11 +183,11 @@ function Full({ res, resp }: { res: any; resp: any }) {
 
         {/* rest of ten */}
         <H2 mark="bundle">The rest of your top ten</H2>
-        <div className="border border-ink bg-card">
+        <div className="border border-line bg-white">
           {ord.slice(3, 10).map((p: string, i: number) => (
             <div
               key={p}
-              className="grid grid-cols-[24px_1fr_auto] items-center gap-x-3 border-b border-rule px-4 py-2.5 last:border-b-0 sm:grid-cols-[24px_1fr_90px_40px]"
+              className="grid grid-cols-[24px_1fr_auto] items-center gap-x-3 border-b border-line px-4 py-2.5 last:border-b-0 sm:grid-cols-[24px_1fr_90px_40px]"
             >
               <span className="text-[0.75rem] tabular-nums text-muted">{i + 4}</span>
               <span className="text-[0.875rem]">{P[p].n}</span>
@@ -211,7 +211,7 @@ function Full({ res, resp }: { res: any; resp: any }) {
                     <span>
                       {DN[k]}
                       {un && (
-                        <span className="ml-2 border border-oxblood px-1.5 text-[0.625rem] font-bold uppercase tracking-[0.08em] text-oxblood">
+                        <span className="ml-2 border border-navy px-1.5 text-[0.625rem] font-bold uppercase tracking-[0.08em] text-navy">
                           untested
                         </span>
                       )}
@@ -219,9 +219,9 @@ function Full({ res, resp }: { res: any; resp: any }) {
                     <span className="text-[0.75rem] tabular-nums text-muted">{ORD(cal[k])}</span>
                   </div>
                   <div className="relative mt-1.5 h-[5px] bg-track">
-                    <span className="absolute left-1/2 top-[-2px] h-[9px] w-px bg-rule" />
+                    <span className="absolute left-1/2 top-[-2px] h-[9px] w-px bg-line" />
                     <span
-                      className={`block h-[5px] ${un ? "bg-ink-soft" : "bg-oxblood"}`}
+                      className={`block h-[5px] ${un ? "bg-muted" : "bg-navy"}`}
                       style={{ width: `${cal[k]}%` }}
                     />
                   </div>
@@ -235,7 +235,7 @@ function Full({ res, resp }: { res: any; resp: any }) {
               <span className="text-[0.75rem] tabular-nums text-muted">{ORD(cal.PACE)}</span>
             </div>
             <div className="relative mt-1.5 h-[5px] bg-track">
-              <span className="block h-[5px] bg-ink-soft" style={{ width: `${cal.PACE}%` }} />
+              <span className="block h-[5px] bg-muted" style={{ width: `${cal.PACE}%` }} />
             </div>
             <div className="mt-1 text-[0.75rem] text-muted">A working condition, not part of the match</div>
           </div>
@@ -257,7 +257,7 @@ function Full({ res, resp }: { res: any; resp: any }) {
               {tens.map((t: string, i: number) => (
                 <p
                   key={i}
-                  className="border border-rule border-l-2 border-l-oxblood bg-card p-3.5 text-[0.9rem] leading-[1.5] text-ink-soft [&_b]:font-semibold [&_b]:text-ink"
+                  className="border border-line border-l-2 border-l-navy bg-white p-3.5 text-[0.9rem] leading-[1.5] text-muted [&_b]:font-semibold [&_b]:text-ink"
                   dangerouslySetInnerHTML={{ __html: t }}
                 />
               ))}
@@ -267,13 +267,13 @@ function Full({ res, resp }: { res: any; resp: any }) {
 
         {/* where */}
         <H2 mark="columns">Where you&rsquo;d want to work</H2>
-        <div className="border border-ink bg-card">
+        <div className="border border-line bg-white">
           {Object.keys(dest)
             .sort((a, b) => dest[b] - dest[a])
             .map((k, i) => (
               <div
                 key={k}
-                className="grid grid-cols-[24px_1fr_auto] items-center gap-x-3 border-b border-rule px-4 py-2.5 last:border-b-0 sm:grid-cols-[24px_1fr_90px_40px]"
+                className="grid grid-cols-[24px_1fr_auto] items-center gap-x-3 border-b border-line px-4 py-2.5 last:border-b-0 sm:grid-cols-[24px_1fr_90px_40px]"
               >
                 <span className="text-[0.75rem] tabular-nums text-muted">{i + 1}</span>
                 <span className="text-[0.875rem]">{DEST[k]}</span>
@@ -285,9 +285,9 @@ function Full({ res, resp }: { res: any; resp: any }) {
 
         {/* do this week */}
         <H2 mark="clock">Two things to do this week</H2>
-        <div className="border border-ink bg-card">
+        <div className="border border-line bg-white">
           {(TRY[ord[0]] || []).map((t, i) => (
-            <div key={i} className="grid grid-cols-[24px_1fr] gap-x-3 border-b border-rule px-4 py-3 last:border-b-0">
+            <div key={i} className="grid grid-cols-[24px_1fr] gap-x-3 border-b border-line px-4 py-3 last:border-b-0">
               <span className="text-[0.75rem] tabular-nums text-muted">{i + 1}</span>
               <span className="text-[0.9rem]">{t}</span>
             </div>
@@ -297,7 +297,7 @@ function Full({ res, resp }: { res: any; resp: any }) {
 
       {/* next → the ₹99 analysis */}
       <Band tone="dark">
-        <h2 className="font-doc text-[clamp(1.5rem,3.6vw,2.2rem)] font-normal tracking-[-0.02em]">
+        <h2 className="text-[clamp(1.5rem,3.6vw,2.2rem)] font-normal tracking-[-0.02em]">
           Now make it show on paper.
         </h2>
         <p className="mt-3 max-w-[52ch] text-[0.9375rem] leading-relaxed text-muted">
@@ -305,13 +305,13 @@ function Full({ res, resp }: { res: any; resp: any }) {
           same. What separates you is being visibly good at one thing. That&rsquo;s
           what a direction is for.
         </p>
-        <div className="mt-6 grid grid-cols-1 gap-px bg-rule sm:grid-cols-3">
+        <div className="mt-6 grid grid-cols-1 gap-px bg-line sm:grid-cols-3">
           {[
             ["Step one", `A CV written for ${shortName(ord[0])}, not for everyone`],
             ["Step two", "A shortlist of firms and chambers that actually do this work"],
             ["Step three", "Applications that say why you, and why them"],
           ].map(([s, t]) => (
-            <div key={s} className="bg-[var(--paper)] p-4">
+            <div key={s} className="bg-navy p-4">
               <div className="text-[0.625rem] font-bold uppercase tracking-[0.12em] text-muted">{s}</div>
               <div className="mt-1.5 text-[0.9rem] font-medium">{t}</div>
             </div>
@@ -322,7 +322,7 @@ function Full({ res, resp }: { res: any; resp: any }) {
         </div>
       </Band>
 
-      <div className="border-b-2 border-ink bg-paper">
+      <div className="border-b border-line bg-white">
         <div className="mx-auto max-w-[1240px] px-6 py-6">
           <Limits
             lines={[
@@ -346,9 +346,9 @@ function Full({ res, resp }: { res: any; resp: any }) {
 
 function Why({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="mt-3.5 border-t border-rule pt-3">
+    <div className="mt-3.5 border-t border-line pt-3">
       <div className="text-[0.625rem] font-bold uppercase tracking-[0.12em] text-muted">{label}</div>
-      <ul className="mt-2 flex flex-col gap-1.5 text-[0.875rem] leading-[1.45] text-ink-soft">
+      <ul className="mt-2 flex flex-col gap-1.5 text-[0.875rem] leading-[1.45] text-muted">
         {children}
       </ul>
     </div>
@@ -386,22 +386,22 @@ function Thin({ res, resp }: { res: any; resp: any }) {
     <>
       <Band>
         <Eyebrow>Your result</Eyebrow>
-        <h1 className="font-doc mt-3 text-[clamp(1.7rem,4.6vw,2.6rem)] font-normal leading-[1.16] tracking-[-0.02em] text-ink">
+        <h1 className="mt-3 text-[clamp(1.7rem,4.6vw,2.6rem)] font-normal leading-[1.16] tracking-[-0.02em] text-ink">
           There isn&rsquo;t enough here yet to tell you.
         </h1>
-        <p className="mt-4 max-w-[52ch] text-[1rem] leading-relaxed text-ink-soft">
+        <p className="mt-4 max-w-[52ch] text-[1rem] leading-relaxed text-muted">
           That is the honest answer, and it is a better one than a ranked list would be.
           You can only compare kinds of legal work once you&rsquo;ve seen some of it, and{" "}
           {why.length ? why.slice(0, 3).join(", ") + "." : "there isn't much to go on yet."}
         </p>
-        <div className="mt-8 text-oxblood">
+        <div className="mt-8 text-navy">
           <Mark name="gate" size={88} />
         </div>
 
         <H2 mark="route">The problems you said interested you</H2>
-        <div className="border border-ink bg-card">
+        <div className="border border-line bg-white">
           {lean.map((p: string) => (
-            <div key={p} className="border-b border-rule px-4 py-3 text-[0.9rem] last:border-b-0">
+            <div key={p} className="border-b border-line px-4 py-3 text-[0.9rem] last:border-b-0">
               <b className="font-semibold text-ink">{P[p].n}</b> — {WHAT[p]}
             </div>
           ))}
@@ -409,11 +409,11 @@ function Thin({ res, resp }: { res: any; resp: any }) {
         <Limits lines={["These come straight from the five situations you ranked — they are your answer, not a calculation. No scores, on purpose: on this many answers a ranking would be closer to noise than to a finding."]} />
 
         <H2 mark="clock">Do these, then come back</H2>
-        <div className="border border-ink bg-card">
+        <div className="border border-line bg-white">
           {tries.map((t, i) => (
-            <div key={i} className="border-b border-rule px-4 py-3 text-[0.9rem] last:border-b-0">{t}</div>
+            <div key={i} className="border-b border-line px-4 py-3 text-[0.9rem] last:border-b-0">{t}</div>
           ))}
-          <div className="border-b border-rule px-4 py-3 text-[0.9rem] last:border-b-0">
+          <div className="border-b border-line px-4 py-3 text-[0.9rem] last:border-b-0">
             Do one internship chosen for the <b className="font-semibold">work</b>, not the name of the place.
           </div>
           <div className="px-4 py-3 text-[0.9rem]">
@@ -432,8 +432,8 @@ function Thin({ res, resp }: { res: any; resp: any }) {
                     <span className="text-[0.75rem] tabular-nums text-muted">{ORD(cal[k])}</span>
                   </div>
                   <div className="relative mt-1.5 h-[5px] bg-track">
-                    <span className="absolute left-1/2 top-[-2px] h-[9px] w-px bg-rule" />
-                    <span className="block h-[5px] bg-oxblood" style={{ width: `${cal[k]}%` }} />
+                    <span className="absolute left-1/2 top-[-2px] h-[9px] w-px bg-line" />
+                    <span className="block h-[5px] bg-navy" style={{ width: `${cal[k]}%` }} />
                   </div>
                   <div className="mt-1 text-[0.75rem] text-muted">{DD[k]}</div>
                 </div>
@@ -445,7 +445,7 @@ function Thin({ res, resp }: { res: any; resp: any }) {
       </Band>
 
       <Band tone="dark">
-        <h2 className="font-doc text-[clamp(1.5rem,3.6vw,2rem)] font-normal tracking-[-0.02em]">
+        <h2 className="text-[clamp(1.5rem,3.6vw,2rem)] font-normal tracking-[-0.02em]">
           Come back after your next internship.
         </h2>
         <p className="mt-3 max-w-[52ch] text-[0.9375rem] leading-relaxed text-muted">
@@ -457,7 +457,7 @@ function Thin({ res, resp }: { res: any; resp: any }) {
         </div>
       </Band>
 
-      <div className="border-b-2 border-ink bg-paper">
+      <div className="border-b border-line bg-white">
         <div className="mx-auto max-w-[1240px] px-6 py-6">
           <Limits lines={[mapVersion]} />
         </div>

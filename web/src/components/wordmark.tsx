@@ -3,20 +3,29 @@ export function Wordmark({
   compact = false,
 }: {
   size?: "sm" | "md" | "lg";
-  /** legacy prop from the inner-flow headers; renders the small mark */
+  /** legacy: show just the LA mark */
   compact?: boolean;
 }) {
-  const scale = { sm: "text-[1.05rem]", md: "text-[1.35rem]", lg: "text-[1.6rem]" }[
-    compact ? "sm" : size
-  ];
+  const box = { sm: 30, md: 38, lg: 44 }[size];
+  const text = { sm: "text-[1.05rem]", md: "text-[1.3rem]", lg: "text-[1.55rem]" }[size];
   return (
-    <span className={`u-display inline-block leading-[0.8] ${scale}`}>
-      <span className="relative">
-        LEX
-        <span className="absolute -right-2 top-0 size-[5px] bg-oxblood" aria-hidden />
+    <span className="inline-flex items-center gap-2.5">
+      <span
+        className="grid shrink-0 place-items-center rounded-[8px] bg-navy font-bold leading-none text-white"
+        style={{ width: box, height: box, fontSize: box * 0.46 }}
+      >
+        L<span className="text-gold">A</span>
       </span>
-      <br />
-      INTENT
+      {!compact && (
+        <span className="leading-none">
+          <span className={`font-bold tracking-tight text-ink ${text}`}>
+            Law<span className="text-gold">Analyser</span>
+          </span>
+          <span className="mt-0.5 block text-[0.5rem] font-bold uppercase tracking-[0.16em] text-muted">
+            AI powered · Legally focused
+          </span>
+        </span>
+      )}
     </span>
   );
 }

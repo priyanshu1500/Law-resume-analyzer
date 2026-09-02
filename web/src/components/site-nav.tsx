@@ -4,8 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
-import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRightIcon, SignOutIcon } from "@phosphor-icons/react/dist/ssr";
 import { Wordmark } from "./wordmark";
+import { useAuth } from "@/lib/auth";
 
 const LINKS: [string, string][] = [
   ["Home", "/"],
@@ -17,6 +18,7 @@ const LINKS: [string, string][] = [
 
 export function SiteNav() {
   const pathname = usePathname();
+  const { user, signOut } = useAuth();
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
   useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 8));
@@ -50,13 +52,28 @@ export function SiteNav() {
           })}
         </nav>
 
-        <Link
-          href="/questionnaire"
-          className="btn btn-navy hidden !px-5 !py-2.5 text-[0.9rem] sm:inline-flex"
-        >
-          Login
-          <ArrowRightIcon size={15} weight="bold" />
-        </Link>
+        {user ? (
+          <div className="hidden items-center gap-3 sm:flex">
+            <span className="max-w-[160px] truncate text-[0.8125rem] text-muted">
+              {user.email}
+            </span>
+            <button
+              onClick={signOut}
+              className="inline-flex items-center gap-1.5 text-[0.8125rem] font-medium text-navy hover:text-navy-deep"
+            >
+              <SignOutIcon size={14} weight="bold" />
+              Sign out
+            </button>
+          </div>
+        ) : (
+          <Link
+            href="/login"
+            className="btn btn-navy hidden !px-5 !py-2.5 text-[0.9rem] sm:inline-flex"
+          >
+            Login
+            <ArrowRightIcon size={15} weight="bold" />
+          </Link>
+        )}
       </div>
     </motion.header>
   );

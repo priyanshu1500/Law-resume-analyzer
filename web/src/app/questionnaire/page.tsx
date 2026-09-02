@@ -12,6 +12,10 @@ import { Mark } from "@/components/practice-mark";
 import { Q, QMARK, SECTIONS, secOf } from "@/lib/practice-compass/data";
 import { q37Stem, selfCheck } from "@/lib/practice-compass/engine";
 import { useSession } from "@/lib/store";
+import { useAuth } from "@/lib/auth";
+
+/** last question index that stays open to anonymous users (end of section 1) */
+const GATE_AFTER = SECTIONS[0].b;
 
 if (process.env.NODE_ENV !== "production") {
   const errs = selfCheck();
@@ -32,6 +36,8 @@ function answered(q: any, a: Ans) {
 export default function QuestionnairePage() {
   const router = useRouter();
   const { state, ready, setResponse, update } = useSession();
+  const { user, configured } = useAuth();
+  const gated = configured && !user;
   const [phase, setPhase] = useState<"intro" | "quiz">("intro");
   const [idx, setIdx] = useState(0);
   const [curtain, setCurtain] = useState<null | { mark: string; name: string; line: string }>(null);
@@ -44,11 +50,12 @@ export default function QuestionnairePage() {
     let i = 0;
     while (i < Q.length && answered(Q[i], R[Q[i].id])) i++;
     if (i > 0) {
-      setIdx(Math.min(i, Q.length - 1));
+      const cap = gated ? Math.min(i, GATE_AFTER + 1) : i;
+      setIdx(Math.min(cap, Q.length - 1));
       setPhase("quiz");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready]);
+  }, [ready, gated]);
 
   const q = Q[idx];
   const sec = secOf(idx);
@@ -78,6 +85,11 @@ export default function QuestionnairePage() {
   async function next() {
     const before = secOf(idx);
     const ni = idx + 1;
+    // login wall after section 1 — answers are already saved locally
+    if (gated && ni > GATE_AFTER) {
+      router.push(`/login?next=${encodeURIComponent("/questionnaire")}`);
+      return;
+    }
     if (ni >= Q.length) {
       update({ fitDone: true });
       router.push("/fit");
@@ -127,6 +139,32 @@ export default function QuestionnairePage() {
           </div>
         </div>
         {curtain && <Curtain {...curtain} />}
+      </Shell>
+    );
+  }
+
+  /* ---- login wall (after section 1) ---- */
+  if (gated && idx > GATE_AFTER) {
+    return (
+      <Shell>
+        <div className="mx-auto max-w-[560px] px-6 py-[clamp(3rem,10vh,6rem)]">
+          <p className="u-eyebrow">Section 1 complete</p>
+          <h1 className="u-display mt-3 text-[clamp(1.8rem,4vw,2.6rem)] [text-wrap:balance]">
+            Sign in to finish the questionnaire.
+          </h1>
+          <p className="mt-5 text-[1rem] leading-relaxed text-muted">
+            Your first {GATE_AFTER + 1} answers are saved. Signing in lets you finish the
+            remaining sections and come back to your result on any device — the result
+            itself is calculated from your answers exactly the same way.
+          </p>
+          <Link
+            href={`/login?next=${encodeURIComponent("/questionnaire")}`}
+            className="btn btn-navy mt-7"
+          >
+            Sign in to continue
+            <ArrowRightIcon size={15} weight="bold" />
+          </Link>
+        </div>
       </Shell>
     );
   }

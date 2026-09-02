@@ -1,11 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useAuth } from "./auth";
 
 /**
- * Throwaway client-side persistence for the prototype. No backend yet —
- * state lives in localStorage so the funnel feels real across
- * questionnaire -> fit -> unlock -> upload -> report.
+ * Client-side session state. Anonymous progress lives in localStorage;
+ * once signed in it is also synced to Supabase (via /api/responses) so the
+ * user can resume on another device. The scoring engine reads `responses`
+ * either way and is unaffected by auth.
  */
 
 const KEY = "lexintent.session.v2";
@@ -13,9 +15,7 @@ const KEY = "lexintent.session.v2";
 export type CompassResp = Record<string, number | number[]>;
 
 export interface SessionState {
-  /** Practice Compass responses, keyed by question id */
   responses: CompassResp;
-  /** questionnaire completed at least once */
   fitDone: boolean;
   paid: boolean;
   resumeName: string | null;
@@ -41,30 +41,84 @@ function write(next: SessionState) {
   }
 }
 
+async function push(patch: { responses?: CompassResp; fitDone?: boolean }) {
+  try {
+    await fetch("/api/responses", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(patch),
+    });
+  } catch {
+    /* offline / not configured — localStorage still holds the truth */
+  }
+}
+
 export function useSession() {
+  const { user } = useAuth();
   const [state, setState] = useState<SessionState>(EMPTY);
   const [ready, setReady] = useState(false);
+  const merged = useRef(false);
+  const debounce = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     setState(read());
     setReady(true);
   }, []);
 
-  const update = useCallback((patch: Partial<SessionState>) => {
-    setState((prev) => {
-      const next = { ...prev, ...patch };
-      write(next);
-      return next;
-    });
-  }, []);
+  // on sign-in: push local answers up (server merges), then adopt the merged set
+  useEffect(() => {
+    if (!user || merged.current) return;
+    merged.current = true;
+    (async () => {
+      try {
+        const local = read();
+        const res = await fetch("/api/responses", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ responses: local.responses, fitDone: local.fitDone }),
+        });
+        const json = await res.json();
+        if (json?.responses) {
+          setState((prev) => {
+            const next = { ...prev, responses: { ...prev.responses, ...json.responses } };
+            write(next);
+            return next;
+          });
+        }
+      } catch {
+        /* ignore */
+      }
+    })();
+  }, [user]);
 
-  const setResponse = useCallback((id: string, value: number | number[]) => {
-    setState((prev) => {
-      const next = { ...prev, responses: { ...prev.responses, [id]: value } };
-      write(next);
-      return next;
-    });
-  }, []);
+  const update = useCallback(
+    (patch: Partial<SessionState>) => {
+      setState((prev) => {
+        const next = { ...prev, ...patch };
+        write(next);
+        return next;
+      });
+      if (user && (patch.fitDone !== undefined || patch.responses)) {
+        push({ fitDone: patch.fitDone, responses: patch.responses });
+      }
+    },
+    [user],
+  );
+
+  const setResponse = useCallback(
+    (id: string, value: number | number[]) => {
+      setState((prev) => {
+        const next = { ...prev, responses: { ...prev.responses, [id]: value } };
+        write(next);
+        return next;
+      });
+      if (user) {
+        if (debounce.current) clearTimeout(debounce.current);
+        debounce.current = setTimeout(() => push({ responses: { [id]: value } }), 900);
+      }
+    },
+    [user],
+  );
 
   const reset = useCallback(() => {
     write(EMPTY);

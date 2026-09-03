@@ -1,5 +1,5 @@
 /**
- * Flat-vector illustration set for LawAnalyser. 2px strokes, minimal fills,
+ * Flat-vector illustration set for LexIntent. 2px strokes, minimal fills,
  * rounded geometry, navy / gold / beige. No 3D, no stock art.
  */
 

@@ -1,5 +1,5 @@
 /**
- * LawAnalyser motion system — exactly seven named interactions.
+ * LexIntent motion system — exactly seven named interactions.
  * Physical, not decorative. No plain fades. Every one degrades to its
  * static end-state under prefers-reduced-motion (handled per component
  * in motion-bits.tsx).

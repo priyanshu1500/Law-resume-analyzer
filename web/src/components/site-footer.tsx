@@ -15,7 +15,7 @@ const COLS: [string, [string, string][]][] = [
     "Company",
     [
       ["About", "/#about"],
-      ["Contact", "mailto:hello@lawanalyser.com"],
+      ["Contact", "mailto:hello@lexintent.com"],
       ["Terms", ""],
       ["Privacy", ""],
     ],
@@ -30,7 +30,8 @@ export function SiteFooter() {
           <div>
             <Wordmark />
             <p className="mt-4 max-w-[34ch] text-[0.875rem] leading-relaxed text-muted">
-              Specialized AI analysis for law students and legal professionals.
+              The Resume Analyser is the first LexIntent tool for law students and
+              legal professionals. More are on the way.
             </p>
           </div>
           {COLS.map(([title, links]) => (
@@ -67,7 +68,7 @@ export function SiteFooter() {
           </div>
         </div>
         <div className="mt-12 flex flex-col justify-between gap-2 border-t border-line pt-5 text-[0.75rem] text-muted sm:flex-row">
-          <span>© {new Date().getFullYear()} LawAnalyser</span>
+          <span>© {new Date().getFullYear()} LexIntent</span>
           <span>Built for the Indian legal field.</span>
         </div>
       </div>

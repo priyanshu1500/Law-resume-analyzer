@@ -1,28 +1,96 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, useMotionValueEvent, useScroll } from "motion/react";
+import {
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+} from "motion/react";
 import { SignOutIcon } from "@phosphor-icons/react/dist/ssr";
 import { Wordmark } from "./wordmark";
 import { CaseFileCTA } from "./ui";
 import { useAuth } from "@/lib/auth";
 
-const LINKS: [string, string][] = [
-  ["Home", "/"],
-  ["Features", "/#features"],
-  ["How It Works", "/#how"],
-  ["Pricing", "/#pricing"],
-  ["About", "/#about"],
+type NavItem = { label: string; href: string; id: string };
+
+const LINKS: NavItem[] = [
+  { label: "Home", href: "/", id: "home" },
+  { label: "Features", href: "/#features", id: "features" },
+  { label: "How It Works", href: "/#how", id: "how" },
+  { label: "Pricing", href: "/#pricing", id: "pricing" },
+  { label: "About", href: "/#about", id: "about" },
 ];
+
+const SECTION_IDS = LINKS.filter((l) => l.id !== "home").map((l) => l.id);
+const HEADER_LINE = 140; // px from viewport top; a section is "active" once its top is within this band
 
 export function SiteNav() {
   const pathname = usePathname();
+  const onHome = pathname === "/";
   const { user, signOut } = useAuth();
   const { scrollY } = useScroll();
+  const reduce = useReducedMotion();
+
   const [scrolled, setScrolled] = useState(false);
+  const [activeId, setActiveId] = useState<string | null>(onHome ? "home" : null);
+  // while a click-triggered smooth scroll is in flight, freeze the spy so the
+  // indicator doesn't flicker through every section on the way
+  const spyFrozenUntil = useRef(0);
+
   useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 8));
+
+  const runSpy = useCallback(() => {
+    if (!onHome) return;
+    if (Date.now() < spyFrozenUntil.current) return;
+    if (window.scrollY < 120) {
+      setActiveId("home");
+      return;
+    }
+    let current = "home";
+    for (const id of SECTION_IDS) {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top <= HEADER_LINE) current = id;
+    }
+    // when the page can't scroll any further, the last section (About) wins
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) {
+      current = "about";
+    }
+    setActiveId(current);
+  }, [onHome]);
+
+  useEffect(() => {
+    if (!onHome) {
+      setActiveId(null);
+      return;
+    }
+    runSpy();
+    window.addEventListener("scroll", runSpy, { passive: true });
+    window.addEventListener("resize", runSpy);
+    return () => {
+      window.removeEventListener("scroll", runSpy);
+      window.removeEventListener("resize", runSpy);
+    };
+  }, [onHome, runSpy]);
+
+  const handleClick = (item: NavItem) => (e: React.MouseEvent) => {
+    if (!onHome) return; // let <Link> navigate to "/" then to the hash
+    e.preventDefault();
+    setActiveId(item.id); // move the indicator immediately
+    spyFrozenUntil.current = Date.now() + 900;
+    const behavior: ScrollBehavior = reduce ? "auto" : "smooth";
+    if (item.href === "/") {
+      window.scrollTo({ top: 0, behavior });
+      history.replaceState(null, "", "/");
+    } else {
+      document
+        .getElementById(item.id)
+        ?.scrollIntoView({ behavior, block: "start" });
+      history.replaceState(null, "", item.href);
+    }
+  };
 
   return (
     <motion.header
@@ -31,40 +99,34 @@ export function SiteNav() {
       transition={{ duration: 0.2 }}
     >
       <div className="mx-auto flex h-[70px] max-w-[1180px] items-center justify-between px-6">
-        <Link href="/" aria-label="LawAnalyser home">
+        <Link href="/" aria-label="LexIntent home">
           <Wordmark />
         </Link>
 
-        <nav className="hidden items-center gap-9 text-[0.9375rem] font-medium text-ink lg:flex">
-          {LINKS.map(([label, href]) => {
-            const active = href === "/" ? pathname === "/" : false;
-            const isHash = href.startsWith("/#");
-            const targetId = isHash ? href.slice(2) : "";
+        <nav className="hidden items-center gap-9 lg:flex">
+          {LINKS.map((item) => {
+            const active = item.id === activeId;
             return (
               <Link
-                key={label}
-                href={href}
-                onClick={(e) => {
-                  // same-page navigation: scroll ourselves so it works even
-                  // when the URL fragment is unchanged or the target is the top
-                  if (pathname !== "/") return;
-                  if (href === "/") {
-                    e.preventDefault();
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                  } else if (isHash) {
-                    const el = document.getElementById(targetId);
-                    if (el) {
-                      e.preventDefault();
-                      el.scrollIntoView({ behavior: "smooth", block: "start" });
-                      history.replaceState(null, "", href);
-                    }
-                  }
-                }}
-                className={`relative py-1 transition-colors hover:text-navy ${active ? "text-gold" : ""}`}
+                key={item.id}
+                href={item.href}
+                onClick={handleClick(item)}
+                aria-current={active ? "page" : undefined}
+                className={`relative py-1 text-[0.9375rem] font-medium transition-colors ${
+                  active ? "text-navy" : "text-ink hover:text-navy"
+                }`}
               >
-                {label}
+                {item.label}
                 {active && (
-                  <span className="absolute inset-x-0 -bottom-0.5 h-[2px] rounded-full bg-gold" />
+                  <motion.span
+                    layoutId="nav-underline"
+                    className="absolute -bottom-1 left-0 right-0 h-[2px] rounded-full bg-gold"
+                    transition={
+                      reduce
+                        ? { duration: 0 }
+                        : { type: "spring", stiffness: 420, damping: 34 }
+                    }
+                  />
                 )}
               </Link>
             );

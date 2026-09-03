@@ -4,7 +4,7 @@ import { ArrowRightIcon, CheckIcon, FolderOpenIcon } from "@phosphor-icons/react
 /** Primary funnel-entry CTA. Reinforces the casefile story. */
 export function CaseFileCTA({
   href = "/questionnaire",
-  label = "Open My Case File",
+  label = "Take the questionnaire",
   sub = "60-second recruiter review",
   compact = false,
   className = "",

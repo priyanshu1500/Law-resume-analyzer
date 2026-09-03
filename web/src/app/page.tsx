@@ -25,11 +25,12 @@ export default function Home() {
             <h1 className="u-display mt-5 text-[clamp(2.75rem,7vw,4.75rem)]">
               <span className="block text-navy">Understand.</span>
               <span className="block text-gold">Improve.</span>
-              <span className="block text-navy">Get Hired.</span>
+              <span className="block text-navy">Stand out.</span>
             </h1>
             <p className="mt-6 max-w-[30rem] text-[1.0625rem] leading-relaxed text-muted">
               Specialized AI analysis for law students and legal professionals. Make
-              your resume <PenUnderline>stand out</PenUnderline> in the legal field.
+              your resume <PenUnderline>impossible to overlook</PenUnderline> in the
+              legal field.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <CaseFileCTA />

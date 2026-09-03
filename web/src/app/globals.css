@@ -51,6 +51,20 @@
   border-color: var(--line);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+/* in-page anchor targets clear the 70px sticky header */
+:target,
+#top,
+#how,
+#features,
+#pricing,
+#about {
+  scroll-margin-top: 6rem;
+}
+
 body {
   background: var(--bg);
   color: var(--ink);
@@ -243,6 +257,9 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;

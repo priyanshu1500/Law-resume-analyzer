@@ -15,16 +15,16 @@ const COLS: [string, [string, string][]][] = [
     "Company",
     [
       ["About", "/#about"],
-      ["Terms", "/#"],
-      ["Privacy", "/#"],
-      ["Contact", "/#"],
+      ["Contact", "mailto:hello@lawanalyser.com"],
+      ["Terms", ""],
+      ["Privacy", ""],
     ],
   ],
 ];
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-line bg-white">
+    <footer id="about" className="border-t border-line bg-white">
       <div className="mx-auto max-w-[1180px] px-6 py-14">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1.4fr]">
           <div>
@@ -39,13 +39,21 @@ export function SiteFooter() {
                 {title}
               </p>
               <ul className="mt-3 space-y-2 text-[0.875rem] text-muted">
-                {links.map(([label, href]) => (
-                  <li key={label}>
-                    <Link href={href} className="transition-colors hover:text-ink">
-                      {label}
-                    </Link>
-                  </li>
-                ))}
+                {links.map(([label, href]) =>
+                  href ? (
+                    <li key={label}>
+                      <Link href={href} className="transition-colors hover:text-ink">
+                        {label}
+                      </Link>
+                    </li>
+                  ) : (
+                    <li key={label}>
+                      <span className="cursor-default opacity-60" title="Coming soon">
+                        {label}
+                      </span>
+                    </li>
+                  ),
+                )}
               </ul>
             </div>
           ))}

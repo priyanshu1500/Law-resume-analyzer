@@ -38,10 +38,28 @@ export function SiteNav() {
         <nav className="hidden items-center gap-9 text-[0.9375rem] font-medium text-ink lg:flex">
           {LINKS.map(([label, href]) => {
             const active = href === "/" ? pathname === "/" : false;
+            const isHash = href.startsWith("/#");
+            const targetId = isHash ? href.slice(2) : "";
             return (
               <Link
                 key={label}
                 href={href}
+                onClick={(e) => {
+                  // same-page navigation: scroll ourselves so it works even
+                  // when the URL fragment is unchanged or the target is the top
+                  if (pathname !== "/") return;
+                  if (href === "/") {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  } else if (isHash) {
+                    const el = document.getElementById(targetId);
+                    if (el) {
+                      e.preventDefault();
+                      el.scrollIntoView({ behavior: "smooth", block: "start" });
+                      history.replaceState(null, "", href);
+                    }
+                  }
+                }}
                 className={`relative py-1 transition-colors hover:text-navy ${active ? "text-gold" : ""}`}
               >
                 {label}

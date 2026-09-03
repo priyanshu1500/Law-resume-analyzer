@@ -1,22 +1,28 @@
 @import "tailwindcss";
 
 /* ============================================================
-   LawAnalyser — clean Swiss-grid legal-tech system
-   White canvas, navy trust, gold accent, beige for illustration
-   blobs only. Geist type. Restrained motion.
+   LawAnalyser — clean Swiss-grid legal-tech system.
+   Three roles, never mixed:
+     navy     — structure & action (CTAs, links, nav, borders)
+     gold     — editorial emphasis (one word, one eyebrow, one card)
+     evidence — the casefile accent (score highlights, annotations,
+                verdict stamps) — burgundy, used sparingly
+   beige stays on illustration blobs only.
    ============================================================ */
 
 :root {
   --bg: #ffffff;
   --ink: #172639; /* primary text */
   --muted: #5a6b7d; /* secondary text */
-  --navy: #013d6f; /* CTAs, links, trust */
+  --navy: #013d6f; /* structure & action */
   --navy-deep: #012f56;
-  --gold: #cb9323; /* accent only */
+  --gold: #cb9323; /* editorial emphasis only */
   --bronze: #926d33;
   --beige: #d5c2a2; /* illustration backgrounds only */
-  --line: #e5e7eb; /* thin dividers */
-  --surface: #f8fafc; /* very light fill, sparingly */
+  --evidence: #8b1e2d; /* casefile accent — scores, annotations, verdicts */
+  --evidence-deep: #6f1622;
+  --line: #e5e7eb;
+  --surface: #f8fafc;
   --track: #eef1f4;
 }
 
@@ -29,6 +35,8 @@
   --color-gold: var(--gold);
   --color-bronze: var(--bronze);
   --color-beige: var(--beige);
+  --color-evidence: var(--evidence);
+  --color-evidence-deep: var(--evidence-deep);
   --color-line: var(--line);
   --color-surface: var(--surface);
   --color-track: var(--track);
@@ -145,6 +153,68 @@ body {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: #fff;
+}
+
+/* verdict stamp — burgundy, letterpressed, slightly askew */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 2px solid var(--evidence);
+  color: var(--evidence);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0.34rem 0.7rem;
+  border-radius: 4px;
+  transform: rotate(-4deg);
+  background:
+    repeating-linear-gradient(
+      45deg,
+      color-mix(in srgb, var(--evidence) 4%, transparent) 0 3px,
+      transparent 3px 6px
+    );
+}
+
+/* casefile CTA — navy body, small recruiter-review sub-line */
+.casefile {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  background: var(--navy);
+  color: #fff;
+  border-radius: var(--radius);
+  padding: 0.85rem 1.7rem;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease, background-color 0.15s ease;
+}
+.casefile:hover {
+  transform: translateY(-2px);
+  background: var(--navy-deep);
+  box-shadow: 0 14px 30px -12px rgba(1, 61, 111, 0.45);
+}
+.casefile .cf-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1;
+}
+.casefile .cf-sub {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, #fff 70%, var(--navy));
+}
+.casefile-compact {
+  flex-direction: row;
+  padding: 0.6rem 1.15rem;
+  border-radius: 12px;
+}
+.casefile-compact .cf-main {
+  font-size: 0.9rem;
 }
 
 /* ---- motion: fade-up reveal, reduced-motion aware -------------- */

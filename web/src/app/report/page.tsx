@@ -1,5 +1,6 @@
 import { SiteNav } from "@/components/site-nav";
 import { Eyebrow, ArrowLink, Meter, Donut, CheckRow } from "@/components/ui";
+import { ScoreCounter, PageTurn, InkSpread } from "@/components/motion-bits";
 import {
   SCORE,
   FORECAST,
@@ -34,8 +35,8 @@ export default function ReportPage() {
           </div>
           <div className="border border-line bg-white p-8">
             <Eyebrow>Your legal career score</Eyebrow>
-            <div className="u-display mt-3 text-[5rem] leading-none text-navy">
-              {SCORE.overall}
+            <div className="u-display mt-3 text-[5rem] leading-none text-evidence">
+              <ScoreCounter to={SCORE.overall} />
               <span className="align-top text-[1.4rem] text-muted">/100</span>
             </div>
             <p className="u-display mt-1 text-[1.25rem] text-ink">{SCORE.band}</p>
@@ -90,7 +91,7 @@ export default function ReportPage() {
             </div>
             <p className="u-display mt-2 text-[1.75rem] text-ink">
               {CAREER_PATH.area}{" "}
-              <span className="text-navy">/ {CAREER_PATH.match}% match</span>
+              <span className="text-evidence">/ {CAREER_PATH.match}% match</span>
             </p>
             <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted">
               {CAREER_PATH.rationale}
@@ -129,38 +130,40 @@ export default function ReportPage() {
 
         {/* Written sections ------------------------------------ */}
         {REPORT_SECTIONS.map((sec) => (
-          <article key={sec.id} className="grid gap-8 border-t border-line py-12 md:grid-cols-[0.4fr_1.6fr] md:gap-12">
-            <div>
-              <span className="font-bold text-gold text-[3.5rem]">{sec.index}</span>
-              <h2 className="u-display mt-2 text-[1.5rem] leading-tight text-ink">
-                {sec.title}
-              </h2>
-              <p className="mt-2 text-[0.8125rem] italic text-navy">
-                {sec.verdict}
-              </p>
-            </div>
-            <div>
-              <p className="u-display text-[1.2rem] leading-relaxed text-ink">
-                {sec.body}
-              </p>
-              <ul className="mt-5 space-y-2 border-t border-line pt-4 text-[0.875rem] text-muted">
-                {sec.points.map((p) => (
-                  <li key={p} className="flex items-start gap-3">
-                    <span aria-hidden className="mt-[0.4rem] size-[5px] shrink-0 rounded-full bg-muted" />
-                    {p}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </article>
+          <PageTurn key={sec.id}>
+            <article className="grid gap-8 border-t border-line py-12 md:grid-cols-[0.4fr_1.6fr] md:gap-12">
+              <div>
+                <span className="font-bold text-gold text-[3.5rem]">{sec.index}</span>
+                <h2 className="u-display mt-2 text-[1.5rem] leading-tight text-ink">
+                  {sec.title}
+                </h2>
+                <p className="mt-2 text-[0.8125rem] italic text-evidence">
+                  {sec.verdict}
+                </p>
+              </div>
+              <div>
+                <p className="u-display text-[1.2rem] leading-relaxed text-ink">
+                  {sec.body}
+                </p>
+                <ul className="mt-5 space-y-2 border-t border-line pt-4 text-[0.875rem] text-muted">
+                  {sec.points.map((p) => (
+                    <li key={p} className="flex items-start gap-3">
+                      <span aria-hidden className="mt-[0.4rem] size-[5px] shrink-0 rounded-full bg-muted" />
+                      {p}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          </PageTurn>
         ))}
 
         {/* Rewrite upsell ------------------------------------- */}
-        <section className="my-12 border border-line bg-navy px-8 py-10">
+        <InkSpread className="my-12 border border-line bg-navy px-8 py-10">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="max-w-[46ch]">
-              <Eyebrow>Optional next step</Eyebrow>
-              <h2 className="u-display mt-3 text-[1.75rem] leading-tight">
+              <Eyebrow className="!text-gold">Optional next step</Eyebrow>
+              <h2 className="u-display mt-3 text-[1.75rem] leading-tight !text-white">
                 Want our editors to rebuild it around these findings?
               </h2>
               <p className="mt-3 text-[0.9375rem] leading-relaxed text-white/80">
@@ -173,12 +176,12 @@ export default function ReportPage() {
                 {PRICING.currency}
                 {PRICING.rewrite.toLocaleString("en-IN")}
               </div>
-              <button className="mt-3 w-full border border-paper bg-white px-6 py-3 text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-ink transition-transform active:translate-y-px">
+              <button className="mt-3 w-full border border-white/30 bg-white px-6 py-3 text-[0.6875rem] font-semibold uppercase tracking-[0.16em] text-ink transition-transform active:translate-y-px">
                 Commission the rewrite
               </button>
             </div>
           </div>
-        </section>
+        </InkSpread>
 
         <div className="border-t border-line py-8">
           <ArrowLink href="/results">Continue to your results</ArrowLink>

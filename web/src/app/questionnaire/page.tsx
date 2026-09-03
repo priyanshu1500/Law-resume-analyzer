@@ -13,6 +13,7 @@ import { Q, QMARK, SECTIONS, secOf } from "@/lib/practice-compass/data";
 import { q37Stem, selfCheck } from "@/lib/practice-compass/engine";
 import { useSession } from "@/lib/store";
 import { useAuth } from "@/lib/auth";
+import { InkSpread } from "@/components/motion-bits";
 
 /** last question index that stays open to anonymous users (end of section 1) */
 const GATE_AFTER = SECTIONS[0].b;
@@ -269,14 +270,14 @@ function Pill({ children }: { children: React.ReactNode }) {
 
 function Curtain({ mark, name, line }: { mark: string; name: string; line: string }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white motion-safe:animate-[fadein_.3s_ease]">
-      <div className="px-6 text-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
+      <InkSpread className="px-6 text-center">
         <Mark name={mark} size={74} className="mx-auto text-navy" />
         <div className="mt-5 text-[0.6875rem] font-bold uppercase tracking-[0.16em] text-muted">
           {name}
         </div>
         <div className="u-display mt-2 text-[clamp(1.5rem,4.4vw,2rem)]">{line}</div>
-      </div>
+      </InkSpread>
     </div>
   );
 }

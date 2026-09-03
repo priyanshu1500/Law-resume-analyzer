@@ -1,5 +1,39 @@
 import Link from "next/link";
-import { ArrowRightIcon, CheckIcon } from "@phosphor-icons/react/dist/ssr";
+import { ArrowRightIcon, CheckIcon, FolderOpenIcon } from "@phosphor-icons/react/dist/ssr";
+
+/** Primary funnel-entry CTA. Reinforces the casefile story. */
+export function CaseFileCTA({
+  href = "/questionnaire",
+  label = "Open My Case File",
+  sub = "60-second recruiter review",
+  compact = false,
+  className = "",
+}: {
+  href?: string;
+  label?: string;
+  sub?: string;
+  compact?: boolean;
+  className?: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className={`casefile group ${compact ? "casefile-compact" : ""} ${className}`}
+    >
+      <span className="cf-main">
+        <FolderOpenIcon size={16} weight="bold" />
+        {label}
+        <ArrowRightIcon size={14} weight="bold" className="transition-transform group-hover:translate-x-0.5" />
+      </span>
+      {!compact && <span className="cf-sub">{sub}</span>}
+    </Link>
+  );
+}
+
+/** Burgundy verdict stamp — the one place evidence-red carries weight. */
+export function VerdictStamp({ children }: { children: React.ReactNode }) {
+  return <span className="stamp">{children}</span>;
+}
 
 export function Eyebrow({
   children,

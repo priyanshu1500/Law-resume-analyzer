@@ -4,8 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
-import { ArrowRightIcon, SignOutIcon } from "@phosphor-icons/react/dist/ssr";
+import { SignOutIcon } from "@phosphor-icons/react/dist/ssr";
 import { Wordmark } from "./wordmark";
+import { CaseFileCTA } from "./ui";
 import { useAuth } from "@/lib/auth";
 
 const LINKS: [string, string][] = [
@@ -66,13 +67,15 @@ export function SiteNav() {
             </button>
           </div>
         ) : (
-          <Link
-            href="/login"
-            className="btn btn-navy hidden !px-5 !py-2.5 text-[0.9rem] sm:inline-flex"
-          >
-            Login
-            <ArrowRightIcon size={15} weight="bold" />
-          </Link>
+          <div className="hidden items-center gap-4 sm:flex">
+            <Link
+              href="/login"
+              className="text-[0.875rem] font-medium text-muted transition-colors hover:text-navy"
+            >
+              Sign in
+            </Link>
+            <CaseFileCTA compact />
+          </div>
         )}
       </div>
     </motion.header>

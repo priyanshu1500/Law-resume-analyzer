@@ -4,7 +4,9 @@ import { useMemo } from "react";
 import Link from "next/link";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
-import { Band, Button, Eyebrow, Meter } from "@/components/ui";
+import { Band, Button, Eyebrow, Meter, CaseFileCTA, VerdictStamp } from "@/components/ui";
+import { Reveal } from "@/components/reveal";
+import { ScoreCounter } from "@/components/motion-bits";
 import { Mark } from "@/components/practice-mark";
 import {
   P, PK, DN, DD, DIMS, WHAT, REALLY, ENTRY, TRY, Q,
@@ -50,7 +52,7 @@ export default function FitPage() {
             and nothing is stored.
           </p>
           <div className="mt-7">
-            <Button href="/questionnaire">Take the questionnaire</Button>
+            <CaseFileCTA />
           </div>
         </Band>
         <SiteFooter />
@@ -110,14 +112,21 @@ function Full({ res, resp }: { res: any; resp: any }) {
   return (
     <>
       <Band>
-        <Eyebrow>{open[0]}</Eyebrow>
-        <h1 className="mt-3 text-[clamp(1.7rem,4.6vw,2.6rem)] font-normal leading-[1.16] tracking-[-0.02em] [text-wrap:pretty] text-ink">
-          {VERD[shape][0]}
-        </h1>
-        <p className="mt-3 max-w-[52ch] text-[1rem] leading-relaxed text-muted">
-          {VERD[shape][1]} Ranked by how the daily work matches the way you like to
-          work, and by which problems you said pull you in.
-        </p>
+        <Reveal>
+          <div className="flex flex-wrap items-center gap-3">
+            <Eyebrow>{open[0]}</Eyebrow>
+            <VerdictStamp>
+              {shape === "one" ? "Clear read" : shape === "two" ? "Two-way" : "Cluster"}
+            </VerdictStamp>
+          </div>
+          <h1 className="mt-3 text-[clamp(1.7rem,4.6vw,2.6rem)] font-normal leading-[1.16] tracking-[-0.02em] [text-wrap:pretty] text-ink">
+            {VERD[shape][0]}
+          </h1>
+          <p className="mt-3 max-w-[52ch] text-[1rem] leading-relaxed text-muted">
+            {VERD[shape][1]} Ranked by how the daily work matches the way you like to
+            work, and by which problems you said pull you in.
+          </p>
+        </Reveal>
 
         {/* top three */}
         <H2 mark="route">The three closest</H2>
@@ -137,13 +146,13 @@ function Full({ res, resp }: { res: any; resp: any }) {
                     </h3>
                     <p className="mt-1 text-[0.875rem] text-muted">{WHAT[p]}</p>
                   </div>
-                  <div className="shrink-0 text-[1.6rem] font-medium tabular-nums tracking-[-0.02em] text-ink">
-                    {comb[p]}
+                  <div className="shrink-0 text-[1.6rem] font-semibold tabular-nums tracking-[-0.02em] text-evidence">
+                    <ScoreCounter to={comb[p]} />
                   </div>
                 </div>
 
                 {w.length > 0 && (
-                  <Why label="Why this came up">
+                  <Why label="Why this came up" accent>
                     {w.map((x: any, k: number) => (
                       <li key={k}>
                         {x.k === "chose" ? (
@@ -344,10 +353,30 @@ function Full({ res, resp }: { res: any; resp: any }) {
   );
 }
 
-function Why({ label, children }: { label: string; children: React.ReactNode }) {
+function Why({
+  label,
+  children,
+  accent = false,
+}: {
+  label: string;
+  children: React.ReactNode;
+  accent?: boolean;
+}) {
   return (
-    <div className="mt-3.5 border-t border-line pt-3">
-      <div className="text-[0.625rem] font-bold uppercase tracking-[0.12em] text-muted">{label}</div>
+    <div
+      className={
+        accent
+          ? "mt-3.5 border-l-2 border-l-evidence pl-3 pt-1"
+          : "mt-3.5 border-t border-line pt-3"
+      }
+    >
+      <div
+        className={`text-[0.625rem] font-bold uppercase tracking-[0.12em] ${
+          accent ? "text-evidence" : "text-muted"
+        }`}
+      >
+        {label}
+      </div>
       <ul className="mt-2 flex flex-col gap-1.5 text-[0.875rem] leading-[1.45] text-muted">
         {children}
       </ul>

@@ -56,7 +56,7 @@ export function ScoreCard() {
         AI Score
       </div>
       <div className="px-4 py-4">
-        <div className="text-[2.75rem] font-bold leading-none tracking-tight text-gold">
+        <div className="text-[2.75rem] font-bold leading-none tracking-tight text-evidence">
           <CountUp to={86} />
         </div>
         <div className="mt-1 text-[0.625rem] font-semibold uppercase tracking-[0.12em] text-muted">

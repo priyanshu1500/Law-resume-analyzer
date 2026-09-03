@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { LockSimpleIcon, SparkleIcon } from "@phosphor-icons/react/dist/ssr";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
-import { Button, Eyebrow } from "@/components/ui";
+import { Button, Eyebrow, CaseFileCTA } from "@/components/ui";
 import { Reveal } from "@/components/reveal";
+import { Typewriter, PenUnderline } from "@/components/motion-bits";
 import { HeroCluster } from "@/components/hero-cluster";
 import { HowItWorks } from "@/components/sections";
 import { DotGrid } from "@/components/illus";
@@ -29,16 +29,16 @@ export default function Home() {
             </h1>
             <p className="mt-6 max-w-[30rem] text-[1.0625rem] leading-relaxed text-muted">
               Specialized AI analysis for law students and legal professionals. Make
-              your resume stand out in the legal field.
+              your resume <PenUnderline>stand out</PenUnderline> in the legal field.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Button href="/questionnaire">Take the Questionnaire</Button>
+              <CaseFileCTA />
               <Button href="/fit" variant="ghost">
                 View Sample Report
               </Button>
             </div>
             <p className="mt-5 flex items-center gap-2 text-[0.8125rem] text-muted">
-              <LockSimpleIcon size={15} className="text-gold" />
+              <LockSimpleIcon size={15} className="text-muted" />
               Your data is secure &amp; confidential.
             </p>
           </div>
@@ -68,7 +68,7 @@ export default function Home() {
             </p>
           </div>
           <div className="flex items-center gap-6">
-            <Button href="/questionnaire">Get Started Now</Button>
+            <CaseFileCTA />
             <DotGrid className="hidden md:block" cols={4} rows={3} color="#CB9323" />
           </div>
         </div>
@@ -78,9 +78,11 @@ export default function Home() {
       <section id="pricing" className="mx-auto max-w-[1180px] px-6 py-[clamp(3.5rem,8vw,6rem)]">
         <Reveal>
           <Eyebrow>Pricing</Eyebrow>
-          <h2 className="u-display mt-3 text-[clamp(1.75rem,4vw,2.75rem)]">
-            Pay once for the read. The rewrite is optional.
-          </h2>
+          <Typewriter
+            as="h2"
+            text="Pay once for the read. The rewrite is optional."
+            className="u-display mt-3 block text-[clamp(1.75rem,4vw,2.75rem)]"
+          />
         </Reveal>
         <Reveal delay={120} className="mt-10 divide-y divide-line border-t border-line">
           {[
@@ -118,9 +120,7 @@ export default function Home() {
           ))}
         </Reveal>
         <Reveal delay={200} className="mt-8">
-          <Link href="/questionnaire" className="btn btn-navy">
-            Take the questionnaire
-          </Link>
+          <CaseFileCTA />
         </Reveal>
       </section>
 

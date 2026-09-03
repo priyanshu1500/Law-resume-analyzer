@@ -2,13 +2,13 @@
 
 import { motion, useReducedMotion, type Variants } from "motion/react";
 import type { ReactNode } from "react";
-import { fadeUp, staggerParent, EASE } from "@/lib/motion";
+import { PAPER_SLIDE, paperGroup } from "@/lib/motion";
 
-const VIEWPORT = { once: true, amount: 0.25, margin: "0px 0px -8% 0px" } as const;
+const VIEWPORT = { once: true, amount: 0.2, margin: "0px 0px -6% 0px" } as const;
 
 /**
- * Fade + short rise on first scroll into view. Motion's whileInView handles
- * the observer; under reduced motion the element renders in its final state.
+ * PaperSlide — the entrance. y:40 -> 0 over 0.8s with a heavy settle.
+ * Not a fade: it always moves. Static end-state under reduced motion.
  */
 export function Reveal({
   children,
@@ -17,19 +17,16 @@ export function Reveal({
   as = "div",
 }: {
   children: ReactNode;
-  /** ms, kept for call-site compatibility */
   delay?: number;
   className?: string;
   as?: "div" | "span";
 }) {
   const reduce = useReducedMotion();
   const Tag = as === "span" ? motion.span : motion.div;
-
   if (reduce) {
     const Plain = as === "span" ? "span" : "div";
     return <Plain className={className}>{children}</Plain>;
   }
-
   return (
     <Tag
       className={className}
@@ -37,11 +34,11 @@ export function Reveal({
       whileInView="show"
       viewport={VIEWPORT}
       variants={{
-        hidden: { opacity: 0, y: 16 },
+        hidden: { opacity: 0, y: 40 },
         show: {
           opacity: 1,
           y: 0,
-          transition: { duration: 0.6, ease: EASE, delay: delay / 1000 },
+          transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: delay / 1000 },
         },
       }}
     >
@@ -50,11 +47,10 @@ export function Reveal({
   );
 }
 
-/** Wrap a set of <RevealItem>s to stagger their entrance. */
 export function RevealGroup({
   children,
   className = "",
-  stagger = 0.08,
+  stagger = 0.09,
   delay = 0,
 }: {
   children: ReactNode;
@@ -70,7 +66,7 @@ export function RevealGroup({
       initial="hidden"
       whileInView="show"
       viewport={VIEWPORT}
-      variants={staggerParent(stagger, delay)}
+      variants={paperGroup(stagger, delay)}
     >
       {children}
     </motion.div>
@@ -80,7 +76,7 @@ export function RevealGroup({
 export function RevealItem({
   children,
   className = "",
-  variants = fadeUp,
+  variants = PAPER_SLIDE,
 }: {
   children: ReactNode;
   className?: string;

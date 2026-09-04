@@ -20,17 +20,17 @@ export default function Home() {
           <div>
             <span className="inline-flex items-center gap-2 rounded-full border border-line px-3 py-1 text-[0.6875rem] font-bold uppercase tracking-[0.12em] text-navy">
               <SparkleIcon size={12} weight="fill" className="text-gold" />
-              AI Powered
+              Made for young lawyers
             </span>
             <h1 className="u-display mt-5 text-[clamp(2.75rem,7vw,4.75rem)]">
               <span className="block text-navy">Understand.</span>
               <span className="block text-gold">Improve.</span>
               <span className="block text-navy">Stand out.</span>
             </h1>
-            <p className="mt-6 max-w-[30rem] text-[1.0625rem] leading-relaxed text-muted">
-              Specialized AI analysis for law students and legal professionals. Make
-              your resume <PenUnderline>impossible to overlook</PenUnderline> in the
-              legal field.
+            <p className="mt-6 max-w-[32rem] text-[1.0625rem] leading-relaxed text-muted">
+              Built by practising lawyers who&rsquo;ve sat on hiring panels. We read
+              your CV the way a firm or chamber actually will &mdash; then show you{" "}
+              <PenUnderline>exactly what to fix</PenUnderline>.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <CaseFileCTA />

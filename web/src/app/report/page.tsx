@@ -159,7 +159,7 @@ export default function ReportPage() {
         ))}
 
         {/* Rewrite upsell ------------------------------------- */}
-        <InkSpread className="my-12 border border-line bg-navy px-8 py-10">
+        <InkSpread className="my-12 border border-line bg-ink px-8 py-10">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="max-w-[46ch]">
               <Eyebrow className="!text-gold">Optional next step</Eyebrow>

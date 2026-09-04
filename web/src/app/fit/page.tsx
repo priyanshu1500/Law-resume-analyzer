@@ -309,25 +309,25 @@ function Full({ res, resp }: { res: any; resp: any }) {
         <h2 className="text-[clamp(1.5rem,3.6vw,2.2rem)] font-normal tracking-[-0.02em]">
           Now make it show on paper.
         </h2>
-        <p className="mt-3 max-w-[52ch] text-[0.9375rem] leading-relaxed text-muted">
+        <p className="mt-3 max-w-[52ch] text-[0.9375rem] leading-relaxed text-white/70">
           Firms get hundreds of applications a week, and since AI the CVs all read the
           same. What separates you is being visibly good at one thing. That&rsquo;s
           what a direction is for.
         </p>
-        <div className="mt-6 grid grid-cols-1 gap-px bg-line sm:grid-cols-3">
+        <div className="mt-6 grid grid-cols-1 gap-px bg-white/15 sm:grid-cols-3">
           {[
             ["Step one", `A CV written for ${shortName(ord[0])}, not for everyone`],
             ["Step two", "A shortlist of firms and chambers that actually do this work"],
             ["Step three", "Applications that say why you, and why them"],
           ].map(([s, t]) => (
             <div key={s} className="bg-navy p-4">
-              <div className="text-[0.625rem] font-bold uppercase tracking-[0.12em] text-muted">{s}</div>
+              <div className="text-[0.625rem] font-bold uppercase tracking-[0.12em] text-white/60">{s}</div>
               <div className="mt-1.5 text-[0.9rem] font-medium">{t}</div>
             </div>
           ))}
         </div>
         <div className="mt-6">
-          <Button href="/unlock">Build my targeted CV · ₹99</Button>
+          <Button href="/unlock" variant="light">Build my targeted CV · ₹99</Button>
         </div>
       </Band>
 
@@ -477,12 +477,12 @@ function Thin({ res, resp }: { res: any; resp: any }) {
         <h2 className="text-[clamp(1.5rem,3.6vw,2rem)] font-normal tracking-[-0.02em]">
           Come back after your next internship.
         </h2>
-        <p className="mt-3 max-w-[52ch] text-[0.9375rem] leading-relaxed text-muted">
+        <p className="mt-3 max-w-[52ch] text-[0.9375rem] leading-relaxed text-white/70">
           It gets sharper every time you&rsquo;ve seen more of the work. Nothing is
           stored, so just take it again.
         </p>
         <div className="mt-6">
-          <Button href="/questionnaire">Take it again</Button>
+          <Button href="/questionnaire" variant="light">Take it again</Button>
         </div>
       </Band>
 

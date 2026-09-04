@@ -1,14 +1,16 @@
 /**
  * Flat-vector illustration set for LexIntent. 2px strokes, minimal fills,
- * rounded geometry, navy / gold / beige. No 3D, no stock art.
+ * rounded geometry, royal blue / gold / periwinkle. No 3D, no stock art.
  */
 
 const S = {
-  navy: "#013D6F",
-  gold: "#CB9323",
-  bronze: "#926D33",
-  beige: "#D5C2A2",
-  ink: "#172639",
+  navy: "#1E40AF",
+  gold: "#F59E0B",
+  bronze: "#B45309",
+  beige: "#E1DEF9",
+  ink: "#0B132B",
+  purple: "#5B4EE6",
+  teal: "#14B8A6",
 };
 
 /* ---- decoration ------------------------------------------------- */

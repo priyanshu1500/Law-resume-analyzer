@@ -95,7 +95,7 @@ export function SiteNav() {
   return (
     <motion.header
       className="sticky top-0 z-50 border-b bg-white/85 backdrop-blur-md"
-      animate={{ borderColor: scrolled ? "#e5e7eb" : "rgba(229,231,235,0)" }}
+      animate={{ borderColor: scrolled ? "#e3e6ef" : "rgba(227,230,239,0)" }}
       transition={{ duration: 0.2 }}
     >
       <div className="mx-auto flex h-[70px] max-w-[1180px] items-center justify-between px-6">

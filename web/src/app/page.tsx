@@ -70,7 +70,7 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-6">
             <CaseFileCTA />
-            <DotGrid className="hidden md:block" cols={4} rows={3} color="#CB9323" />
+            <DotGrid className="hidden md:block" cols={4} rows={3} color="#F59E0B" />
           </div>
         </div>
       </section>
@@ -114,7 +114,7 @@ export default function Home() {
                   {t.body}
                 </p>
               </div>
-              <span className="text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-gold">
+              <span className="text-[0.6875rem] font-bold uppercase tracking-[0.14em] text-bronze">
                 {t.tag}
               </span>
             </div>

@@ -22,7 +22,7 @@ export function Wordmark({
       {!compact && (
         <span className="leading-none">
           <span className={`font-bold tracking-tight text-ink ${text}`}>
-            Lex<span className="text-gold">Intent</span>
+            Lex<span className="text-navy">Intent</span>
           </span>
           {product && (
             <span className="mt-0.5 block text-[0.5rem] font-bold uppercase tracking-[0.16em] text-muted">

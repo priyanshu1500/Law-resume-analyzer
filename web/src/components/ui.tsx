@@ -66,7 +66,7 @@ export function Band({
   return (
     <section
       id={id}
-      className={`${dark ? "bg-navy text-white" : "bg-bg text-ink"} ${
+      className={`${dark ? "bg-ink text-white" : "bg-bg text-ink"} ${
         divide && !dark ? "border-t border-line" : ""
       } ${className}`}
     >
@@ -77,9 +77,9 @@ export function Band({
   );
 }
 
-type Variant = "navy" | "gold" | "ghost";
+type Variant = "navy" | "gold" | "ghost" | "light";
 const MAP: Record<string, Variant> = {
-  navy: "navy", gold: "gold", ghost: "ghost",
+  navy: "navy", gold: "gold", ghost: "ghost", light: "light",
   // legacy aliases
   oxblood: "navy", ink: "navy", outline: "ghost", primary: "navy",
 };
@@ -128,7 +128,7 @@ export function ArrowLink({
 export function Check({ children }: { children: React.ReactNode }) {
   return (
     <li className="flex items-start gap-2.5 text-[0.9375rem] text-ink">
-      <span className="mt-0.5 grid size-[18px] shrink-0 place-items-center rounded-full bg-gold text-white">
+      <span className="mt-0.5 grid size-[18px] shrink-0 place-items-center rounded-full bg-teal text-white">
         <CheckIcon size={11} weight="bold" />
       </span>
       {children}
@@ -139,7 +139,7 @@ export function Check({ children }: { children: React.ReactNode }) {
 export function CheckRow({ children }: { children: React.ReactNode }) {
   return (
     <li className="flex items-start gap-3 py-2 text-[0.9375rem] text-ink">
-      <span className="mt-0.5 grid size-[18px] shrink-0 place-items-center rounded-full bg-gold text-white">
+      <span className="mt-0.5 grid size-[18px] shrink-0 place-items-center rounded-full bg-teal text-white">
         <CheckIcon size={11} weight="bold" />
       </span>
       {children}

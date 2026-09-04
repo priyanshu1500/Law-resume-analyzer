@@ -14,7 +14,7 @@ import { Courthouse } from "./illus";
 const STEPS = [
   { n: 1, icon: UploadSimpleIcon, t: "Upload", d: "Upload your resume in PDF format.", c: "bg-navy" },
   { n: 2, icon: MagnifyingGlassIcon, t: "Analyse", d: "Our AI deeply analyses your resume.", c: "bg-gold" },
-  { n: 3, icon: ChartBarIcon, t: "Get Insights", d: "Receive detailed feedback and scores.", c: "bg-bronze" },
+  { n: 3, icon: ChartBarIcon, t: "Get Insights", d: "Receive detailed feedback and scores.", c: "bg-teal" },
   { n: 4, icon: TrendUpIcon, t: "Improve", d: "Enhance your resume and stand out.", c: "bg-navy" },
 ];
 

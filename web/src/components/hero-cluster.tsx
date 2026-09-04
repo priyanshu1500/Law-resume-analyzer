@@ -72,14 +72,14 @@ export function ScoreCard() {
 const INSIGHTS = ["Content Quality", "Role Relevance", "Skills Match", "ATS Friendly"];
 export function InsightCard() {
   return (
-    <div className="w-[180px] rounded-[16px] bg-gold p-4 text-white shadow-[0_20px_46px_-22px_rgba(203,147,35,0.6)]">
-      <div className="text-[0.625rem] font-bold uppercase tracking-[0.16em] text-white/80">
+    <div className="w-[180px] rounded-[16px] bg-gold p-4 text-ink shadow-[0_20px_46px_-22px_rgba(245,158,11,0.55)]">
+      <div className="text-[0.625rem] font-bold uppercase tracking-[0.16em] text-ink/70">
         Key Insights
       </div>
       <ul className="mt-3 space-y-2.5">
         {INSIGHTS.map((t) => (
           <li key={t} className="flex items-center gap-2 text-[0.8125rem] font-semibold">
-            <span className="grid size-[16px] shrink-0 place-items-center rounded-full bg-white text-gold">
+            <span className="grid size-[16px] shrink-0 place-items-center rounded-full bg-ink text-white">
               <CheckIcon size={10} weight="bold" />
             </span>
             {t}
@@ -97,8 +97,8 @@ export function HeroCluster() {
       {/* backdrops */}
       <Blob className="absolute -left-4 top-10 h-[210px] w-auto opacity-90" />
       <Arch className="absolute right-0 top-0 opacity-90" />
-      <DotGrid className="absolute right-2 top-16" cols={5} rows={5} color="#CB9323" />
-      <DotGrid className="absolute left-6 -bottom-2" cols={4} rows={3} color="#013D6F" />
+      <DotGrid className="absolute right-2 top-16" cols={5} rows={5} color="#F59E0B" />
+      <DotGrid className="absolute left-6 -bottom-2" cols={4} rows={3} color="#1E40AF" />
       <Squiggle className="absolute left-32 bottom-0" />
 
       {/* scales */}

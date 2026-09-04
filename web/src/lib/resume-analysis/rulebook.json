@@ -1,0 +1,108 @@
+{
+  "version": "1.0.0",
+  "generated": "2026-09-05",
+  "sourceDoc": "docs/research/resume-rulebook.md",
+  "citations": {
+    "HLS-LAYOUT": "Harvard Law School OPIA — Resume Layout Guidance, hls.harvard.edu",
+    "HLS-WORKSHOP": "Harvard Law School — Resume Workshop (PDF), hls.harvard.edu",
+    "ATL-2026": "Above the Law (Wendi Weiner) — What Happens To Your Resume After You Hit Send, 2026-03-04",
+    "ATL-2021": "Above the Law (Wendi Weiner) — 3 Mistakes You're Making In Your Legal Resume, 2021-08-31",
+    "TLC-CV": "The Legal Catalyst (Samyak Tiwari) — How to Draft a CV as a Law Student, 2026-01-20",
+    "NLUD-RCC": "NLU Delhi — Recruitment Coordination Committee policy + brochure",
+    "LAWCTOPUS-INTERN": "Lawctopus — The Law Student's Guide to Internships, 2026-03-12",
+    "ATS-BENCH-2026": "ATS Verification — ATS Parsing Benchmark 2026 (controlled experiment), 2026-06-30",
+    "JOBAAJ-FIRMS": "jobaaj.com — How to Secure an Internship at Top Law Firms, 2025-12-01"
+  },
+
+  "sectionOrder": ["header", "education", "honors", "activities", "thesis", "publications", "experience", "skills"],
+  "sectionCaps": { "honors": 5, "activities": 5 },
+  "requiredSections": ["header", "education", "experience"],
+  "forbiddenSections": {
+    "referencesLine": { "severity": "low", "citation": "HLS-LAYOUT", "message": "Drop \"References available upon request\" — it wastes space; employers request references separately." }
+  },
+
+  "objectiveSection": {
+    "rule": "conditional",
+    "allowIf": "internshipCount < 2",
+    "citation": ["HLS-LAYOUT", "TLC-CV"],
+    "message": "A career-objective line is optional and most useful for 1st/2nd-year students with limited internships; final-year students with real experience should drop it."
+  },
+
+  "lengthNorms": {
+    "student": { "maxPages": 1, "yearRange": [1, 3], "citation": "TLC-CV" },
+    "finalYearStudent": { "maxPages": 2, "citation": "TLC-CV" },
+    "practicingLawyer": { "maxPages": 2, "citation": ["HLS-WORKSHOP", "ATL-2026"] }
+  },
+
+  "headerFields": {
+    "include": ["fullName", "email", "phone", "cityState", "linkedin"],
+    "excludeIndia": {
+      "fields": ["dateOfBirth", "gender", "religion", "fullResidentialAddress"],
+      "severity": "med",
+      "citation": "TLC-CV",
+      "message": "Drop personal fields not relevant to professional evaluation (DOB, gender, religion, full home address)."
+    },
+    "excludeAlways": ["photo"]
+  },
+
+  "formatting": {
+    "fileFormat": { "require": "pdf", "severity": "high", "citation": "TLC-CV" },
+    "fontFamily": { "preferred": ["Arial", "Calibri", "Helvetica", "Times New Roman", "Garamond"], "severity": "low", "citation": ["ATL-2021", "TLC-CV"] },
+    "fontSize": { "bodyPt": [11, 12], "headingPt": [13, 14], "citation": "TLC-CV" },
+    "lineSpacing": [1.15, 1.5],
+    "forbid": { "colorFonts": true, "decorativeTemplate": true, "photos": true, "citation": ["HLS-WORKSHOP", "ATL-2026"] },
+    "dateConsistency": { "severity": "med", "citation": ["HLS-WORKSHOP", "HLS-LAYOUT"], "message": "Use one date format throughout (don't mix \"Sept.\" with \"September\", or exact months with year-only)." },
+    "latinHonorsItalicLowercase": { "citation": "HLS-LAYOUT" }
+  },
+
+  "atsChecks": [
+    { "code": "two_column_layout", "severity": "high", "citation": "ATS-BENCH-2026", "message": "Two-column / sidebar layouts scramble reading order for ATS parsers — the one confirmed high-impact ATS breaker in controlled testing. Use a single column." },
+    { "code": "contact_in_header_only", "severity": "med", "citation": "ATS-BENCH-2026", "message": "Put contact info in the body of page one, not only in a repeated page header/footer — some ATS engines discard header/footer content." },
+    { "code": "nonstandard_section_headings", "severity": "low", "citation": "ATS-BENCH-2026", "message": "Use conventional section names (Experience, Education, Skills) — creative headings are missed by ATS section detection." }
+  ],
+  "atsNonIssues": {
+    "codes": ["skills_table_or_grid", "em_dashes", "curly_quotes"],
+    "citation": "ATS-BENCH-2026",
+    "note": "Controlled testing showed these parse cleanly — do not flag them despite common folklore."
+  },
+
+  "verbBank": {
+    "general": ["led", "supervised", "managed", "motivated", "facilitated", "enforced", "developed", "directed", "established", "generated", "increased", "engineered", "achieved", "resolved", "pioneered", "expanded", "organized", "created"],
+    "legalIndia": ["drafted", "researched", "analyzed", "prepared", "assisted in drafting", "conducted due diligence", "reviewed agreements", "argued", "advised", "negotiated"],
+    "citation": ["HLS-WORKSHOP", "JOBAAJ-FIRMS"]
+  },
+  "weakPhrases": {
+    "flag": ["responsible for", "helped with", "worked on", "involved in", "assisted with"],
+    "severity": "med",
+    "citation": ["JOBAAJ-FIRMS", "HLS-LAYOUT"],
+    "message": "Replace vague duty phrasing with a specific action verb and a specific, concrete task."
+  },
+  "genericTaskFlags": {
+    "flag": ["legal research", "general research", "misc work", "various tasks"],
+    "severity": "med",
+    "citation": "JOBAAJ-FIRMS",
+    "message": "State the specific work done, not a generic label — recruiters explicitly call out unspecific \"legal research\" bullets."
+  },
+
+  "passiveVoicePattern": "\\b(was|were|is|are|been)\\s+\\w+ed\\b",
+  "quantificationPatterns": ["\\d+%", "₹\\s?\\d", "\\d+\\s*(cases|matters|clients|hours|deals|pages|drafts)"],
+
+  "redFlags": [
+    { "code": "unexplained_gap", "severity": "med", "citation": ["HLS-WORKSHOP", "ATL-2026"], "message": "An unexplained date gap between entries reads as a red flag — address it briefly if real." },
+    { "code": "generic_ai_phrasing", "severity": "high", "citation": "ATL-2026", "message": "Boilerplate, non-specific phrasing reads as AI-generated to recruiters and costs interviews — every bullet should carry a specific, concrete detail unique to the candidate." },
+    { "code": "cv_only_no_experience_specificity", "severity": "med", "citation": "JOBAAJ-FIRMS" }
+  ],
+
+  "positiveSignals": [
+    { "code": "moot_court", "weight": "high", "citation": ["NLUD-RCC", "JOBAAJ-FIRMS"] },
+    { "code": "publication", "weight": "high", "citation": ["NLUD-RCC", "HLS-LAYOUT"] },
+    { "code": "internship_diversity", "weight": "med", "citation": "NLUD-RCC" },
+    { "code": "internship_to_interest_coherence", "weight": "high", "citation": "JOBAAJ-FIRMS", "note": "A focused, declared practice-area interest with matching internships outperforms an unfocused spread — mirrors the Practice Compass fit logic." },
+    { "code": "progressive_internship_ladder", "weight": "low", "citation": ["JOBAAJ-FIRMS", "LAWCTOPUS-INTERN"] }
+  ],
+
+  "knownGaps": [
+    "Firm-specific / practice-area-specific screening criteria beyond general Tier-1 corporate-firm signals",
+    "Litigation-chamber-side hiring criteria specifically (this pass surfaced firm-side data more than chamber-side)"
+  ]
+}

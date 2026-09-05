@@ -1,22 +1,27 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { analyzeResume } from "@/lib/resume-analysis";
+import { getServerClient } from "@/lib/supabase/server";
+import { isAuthConfigured } from "@/lib/supabase/config";
 
 /**
  * POST /api/analyze — multipart form with a `file` field (PDF or DOCX).
  * Returns real, deterministic Findings (Phase 2 engine, no LLM call here).
  *
- * Security posture for THIS phase (intentionally minimal, not final):
+ * Security posture:
  * - Validates real file bytes (magic number), not just the client-supplied
  *   Content-Type, and hard-caps size — a client can't lie its way past this.
  * - The file is processed in memory and never written to disk or storage —
  *   no data-at-rest risk yet, which is deliberate: private-bucket storage +
  *   retention policy is Phase 5 (Upload pipeline security).
- * - NOT YET behind auth/entitlement — that's Phase 4 (RLS) + Phase 7
- *   (payments wired to real entitlement). Do not treat this route as
- *   production-ready to expose broadly until those land; it's the engine's
- *   development/integration endpoint for now.
- * - No rate limiting yet (Phase 5/8) — fine while there's no paid LLM call
- *   behind it (there isn't one yet; Phase 6 adds that, gated separately).
+ * - Requires a signed-in user once auth is configured (Phase 4) — no
+ *   anonymous resume analysis or storage. When auth isn't configured yet
+ *   (local/demo), the route stays open, matching every other route in this
+ *   app (see isAuthConfigured usage in /api/responses).
+ * - Does NOT yet check payment entitlement — that's Phase 7, once Razorpay
+ *   is wired up. Being signed in is necessary but not sufficient once that
+ *   lands; don't treat this route as the final gate.
+ * - No rate limiting yet (Phase 5/8) — acceptable while there's no paid LLM
+ *   call behind it (there isn't one yet; Phase 6 adds that, gated separately).
  */
 
 const MAX_BYTES = 5 * 1024 * 1024; // 5MB
@@ -30,6 +35,12 @@ function sniffMime(buf: Buffer): string | null {
 }
 
 export async function POST(request: NextRequest) {
+  if (isAuthConfigured) {
+    const sb = await getServerClient();
+    const { data: auth } = (await sb?.auth.getUser()) ?? { data: { user: null } };
+    if (!auth.user) return NextResponse.json({ error: "sign in required" }, { status: 401 });
+  }
+
   let form: FormData;
   try {
     form = await request.formData();

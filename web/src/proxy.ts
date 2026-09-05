@@ -7,6 +7,8 @@ export async function proxy(request: NextRequest) {
 
   const response = NextResponse.next({ request });
   const supabase = createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    // keep in sync with src/lib/supabase/server.ts's COOKIE_OPTIONS
+    cookieOptions: { sameSite: "lax", secure: process.env.NODE_ENV === "production" },
     cookies: {
       getAll: () => request.cookies.getAll(),
       setAll: (list) => {

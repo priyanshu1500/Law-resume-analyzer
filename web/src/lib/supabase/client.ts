@@ -8,6 +8,8 @@ let cached: ReturnType<typeof createBrowserClient> | null = null;
 /** Browser Supabase client, or null when auth isn't configured yet. */
 export function getBrowserClient() {
   if (!isAuthConfigured) return null;
-  cached ??= createBrowserClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  cached ??= createBrowserClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    cookieOptions: { sameSite: "lax", secure: process.env.NODE_ENV === "production" },
+  });
   return cached;
 }

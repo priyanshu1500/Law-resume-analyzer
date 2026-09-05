@@ -28,6 +28,9 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json().catch(() => ({}));
   const incoming = (body?.responses ?? {}) as Record<string, unknown>;
+  if (JSON.stringify(incoming).length > 50_000) {
+    return NextResponse.json({ error: "payload too large" }, { status: 413 });
+  }
 
   const { data: existing } = await sb
     .from("responses")

@@ -10,10 +10,17 @@ import { getBrowserClient } from "@/lib/supabase/client";
 import { isAuthConfigured } from "@/lib/supabase/config";
 import { useAuth } from "@/lib/auth";
 
+/** Only allow same-origin relative paths — mirrors the guard in
+ * /auth/callback so a crafted "?next=" can't be used to redirect off-site. */
+function safeNext(raw: string | null): string {
+  if (raw && raw.startsWith("/") && !raw.startsWith("//") && !raw.startsWith("/\\")) return raw;
+  return "/questionnaire";
+}
+
 function LoginInner() {
   const router = useRouter();
   const params = useSearchParams();
-  const next = params.get("next") || "/questionnaire";
+  const next = safeNext(params.get("next"));
   const { user } = useAuth();
 
   const [email, setEmail] = useState("");

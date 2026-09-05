@@ -45,6 +45,10 @@ export default function UploadPage() {
       const form = new FormData();
       form.append("file", file);
       const res = await fetch("/api/analyze", { method: "POST", body: form });
+      if (res.status === 401) {
+        router.push(`/login?next=${encodeURIComponent("/upload")}`);
+        return;
+      }
       const json = await res.json();
       if (!res.ok) throw new Error(json?.error ?? "Analysis failed");
       clearInterval(ticker);

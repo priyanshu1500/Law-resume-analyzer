@@ -15,6 +15,7 @@ import {
   computeResult, whyFor, confidence, ORD, shortName,
 } from "@/lib/practice-compass/engine";
 import { useSession } from "@/lib/store";
+import { buildRecommendations } from "@/lib/recommend";
 
 const DEST: Record<string, string> = {
   firm: "Law firm",
@@ -63,7 +64,7 @@ export default function FitPage() {
   return (
     <div className="min-h-[100dvh] bg-white">
       <SiteNav />
-      {res.thin ? <Thin res={res} resp={resp} /> : <Full res={res} resp={resp} />}
+      {res.thin ? <Thin res={res} resp={resp} /> : <Full res={res} resp={resp} findings={state.findings} />}
       <SiteFooter />
     </div>
   );
@@ -92,7 +93,7 @@ function Limits({ lines }: { lines: string[] }) {
   );
 }
 
-function Full({ res, resp }: { res: any; resp: any }) {
+function Full({ res, resp, findings }: { res: any; resp: any; findings?: import("@/lib/resume-analysis/types").Findings | null }) {
   const { comb, cal, int, fit, ord, dest, tens, soft, trace, shape, open, mapVersion, exp, q, inf } = res;
   const VERD: Record<string, [React.ReactNode, string]> = {
     one: [
@@ -293,14 +294,19 @@ function Full({ res, resp }: { res: any; resp: any }) {
         </div>
 
         {/* do this week */}
-        <H2 mark="clock">Two things to do this week</H2>
+        <H2 mark="clock">What to do next</H2>
         <div className="border border-line bg-white">
-          {(TRY[ord[0]] || []).map((t, i) => (
-            <div key={i} className="grid grid-cols-[24px_1fr] gap-x-3 border-b border-line px-4 py-3 last:border-b-0">
-              <span className="text-[0.75rem] tabular-nums text-muted">{i + 1}</span>
-              <span className="text-[0.9rem]">{t}</span>
-            </div>
-          ))}
+          {buildRecommendations({ findings, topArea: ord[0] })
+            .slice(0, 5)
+            .map((r, i) => (
+              <div key={r.code + i} className="grid grid-cols-[24px_1fr_auto] items-baseline gap-x-3 border-b border-line px-4 py-3 last:border-b-0">
+                <span className="text-[0.75rem] tabular-nums text-muted">{i + 1}</span>
+                <span className="text-[0.9rem]">{r.detail}</span>
+                <span className="text-[0.625rem] font-bold uppercase tracking-[0.1em] text-muted">
+                  {r.source === "resume" ? "your resume" : "build experience"}
+                </span>
+              </div>
+            ))}
         </div>
       </Band>
 

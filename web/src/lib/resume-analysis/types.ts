@@ -77,12 +77,6 @@ export interface Flag {
   citation?: string | string[];
 }
 
-export interface Fix {
-  code: string;
-  detail: string;
-  priority: number;          // lower = do first
-}
-
 export interface Findings {
   version: string;            // rulebook version this was computed against
   overallScore: number;
@@ -91,7 +85,9 @@ export interface Findings {
   redFlags: Flag[];
   atsFlags: Flag[];
   strengths: string[];
-  fixes: Fix[];
+  /** Prioritized actions are NOT computed here — see the Recommendation
+   * Engine (src/lib/recommend.ts, Phase 3), which merges these flags with
+   * Practice Compass career actions into one ranked list. */
   keywordMatch: { practiceArea: string; matched: string[]; pct: number }[];
   quantification: { bulletsTotal: number; bulletsWithNumbers: number };
   sections: { name: string; present: boolean; wordCount: number }[];

@@ -5,6 +5,8 @@ import { Eyebrow, ArrowLink, Meter, Donut, CheckRow } from "@/components/ui";
 import { ScoreCounter, PageTurn, InkSpread } from "@/components/motion-bits";
 import { useSession } from "@/lib/store";
 import { P as PRACTICE_AREAS } from "@/lib/practice-compass/data";
+import { computeResult } from "@/lib/practice-compass/engine";
+import { buildRecommendations } from "@/lib/recommend";
 import {
   SCORE,
   FORECAST,
@@ -71,6 +73,21 @@ export default function ReportPage() {
   const topArea = findings.keywordMatch[0];
   const topAreaName = topArea ? PRACTICE_AREAS[topArea.practiceArea]?.n ?? topArea.practiceArea : null;
 
+  // Practice Compass fit (from the questionnaire, if it's been taken) feeds
+  // the Recommendation Engine's career-building actions alongside the
+  // resume's own fixes — one prioritized list, not two separate ones.
+  const hasResponses = Object.keys(state.responses).length > 0;
+  let fitTopArea: string | null = null;
+  if (hasResponses) {
+    try {
+      const fitRes = computeResult(state.responses as Record<string, number | number[]>);
+      if (!fitRes.thin) fitTopArea = fitRes.ord[0];
+    } catch {
+      /* questionnaire answers incomplete/invalid — skip career actions */
+    }
+  }
+  const recommendations = buildRecommendations({ findings, topArea: fitTopArea });
+
   return (
     <ReportBody
       score={{
@@ -112,7 +129,7 @@ export default function ReportPage() {
           : "Add specific practice-area terms (deal types, statutes, forums) once you know the direction you're aiming for — generic phrasing doesn't signal a focus."
       }
       strengths={findings.strengths}
-      improvements={findings.fixes.map((f) => f.detail)}
+      improvements={recommendations.map((r) => r.detail)}
       sections={findings.breakdown.map((b, i) => ({
         id: b.key,
         index: String(i + 1).padStart(2, "0"),

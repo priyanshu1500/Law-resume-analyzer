@@ -1,4 +1,4 @@
-import type { Evidence, Findings, Breakdown, Flag, Fix } from "./types";
+import type { Evidence, Findings, Breakdown, Flag } from "./types";
 import rulebook from "./rulebook.json";
 
 const RULEBOOK_VERSION = rulebook.version as string;
@@ -130,24 +130,16 @@ function buildStrengths(e: Evidence): string[] {
   return s;
 }
 
-function buildFixes(redFlags: Flag[], atsFlags: Flag[], breakdown: Breakdown[]): Fix[] {
-  const weight = { high: 0, med: 1, low: 2 } as const;
-  const all = [...atsFlags, ...redFlags].sort((a, b) => weight[a.severity] - weight[b.severity]);
-  const fixes: Fix[] = all.map((f, i) => ({ code: f.code, detail: f.message, priority: i + 1 }));
-  const weakest = [...breakdown].sort((a, b) => a.value - b.value)[0];
-  if (weakest && !fixes.some((f) => f.detail.toLowerCase().includes(weakest.key.toLowerCase()))) {
-    fixes.push({ code: "weakest_area", detail: `Lowest-scoring area: ${weakest.key} (${weakest.value}/100)  -  ${weakest.evidence[0] ?? "see breakdown"}.`, priority: fixes.length + 1 });
-  }
-  return fixes;
-}
-
 export function runRules(e: Evidence): Findings {
   const breakdown = [contentQuality(e), legalExperience(e), skillsAbilities(e), achievementsImpact(e), presentationClarity(e)];
   const overallScore = Math.round(breakdown.reduce((s, b) => s + b.value, 0) / breakdown.length);
   const band = overallScore >= 85 ? "Excellent" : overallScore >= 70 ? "Good Potential" : overallScore >= 50 ? "Needs Work" : "Early Stage";
   const { redFlags, atsFlags } = buildFlags(e);
   const strengths = buildStrengths(e);
-  const fixes = buildFixes(redFlags, atsFlags, breakdown);
+  // Prioritized fixes are no longer computed here — that's the
+  // Recommendation Engine's job (src/lib/recommend.ts, Phase 3), which
+  // merges these flags with Practice Compass career actions into one
+  // ranked list instead of each surface prioritizing independently.
 
   const keywordMatch = Object.entries(e.practiceAreaKeywordHits).map(([practiceArea, matched]) => ({
     practiceArea,
@@ -169,7 +161,6 @@ export function runRules(e: Evidence): Findings {
     redFlags,
     atsFlags,
     strengths,
-    fixes,
     keywordMatch,
     quantification: { bulletsTotal: e.bulletsTotal, bulletsWithNumbers: e.bulletsWithNumbers },
     sections: sectionsOut,

@@ -40,3 +40,56 @@ drop policy if exists "read own entitlements" on public.entitlements;
 create policy "read own entitlements" on public.entitlements
   for select using (auth.uid() = user_id);
 -- no insert/update/delete policy -> only the service role can write.
+
+-- 3. Uploaded resume metadata (Phase 5 — upload pipeline security) --
+--    The file itself lives in the private "resumes" storage bucket at
+--    resumes/{user_id}/{uuid}-{original filename}; this table is the
+--    queryable index + what the retention cron deletes against.
+create table if not exists public.resumes (
+  id             uuid primary key default gen_random_uuid(),
+  user_id        uuid not null references auth.users (id) on delete cascade,
+  storage_path   text not null,
+  original_name  text not null,
+  mime           text not null,
+  size_bytes     integer not null,
+  uploaded_at    timestamptz not null default now()
+);
+
+create index if not exists resumes_user_id on public.resumes (user_id);
+create index if not exists resumes_uploaded_at on public.resumes (uploaded_at);
+
+alter table public.resumes enable row level security;
+
+drop policy if exists "own resumes" on public.resumes;
+create policy "own resumes" on public.resumes
+  for all
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id);
+
+-- 4. Private storage bucket + per-user folder policies ---------------
+--    Path convention enforced by policy, not just by convention:
+--    storage.foldername(name)[1] must equal the caller's own uid, so a
+--    user can only read/write/delete objects under their own folder.
+insert into storage.buckets (id, name, public)
+  values ('resumes', 'resumes', false)
+  on conflict (id) do nothing;
+
+drop policy if exists "own resume folder read" on storage.objects;
+create policy "own resume folder read" on storage.objects
+  for select using (bucket_id = 'resumes' and (storage.foldername(name))[1] = auth.uid()::text);
+
+drop policy if exists "own resume folder insert" on storage.objects;
+create policy "own resume folder insert" on storage.objects
+  for insert with check (bucket_id = 'resumes' and (storage.foldername(name))[1] = auth.uid()::text);
+
+drop policy if exists "own resume folder delete" on storage.objects;
+create policy "own resume folder delete" on storage.objects
+  for delete using (bucket_id = 'resumes' and (storage.foldername(name))[1] = auth.uid()::text);
+-- no update policy: files are replaced by delete + re-upload, never edited in place.
+
+-- Retention: originals are deleted automatically after 30 days by the
+-- /api/cron/cleanup-resumes route (see vercel.json's cron entry), which
+-- uses the service-role key to remove both the storage object and this
+-- row. There is no in-database scheduled job (pg_cron) — the Vercel Cron
+-- keeps deletion logic in one place (application code) rather than split
+-- between SQL and TypeScript.

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuth } from "./auth";
+import type { Findings } from "./resume-analysis/types";
 
 /**
  * Client-side session state. Anonymous progress lives in localStorage;
@@ -19,9 +20,13 @@ export interface SessionState {
   fitDone: boolean;
   paid: boolean;
   resumeName: string | null;
+  /** Real, deterministic resume-analysis output (Phase 2 engine). Lives only
+   * in localStorage for now — no server persistence until Phase 5 (upload
+   * pipeline security) lands. Null until a resume has actually been analyzed. */
+  findings: Findings | null;
 }
 
-const EMPTY: SessionState = { responses: {}, fitDone: false, paid: false, resumeName: null };
+const EMPTY: SessionState = { responses: {}, fitDone: false, paid: false, resumeName: null, findings: null };
 
 function read(): SessionState {
   if (typeof window === "undefined") return EMPTY;

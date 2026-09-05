@@ -1,6 +1,10 @@
+"use client";
+
 import { SiteNav } from "@/components/site-nav";
 import { Eyebrow, ArrowLink, Meter, Donut, CheckRow } from "@/components/ui";
 import { ScoreCounter, PageTurn, InkSpread } from "@/components/motion-bits";
+import { useSession } from "@/lib/store";
+import { P as PRACTICE_AREAS } from "@/lib/practice-compass/data";
 import {
   SCORE,
   FORECAST,
@@ -11,12 +15,143 @@ import {
   PRICING,
 } from "@/lib/mock";
 
+/** One-line, deterministic framing per breakdown bucket — not AI narrative
+ * (that's Phase 6's job); just enough context to read the evidence bullets. */
+const SECTION_INTRO: Record<string, string> = {
+  "Content Quality": "How your bullets are actually written — verbs, specificity, and phrasing.",
+  "Legal Experience": "What the document shows about your internships, moots, and publications.",
+  "Skills & Abilities": "Whether your listed skills and vocabulary match a real practice area.",
+  "Achievements & Impact": "How much of your experience is backed by a number or a named outcome.",
+  "Presentation & Clarity": "Formatting and structure — the things an ATS or a 10-second skim will catch.",
+};
+
 export default function ReportPage() {
+  const { state, ready } = useSession();
+  const findings = state.findings;
+
+  if (ready && !findings) {
+    // No real analysis yet — fall back to the sample report so marketing
+    // links ("View Sample Report") still work end to end.
+    return <ReportBody
+      score={SCORE}
+      forecastNode={
+        <>
+          <Donut value={FORECAST.chance} label={FORECAST.target} size={132} />
+          <div>
+            <Eyebrow>Placement forecast (sample)</Eyebrow>
+            <p className="u-display mt-3 text-[1.75rem] leading-tight text-ink">
+              {FORECAST.verdict} of a {FORECAST.target} shortlist.
+            </p>
+            <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted">{FORECAST.detail}</p>
+          </div>
+        </>
+      }
+      directionNode={
+        <>
+          {CAREER_PATH.area}{" "}
+          <span className="text-evidence">/ {CAREER_PATH.match}% match</span>
+        </>
+      }
+      directionRationale={CAREER_PATH.rationale}
+      strengths={STRENGTHS}
+      improvements={IMPROVEMENTS}
+      sections={REPORT_SECTIONS}
+      isSample
+    />;
+  }
+
+  if (!findings) {
+    return (
+      <div className="min-h-[100dvh] bg-white">
+        <SiteNav />
+      </div>
+    );
+  }
+
+  const topArea = findings.keywordMatch[0];
+  const topAreaName = topArea ? PRACTICE_AREAS[topArea.practiceArea]?.n ?? topArea.practiceArea : null;
+
+  return (
+    <ReportBody
+      score={{
+        overall: findings.overallScore,
+        band: findings.band,
+        note: findings.looksImageOnly
+          ? "We couldn't extract readable text from this file — see Presentation & Clarity below before anything else."
+          : "This read comes entirely from your resume's own text and structure — every number below traces back to something the document actually says.",
+        breakdown: findings.breakdown.map((b) => ({ key: b.key, value: b.value })),
+      }}
+      forecastNode={
+        <>
+          <Donut value={findings.overallScore} label="Overall score" size={132} />
+          <div>
+            <Eyebrow>What this score is</Eyebrow>
+            <p className="u-display mt-3 text-[1.75rem] leading-tight text-ink">
+              A read of the document, not a placement guarantee.
+            </p>
+            <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted">
+              This reflects your resume&rsquo;s content and structure against the rulebook below —
+              it does not predict whether any specific firm will shortlist you.
+            </p>
+          </div>
+        </>
+      }
+      directionNode={
+        topAreaName ? (
+          <>
+            {topAreaName}{" "}
+            <span className="text-evidence">/ {topArea!.pct}% vocabulary match</span>
+          </>
+        ) : (
+          <span className="text-ink">No practice-area vocabulary detected yet</span>
+        )
+      }
+      directionRationale={
+        topAreaName
+          ? `Your resume's language matches ${topAreaName} terms most closely (${topArea!.matched.join(", ")}). Lean into this in your bullets if it's the direction you want.`
+          : "Add specific practice-area terms (deal types, statutes, forums) once you know the direction you're aiming for — generic phrasing doesn't signal a focus."
+      }
+      strengths={findings.strengths}
+      improvements={findings.fixes.map((f) => f.detail)}
+      sections={findings.breakdown.map((b, i) => ({
+        id: b.key,
+        index: String(i + 1).padStart(2, "0"),
+        title: b.key,
+        verdict: b.value >= 75 ? "Strong" : b.value >= 55 ? "Adequate" : "Needs work",
+        body: SECTION_INTRO[b.key] ?? "",
+        points: b.evidence,
+      }))}
+    />
+  );
+}
+
+function ReportBody({
+  score,
+  forecastNode,
+  directionNode,
+  directionRationale,
+  strengths,
+  improvements,
+  sections,
+  isSample = false,
+}: {
+  score: { overall: number; band: string; note: string; breakdown: { key: string; value: number }[] };
+  forecastNode: React.ReactNode;
+  directionNode: React.ReactNode;
+  directionRationale: string;
+  strengths: string[];
+  improvements: string[];
+  sections: { id: string; index: string; title: string; verdict: string; body: string; points: string[] }[];
+  isSample?: boolean;
+}) {
   return (
     <div className="min-h-[100dvh] bg-white">
       <SiteNav />
       <div className="border-b border-line">
-        <div className="mx-auto flex max-w-[1180px] items-center justify-end px-6 py-3">
+        <div className="mx-auto flex max-w-[1180px] items-center justify-between px-6 py-3">
+          {isSample ? (
+            <span className="text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-muted">Sample report</span>
+          ) : <span />}
           <ArrowLink href="/results">Open results</ArrowLink>
         </div>
       </div>
@@ -29,19 +164,17 @@ export default function ReportPage() {
             <h1 className="u-display mt-4 text-[2.75rem] leading-[1.03] text-ink sm:text-[3.5rem]">
               Where you stand, and what to change first.
             </h1>
-            <p className="mt-6 max-w-[54ch] text-[1.05rem] leading-relaxed text-muted">
-              {SCORE.note}
-            </p>
+            <p className="mt-6 max-w-[54ch] text-[1.05rem] leading-relaxed text-muted">{score.note}</p>
           </div>
           <div className="border border-line bg-white p-8">
             <Eyebrow>Your legal career score</Eyebrow>
             <div className="u-display mt-3 text-[5rem] leading-none text-evidence">
-              <ScoreCounter to={SCORE.overall} />
+              <ScoreCounter to={score.overall} />
               <span className="align-top text-[1.4rem] text-muted">/100</span>
             </div>
-            <p className="u-display mt-1 text-[1.25rem] text-ink">{SCORE.band}</p>
+            <p className="u-display mt-1 text-[1.25rem] text-ink">{score.band}</p>
             <div className="mt-4">
-              <Meter value={SCORE.overall} />
+              <Meter value={score.overall} />
               <div className="mt-1 flex justify-between text-[0.625rem] uppercase tracking-[0.12em] text-muted">
                 <span>0</span>
                 <span>50</span>
@@ -55,7 +188,7 @@ export default function ReportPage() {
         <section className="border-t border-line py-12">
           <Eyebrow>Score breakdown</Eyebrow>
           <div className="mt-8 grid gap-8 sm:grid-cols-3 lg:grid-cols-5">
-            {SCORE.breakdown.map((b) => (
+            {score.breakdown.map((b) => (
               <div key={b.key}>
                 <div className="u-eyebrow text-[0.625rem] leading-tight">{b.key}</div>
                 <div className="u-display mt-2 text-[2.5rem] leading-none text-ink">
@@ -72,30 +205,14 @@ export default function ReportPage() {
 
         {/* Forecast + career path -------------------------------- */}
         <section className="grid gap-12 border-t border-line py-12 md:grid-cols-2 md:gap-16">
-          <div className="flex items-start gap-8">
-            <Donut value={FORECAST.chance} label={FORECAST.target} size={132} />
-            <div>
-              <Eyebrow>Placement forecast</Eyebrow>
-              <p className="u-display mt-3 text-[1.75rem] leading-tight text-ink">
-                {FORECAST.verdict} of a {FORECAST.target} shortlist.
-              </p>
-              <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted">
-                {FORECAST.detail}
-              </p>
-            </div>
-          </div>
+          <div className="flex items-start gap-8">{forecastNode}</div>
           <div className="border-l border-line pl-8">
             <div className="flex items-baseline gap-3">
               <span className="font-bold text-gold text-[2.5rem]">01</span>
               <Eyebrow>Suggested direction</Eyebrow>
             </div>
-            <p className="u-display mt-2 text-[1.75rem] text-ink">
-              {CAREER_PATH.area}{" "}
-              <span className="text-evidence">/ {CAREER_PATH.match}% match</span>
-            </p>
-            <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted">
-              {CAREER_PATH.rationale}
-            </p>
+            <p className="u-display mt-2 text-[1.75rem] text-ink">{directionNode}</p>
+            <p className="mt-3 text-[0.9375rem] leading-relaxed text-muted">{directionRationale}</p>
           </div>
         </section>
 
@@ -107,7 +224,7 @@ export default function ReportPage() {
               <Eyebrow>Key strengths</Eyebrow>
             </div>
             <ul className="mt-4 divide-y divide-line border-y border-line">
-              {STRENGTHS.map((s) => (
+              {strengths.map((s) => (
                 <CheckRow key={s}>{s}</CheckRow>
               ))}
             </ul>
@@ -118,7 +235,7 @@ export default function ReportPage() {
               <Eyebrow ox>Fix in this order</Eyebrow>
             </div>
             <ol className="mt-4 divide-y divide-line border-y border-line">
-              {IMPROVEMENTS.map((s, i) => (
+              {improvements.map((s, i) => (
                 <li key={s} className="flex items-start gap-3 py-2.5 text-[0.9375rem] text-muted">
                   <span className="u-display text-navy">{i + 1}</span>
                   {s}
@@ -129,22 +246,16 @@ export default function ReportPage() {
         </section>
 
         {/* Written sections ------------------------------------ */}
-        {REPORT_SECTIONS.map((sec) => (
+        {sections.map((sec) => (
           <PageTurn key={sec.id}>
             <article className="grid gap-8 border-t border-line py-12 md:grid-cols-[0.4fr_1.6fr] md:gap-12">
               <div>
                 <span className="font-bold text-gold text-[3.5rem]">{sec.index}</span>
-                <h2 className="u-display mt-2 text-[1.5rem] leading-tight text-ink">
-                  {sec.title}
-                </h2>
-                <p className="mt-2 text-[0.8125rem] italic text-evidence">
-                  {sec.verdict}
-                </p>
+                <h2 className="u-display mt-2 text-[1.5rem] leading-tight text-ink">{sec.title}</h2>
+                <p className="mt-2 text-[0.8125rem] italic text-evidence">{sec.verdict}</p>
               </div>
               <div>
-                <p className="u-display text-[1.2rem] leading-relaxed text-ink">
-                  {sec.body}
-                </p>
+                <p className="u-display text-[1.2rem] leading-relaxed text-ink">{sec.body}</p>
                 <ul className="mt-5 space-y-2 border-t border-line pt-4 text-[0.875rem] text-muted">
                   {sec.points.map((p) => (
                     <li key={p} className="flex items-start gap-3">

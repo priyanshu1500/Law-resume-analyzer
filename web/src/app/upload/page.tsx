@@ -9,38 +9,54 @@ import { Eyebrow } from "@/components/ui";
 import { useSession } from "@/lib/store";
 
 const STAGES = [
-  "Parsing document structure",
-  "Mapping entries to your intake answers",
-  "Scoring against target-area norms",
-  "Drafting the written verdicts",
+  "Extracting document text",
+  "Reading structure and formatting",
+  "Scoring against the rulebook",
+  "Assembling your report",
 ];
 
 export default function UploadPage() {
   const router = useRouter();
   const { state, ready, update } = useSession();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [name, setName] = useState<string | null>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [dragging, setDragging] = useState(false);
   const [running, setRunning] = useState(false);
   const [stage, setStage] = useState(0);
+  const [error, setError] = useState<string | null>(null);
+  const name = file?.name ?? null;
 
-  function accept(file: File | undefined) {
-    if (!file) return;
-    setName(file.name);
-    update({ resumeName: file.name });
+  function accept(f: File | undefined) {
+    if (!f) return;
+    setError(null);
+    setFile(f);
+    update({ resumeName: f.name });
   }
 
-  function run() {
+  async function run() {
+    if (!file) return;
+    setError(null);
     setRunning(true);
-    let i = 0;
-    const t = setInterval(() => {
-      i += 1;
-      setStage(i);
-      if (i >= STAGES.length) {
-        clearInterval(t);
-        setTimeout(() => router.push("/report"), 500);
-      }
-    }, 900);
+    setStage(0);
+    // cosmetic stage progression while the real request is in flight —
+    // stops advancing at the last stage until the response actually lands
+    const ticker = setInterval(() => setStage((s) => Math.min(s + 1, STAGES.length - 1)), 900);
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      const res = await fetch("/api/analyze", { method: "POST", body: form });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json?.error ?? "Analysis failed");
+      clearInterval(ticker);
+      setStage(STAGES.length);
+      update({ findings: json.findings });
+      setTimeout(() => router.push("/report"), 400);
+    } catch (err) {
+      clearInterval(ticker);
+      setRunning(false);
+      setStage(0);
+      setError(err instanceof Error ? err.message : "Something went wrong reading that file.");
+    }
   }
 
   if (ready && !state.paid) {
@@ -66,8 +82,8 @@ export default function UploadPage() {
             Upload your resume.
           </h1>
           <p className="mt-6 max-w-[48ch] text-[1.05rem] leading-relaxed text-muted">
-            PDF or Word, one file. The analysis reads it against the forty-nine
-            answers you gave in the intake.
+            PDF or DOCX, one file, under 5MB. We read the document itself —
+            structure, wording, formatting — and score it against the rulebook.
           </p>
 
           {!running ? (
@@ -107,10 +123,13 @@ export default function UploadPage() {
               <input
                 ref={inputRef}
                 type="file"
-                accept=".pdf,.doc,.docx"
+                accept=".pdf,.docx"
                 hidden
                 onChange={(e) => accept(e.target.files?.[0] ?? undefined)}
               />
+              {error && (
+                <p className="mt-4 text-[0.8125rem] text-evidence">{error}</p>
+              )}
             </div>
           ) : (
             <ol className="mt-10 divide-y divide-line border-y border-line">
